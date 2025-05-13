@@ -249,5 +249,10 @@
   },
   "buttons": {
     "toggleMenu": "Toggle menu"
+  },
+  "theme": {
+    "dark": "Dark Mode",
+    "light": "Light Mode",
+    "system": "System Default"
   }
 }

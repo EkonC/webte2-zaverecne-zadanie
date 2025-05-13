@@ -249,5 +249,10 @@
   },
   "buttons": {
     "toggleMenu": "Prepnúť menu"
+  },
+  "theme": {
+    "light": "Svetlý režim",
+    "dark": "Tmavý režim",
+    "system": "Automaticky (podľa systému)"
   }
 }

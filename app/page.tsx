@@ -1,16 +1,17 @@
 "use client";
-import LanguageSwitcher from "@/components/language-switcher";
-import { redirect } from "next/navigation";
-//import { FileUpload } from "@/components/file-upload";
-//import { FeatureGrid } from "@/components/feature-grid";
-//import { DashboardHeader } from "@/components/dashboard-header";
+
 import { useTranslation } from "react-i18next";
+import { redirect } from "next/navigation";
+import { DashboardHeader } from "@/components/dashboard-header";
+import { FileUpload } from "@/components/file-upload";
+import { FeatureGrid } from "@/components/feature-grid";
 
 export default function Home() {
-  // In a real app, you would check authentication status here
+  const { t } = useTranslation("common");
+
+  //TODO: Check if the user is authenticated
   // For demo purposes, we'll assume the user is authenticated
   const isAuthenticated = true;
-  const { t, i18n } = useTranslation("common");
 
   if (!isAuthenticated) {
     redirect("/login");
@@ -18,18 +19,18 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      {/* <DashboardHeader />*/}
+      <DashboardHeader />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <LanguageSwitcher />
+        <h1 className="text-3xl font-bold mb-6">{t("dashboard.title")}</h1>
+        <p className="text-muted-foreground mb-8">{t("dashboard.subtitle")}</p>
 
-        {/*<FileUpload />*/}
+        <FileUpload />
 
-        <div>
-          <h1>{t("welcomeMessage")}</h1>
-          <p>{t("greeting", { name: "Používateľ" })}</p>{" "}
-          {/* Príklad s interpoláciou */}
-          <p>Toto je {t("homePage")}.</p>
-          <p>Aktuálny jazyk z page.tsx: {i18n.language}</p>
+        <div className="mt-12">
+          <h2 className="text-2xl font-semibold mb-6">
+            {t("dashboard.availableTools")}
+          </h2>
+          <FeatureGrid />
         </div>
       </main>
     </div>
