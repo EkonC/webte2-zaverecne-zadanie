@@ -2,7 +2,6 @@
 
 import { useTranslation } from "react-i18next";
 import { redirect } from "next/navigation";
-import { DashboardHeader } from "@/components/dashboard-header";
 import { FileUpload } from "@/components/file-upload";
 import { FeatureGrid } from "@/components/feature-grid";
 
@@ -19,7 +18,6 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <DashboardHeader />
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">{t("dashboard.title")}</h1>
         <p className="text-muted-foreground mb-8">{t("dashboard.subtitle")}</p>

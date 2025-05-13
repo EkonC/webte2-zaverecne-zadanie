@@ -1,7 +1,6 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { DashboardHeader } from "@/components/dashboard-header";
 import { UsageHistoryTable } from "@/components/usage-history-table";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +17,6 @@ export default function HistoryPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <DashboardHeader />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
           <div>
