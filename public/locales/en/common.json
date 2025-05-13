@@ -1,0 +1,7 @@
+{
+  "welcomeMessage": "Welcome to our application!",
+  "changeLanguage": "Change Language",
+  "homePage": "Home Page",
+  "aboutPage": "About Page",
+  "greeting": "Hello, {{name}}!"
+}

@@ -1,0 +1,7 @@
+{
+  "welcomeMessage": "Vitajte v našej aplikácii!",
+  "changeLanguage": "Zmeniť jazyk",
+  "homePage": "Domovská stránka",
+  "aboutPage": "O nás",
+  "greeting": "Ahoj, {{name}}!"
+}
