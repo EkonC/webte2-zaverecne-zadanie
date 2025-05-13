@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Tvoje existujúce rewrites, ak ich potrebuješ
   rewrites: async () => {
     return [
       {
@@ -26,7 +25,7 @@ const nextConfig = {
       },
     ];
   },
-
+  /* 
   // added webpack config
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.optimization.moduleIds = "named";
@@ -36,7 +35,7 @@ const nextConfig = {
     config.output.hashFunction = "xxhash64";
 
     return config;
-  },
+  },*/
 };
 
 module.exports = nextConfig;

@@ -9,7 +9,14 @@
     "documentation": "Dokumentácia",
     "profile": "Profil",
     "settings": "Nastavenia",
-    "logout": "Odhlásiť sa"
+    "logout": "Odhlásiť sa",
+    "userMenu": "Používateľské menu"
+  },
+  "theme": {
+    "toggle": "Prepnúť tému",
+    "light": "Svetlá",
+    "dark": "Tmavá",
+    "system": "Systémová"
   },
   "languages": {
     "en": "Angličtina",
@@ -249,10 +256,5 @@
   },
   "buttons": {
     "toggleMenu": "Prepnúť menu"
-  },
-  "theme": {
-    "light": "Svetlý režim",
-    "dark": "Tmavý režim",
-    "system": "Automaticky (podľa systému)"
   }
 }

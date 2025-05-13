@@ -106,7 +106,7 @@ export function DashboardHeader() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <User className="h-5 w-5" />
-                <span className="sr-only">User menu</span>
+                <span className="sr-only">{t("nav.menu")}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

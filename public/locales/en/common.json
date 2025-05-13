@@ -9,7 +9,14 @@
     "documentation": "Documentation",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "userMenu": "User menu"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
   },
   "languages": {
     "en": "English",
@@ -249,10 +256,5 @@
   },
   "buttons": {
     "toggleMenu": "Toggle menu"
-  },
-  "theme": {
-    "dark": "Dark Mode",
-    "light": "Light Mode",
-    "system": "System Default"
   }
 }
