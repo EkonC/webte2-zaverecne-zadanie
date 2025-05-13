@@ -34,7 +34,8 @@
     "upload": "Upload",
     "uploading": "Uploading...",
     "selectedFile": "Selected file:",
-    "mb": "MB"
+    "mb": "MB",
+    "changeFile": "Change file"
   },
   "tools": {
     "merge": {

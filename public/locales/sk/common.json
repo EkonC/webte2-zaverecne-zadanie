@@ -34,7 +34,8 @@
     "upload": "Nahrať",
     "uploading": "Nahrávanie...",
     "selectedFile": "Vybraný súbor:",
-    "mb": "MB"
+    "mb": "MB",
+    "changeFile": "Zmeniť súbor"
   },
   "tools": {
     "merge": {
