@@ -174,7 +174,8 @@
     "loggingIn": "Logging in...",
     "name": "Name",
     "namePlaceholder": "John Doe",
-    "createAccount": "Create account"
+    "createAccount": "Create account",
+    "creatingAccount": "Creating account..."
   },
   "history": {
     "title": "Usage History",

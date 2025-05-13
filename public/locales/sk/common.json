@@ -174,7 +174,8 @@
     "loggingIn": "Prihlasovanie...",
     "name": "Meno",
     "namePlaceholder": "Ján Novák",
-    "createAccount": "Vytvoriť účet"
+    "createAccount": "Vytvoriť účet",
+    "creatingAccount": "Vytváranie účtu..."
   },
   "history": {
     "title": "História použitia",
