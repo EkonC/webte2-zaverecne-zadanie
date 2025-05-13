@@ -1,7 +1,253 @@
 {
-  "welcomeMessage": "Welcome to our application!",
-  "changeLanguage": "Change Language",
-  "homePage": "Home Page",
-  "aboutPage": "About Page",
-  "greeting": "Hello, {{name}}!"
+  "app": {
+    "name": "PDF Manipulator",
+    "description": "A modern web application for PDF file manipulation"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "history": "History",
+    "documentation": "Documentation",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "languages": {
+    "en": "English",
+    "sk": "Slovak"
+  },
+  "dashboard": {
+    "title": "PDF Tools Dashboard",
+    "subtitle": "Upload a PDF file to get started with our powerful PDF manipulation tools.",
+    "availableTools": "Available PDF Tools"
+  },
+  "upload": {
+    "title": "Upload your PDF file",
+    "subtitle": "Drag and drop your PDF file here, or click to browse",
+    "browseFiles": "Browse files",
+    "upload": "Upload",
+    "uploading": "Uploading...",
+    "selectedFile": "Selected file:",
+    "mb": "MB"
+  },
+  "tools": {
+    "merge": {
+      "title": "Merge PDFs",
+      "description": "Combine multiple PDF files into a single document",
+      "pageTitle": "Merge PDFs",
+      "pageSubtitle": "Combine multiple PDF files into a single document",
+      "uploadPdfFiles": "Upload PDF Files",
+      "mergeButton": "Merge PDFs",
+      "processing": "Processing...",
+      "filesToMerge": "Files to Merge",
+      "dragToReorder": "Drag files to reorder them. The PDFs will be merged in the order shown below.",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "remove": "Remove",
+      "mergeComplete": "Merge Complete!",
+      "mergeCompleteDesc": "Your PDFs have been successfully merged into a single document.",
+      "download": "Download",
+      "howTo": "How to Merge PDF Files",
+      "steps": {
+        "step1": "Upload two or more PDF files using the file browser above.",
+        "step2": "Arrange the files in the desired order using the up and down arrows.",
+        "step3": "Click the \"Merge PDFs\" button to combine the files.",
+        "step4": "Once processing is complete, download the merged PDF file."
+      },
+      "tips": {
+        "title": "Tips:",
+        "tip1": "The PDFs will be merged in the order shown in the list.",
+        "tip2": "You can merge up to 20 PDF files at once with a free account.",
+        "tip3": "Maximum file size: 10MB per file (free account)."
+      }
+    },
+    "split": {
+      "title": "Split PDF",
+      "description": "Divide your PDF into multiple separate documents",
+      "pageTitle": "Split PDF",
+      "pageSubtitle": "Divide your PDF into multiple separate documents",
+      "uploadPdfFile": "Upload PDF File",
+      "splitOptions": "Split Options",
+      "pageRange": "Page Range",
+      "splitByInterval": "Split by Interval",
+      "extractPages": "Extract Pages",
+      "pageRangeDesc": "Specify page ranges separated by commas (e.g., 1-3, 5-8)",
+      "intervalDesc": "Split the PDF into separate files every N pages",
+      "splitEveryNPages": "Split every N pages",
+      "extractOptions": "Extract Options",
+      "extractAll": "Extract all pages as separate files",
+      "extractEven": "Extract even pages",
+      "extractOdd": "Extract odd pages",
+      "splitButton": "Split PDF",
+      "processing": "Processing...",
+      "splitComplete": "Split Complete!",
+      "splitCompleteDesc": "Your PDF has been successfully split into multiple files.",
+      "downloadAll": "Download All",
+      "pages": "pages",
+      "howTo": "How to Split PDF Files",
+      "steps": {
+        "step1": "Upload a PDF file using the file browser above.",
+        "step2": "Choose a split method:",
+        "step2a": "Page Range: Split into specific page ranges",
+        "step2b": "Split by Interval: Split every N pages",
+        "step2c": "Extract Pages: Extract specific pages",
+        "step3": "Configure the split options based on your selected method.",
+        "step4": "Click the \"Split PDF\" button to process the file.",
+        "step5": "Once processing is complete, download the split PDF files."
+      }
+    },
+    "edit": {
+      "title": "Edit PDF",
+      "description": "Modify text, images, and other content in your PDF files",
+      "pageTitle": "Edit PDF",
+      "pageSubtitle": "Modify text, images, and other content in your PDF files",
+      "uploadPdfFile": "Upload PDF File to Edit",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page",
+      "of": "of",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "pdfPreview": "PDF Preview",
+      "text": "Text",
+      "images": "Images",
+      "annotations": "Annotations",
+      "editText": "Edit Text",
+      "textPlaceholder": "Select text in the PDF preview to edit it here",
+      "applyTextChanges": "Apply Text Changes",
+      "imageOperations": "Image Operations",
+      "addImage": "Add Image",
+      "replaceImage": "Replace Image",
+      "removeImage": "Remove Image",
+      "imageDesc": "Select an image in the PDF preview to replace or remove it, or add a new image at the cursor position.",
+      "addAnnotation": "Add Annotation",
+      "highlightText": "Highlight Text",
+      "addComment": "Add Comment",
+      "annotationDesc": "Select text in the PDF preview to highlight it or add a comment, or add a freeform annotation.",
+      "editComplete": "Edit Complete!",
+      "editCompleteDesc": "Your PDF has been successfully edited.",
+      "download": "Download",
+      "howTo": "How to Edit PDF Files",
+      "steps": {
+        "step1": "Upload a PDF file using the file browser above.",
+        "step2": "Navigate through the pages using the Previous and Next buttons.",
+        "step3": "Use the tabs to access different editing tools:",
+        "step3a": "Text: Edit text content in the PDF",
+        "step3b": "Images: Add, replace, or remove images",
+        "step3c": "Annotations: Add highlights, comments, or other annotations",
+        "step4": "Make your desired changes to the PDF content.",
+        "step5": "Click the \"Save Changes\" button to apply your edits.",
+        "step6": "Once processing is complete, download the edited PDF file."
+      },
+      "note": "Note:",
+      "noteDesc": "PDF editing capabilities may vary depending on the structure of the PDF file. Some PDFs, especially scanned documents or those with security restrictions, may have limited editing options."
+    },
+    "delete": {
+      "title": "Delete Pages",
+      "description": "Remove specific pages from your PDF document"
+    },
+    "toc": {
+      "title": "Create Table of Contents",
+      "description": "Generate a clickable table of contents for your PDF"
+    },
+    "convert": {
+      "title": "Convert to Images",
+      "description": "Transform your PDF pages into image formats"
+    },
+    "useTool": "Use Tool"
+  },
+  "auth": {
+    "title": "PDF Manipulator",
+    "subtitle": "Enter your credentials to access your account",
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "emailPlaceholder": "name@example.com",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "loggingIn": "Logging in...",
+    "name": "Name",
+    "namePlaceholder": "John Doe",
+    "createAccount": "Create account"
+  },
+  "history": {
+    "title": "Usage History",
+    "subtitle": "View and manage your PDF manipulation history",
+    "exportCsv": "Export CSV",
+    "clearHistory": "Clear History",
+    "activityLog": "Activity Log",
+    "activityLogDesc": "Your recent PDF manipulation activities",
+    "operationId": "Operation ID",
+    "action": "Action",
+    "dateTime": "Date & Time",
+    "location": "Location",
+    "files": "Files",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "downloadResult": "Download Result",
+    "deleteRecord": "Delete Record",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "entries": "entries",
+    "page": "Page"
+  },
+  "docs": {
+    "title": "Documentation",
+    "userManual": "User Manual",
+    "userManualDesc": "Learn how to use our PDF manipulation tools effectively",
+    "apiDocs": "API Documentation",
+    "apiDocsDesc": "Technical documentation for integrating with our PDF API",
+    "userGuide": "PDF Manipulator User Guide",
+    "exportAsPdf": "Export as PDF",
+    "gettingStarted": "Getting Started",
+    "tools": "Tools",
+    "faq": "FAQ",
+    "welcome": "Welcome to PDF Manipulator",
+    "welcomeDesc": "PDF Manipulator is a powerful web application that allows you to perform various operations on PDF files. This guide will help you get started with the application and make the most of its features.",
+    "quickStart": "Quick Start",
+    "quickStartSteps": {
+      "step1": "Upload a PDF file using the drag-and-drop area or file browser on the dashboard.",
+      "step2": "Select the operation you want to perform from the available tools.",
+      "step3": "Configure the operation settings as needed.",
+      "step4": "Click the \"Process\" button to perform the operation.",
+      "step5": "Download the resulting PDF file."
+    },
+    "accountManagement": "Account Management",
+    "accountManagementDesc": "To access all features of PDF Manipulator, you need to create an account. Once logged in, you can:",
+    "accountFeatures": {
+      "feature1": "Save your PDF files for future use",
+      "feature2": "Access your operation history",
+      "feature3": "Generate API keys for programmatic access",
+      "feature4": "Customize your application settings"
+    },
+    "faqQuestions": {
+      "q1": "Is my data secure?",
+      "a1": "Yes, all uploaded files are encrypted and automatically deleted after processing unless you choose to save them to your account.",
+      "q2": "What file size limits are there?",
+      "a2": "Free accounts can upload files up to 10MB. Premium accounts can upload files up to 100MB.",
+      "q3": "Can I use the application offline?",
+      "a3": "No, PDF Manipulator is a web-based application and requires an internet connection to function.",
+      "q4": "How do I report issues or request features?",
+      "a4": "You can contact our support team through the \"Help\" section or email us at support@pdfmanipulator.com.",
+      "q5": "Is there an API available?",
+      "a5": "Yes, we offer a RESTful API for programmatic access to all PDF manipulation features. See the API Documentation for details."
+    }
+  },
+  "api": {
+    "title": "PDF Manipulator API",
+    "version": "Version 1.0.0 • OpenAPI 3.0",
+    "downloadSpec": "Download OpenAPI Spec",
+    "authentication": "Authentication",
+    "endpoints": "Endpoints",
+    "examples": "Examples",
+    "authDesc": "API Authentication",
+    "authDetails": "Our API uses API keys for authentication. You can generate an API key in your account settings.",
+    "exampleRequest": "Example Request with Authentication",
+    "mergeExample": "Example: Merging PDFs",
+    "request": "Request",
+    "response": "Response"
+  },
+  "buttons": {
+    "toggleMenu": "Toggle menu"
+  }
 }
