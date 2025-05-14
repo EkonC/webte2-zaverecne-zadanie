@@ -15,8 +15,10 @@ import {
   Merge,
   FileEdit,
   ListTree,
+  Trash2,
+  FilePlus,
+  FileText,
   ImageIcon,
-  Trash,
 } from "lucide-react";
 
 const features = [
@@ -37,8 +39,23 @@ const features = [
   },
   {
     key: "delete",
-    icon: Trash,
-    href: "/tools/delete-pages",
+    icon: Trash2,
+    href: "/tools/delete",
+  },
+  {
+    key: "addPages",
+    icon: FilePlus,
+    href: "/tools/add-pages",
+  },
+  {
+    key: "extractImages",
+    icon: ImageIcon,
+    href: "/tools/extract-images",
+  },
+  {
+    key: "extractText",
+    icon: FileText,
+    href: "/tools/extract-text",
   },
   {
     key: "toc",
