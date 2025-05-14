@@ -385,5 +385,12 @@
   },
   "buttons": {
     "toggleMenu": "Prepnúť menu"
+  },
+  "errors": {
+    "notFound": "404 - Stránka nebola nájdená",
+    "notFoundDesc": "Prepáčte, ale stránka, ktorú hľadáte, neexistuje alebo bola odstránená.",
+    "backHome": "Späť na domovskú stránku",
+    "somethingWrong": "Niečo sa pokazilo",
+    "tryAgain": "Skúste to znova neskôr."
   }
 }

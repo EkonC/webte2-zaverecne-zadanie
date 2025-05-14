@@ -385,5 +385,12 @@
   },
   "buttons": {
     "toggleMenu": "Toggle menu"
+  },
+  "errors": {
+    "notFound": "404 - Page Not Found",
+    "notFoundDesc": "Sorry, the page you are looking for does not exist.",
+    "backHome": "Back to Home",
+    "somethingWrong": "Something went wrong",
+    "tryAgain": "Please try again later."
   }
 }
