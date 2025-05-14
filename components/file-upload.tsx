@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { FileUp, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+import { toast } from "sonner";
+
 export function FileUpload() {
   const { t } = useTranslation("common");
   const [isDragging, setIsDragging] = useState(false);
@@ -53,7 +55,8 @@ export function FileUpload() {
         setFile(selectedFile);
       } else {
         console.warn("Selected file is not a PDF.");
-        alert(t("upload.error.notPdf", "Please select a PDF file.")); // Príklad alertu, lepšie použiť Toaster
+        //use toast to show error message
+        toast.error(t("upload.errorMessage"));
         setFile(null);
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
