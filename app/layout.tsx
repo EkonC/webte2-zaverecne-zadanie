@@ -2,7 +2,10 @@ import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import I18nProviderComponent from "@/components/providers/i18n-provider";
+import { DashboardHeader } from "@/components/dashboard-header";
+import { ToastProvider } from "@/components/providers/toast-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,16 +20,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="sk" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <I18nProviderComponent>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <DashboardHeader />
+            <ToastProvider />
+            {children}
+          </ThemeProvider>
+        </I18nProviderComponent>
       </body>
     </html>
   );
