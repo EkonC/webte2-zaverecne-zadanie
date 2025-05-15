@@ -1,3 +1,16 @@
+
+# Funkcie na úpravu PDF
+1. Zlúčiť PDF - Merge PDF
+2. Extrahovať text z PDF - Extract text from PDF
+3. Extrahovať obrázky z PDF - Extract images from PDF
+4. Odstraňovanie stránok - Remove pages
+5. Rotácia stránok - Rotate pages
+6. Úprava textu - Edit text
+7. Pridanie vodoznaku - Add watermark
+8. Export do PNG - Export to PNG
+9. Export do JPG - Export to JPG
+10. Viac strán na jednom liste - Multiple pages on one sheet
+
 # AI SDK Python Streaming Preview
 
 This template demonstrates the usage of [Data Stream Protocol](https://sdk.vercel.ai/docs/ai-sdk-ui/stream-protocol#data-stream-protocol) to stream chat completions from a Python endpoint ([FastAPI](https://fastapi.tiangolo.com)) and display them using the [useChat](https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot#chatbot) hook in your Next.js application.
