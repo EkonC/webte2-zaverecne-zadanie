@@ -8,7 +8,9 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    build: .
+    build:
+        context: ./backend
+        dockerfile: Dockerfile
     depends_on:
       - db
     env_file:
@@ -16,20 +18,36 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - .:/usr/src/app
+      - ./backend:/usr/src/app
     command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
+  frontend:
+    build:
+        context: ./frontend
+        dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/src/app
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    command: ["pnpm", "dev"]
+
   tests:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     depends_on:
       - db
     env_file:
       - .env
     volumes:
-      - .:/usr/src/app
+      - ./backend:/usr/src/app
     working_dir: /usr/src/app
     environment:
-      - PYTHONPATH=/usr/src/app
+      PYTHONPATH: /usr/src/app
     command: ["pytest", "-q"]
 
 volumes:
