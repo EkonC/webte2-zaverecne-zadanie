@@ -34,23 +34,44 @@ export function PdfExtractTextTool() {
     }
   };
 
-  const handleExtract = () => {
+  const handleExtract = async () => {
     if (!file) return;
-
     setIsProcessing(true);
+    setIsComplete(false);
+    setExtractedText("");
 
-    // Simulate processing
-    setTimeout(() => {
-      setIsProcessing(false);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("page_range", pageRange);
+    form.append("preserve_layout", preserveLayout ? "true" : "false");
+    form.append("text_format", textFormat);
+
+    try {
+      const res = await fetch("/api/extract-text", { method: "POST", body: form });
+      if (!res.ok) throw new Error(`Extraction failed: ${res.statusText}`);
+      const { text } = await res.json();
+      setExtractedText(text);
       setIsComplete(true);
-      setExtractedText(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl.\n\nPellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nullam auctor, nisl eget ultricies tincidunt, nisl nisl aliquam nisl, eget ultricies nisl nisl eget nisl."
-      );
-    }, 2000);
+    } catch (err) {
+      console.error(err);
+      // optionally show an error toast here
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(extractedText);
+  };
+
+  const handleDownloadText = () => {
+    const blob = new Blob([extractedText], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "extracted.txt";
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -198,7 +219,7 @@ export function PdfExtractTextTool() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                <Button className="flex items-center gap-1">
+                <Button onClick={handleDownloadText} className="flex items-center gap-1">
                   <Download className="h-4 w-4" />
                   <span>{t("tools.extractText.downloadText")}</span>
                 </Button>
