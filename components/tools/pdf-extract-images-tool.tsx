@@ -33,17 +33,40 @@ export function PdfExtractImagesTool() {
     }
   };
 
-  const handleExtract = () => {
+  const handleExtract = async () => {
     if (!file) return;
-
     setIsProcessing(true);
+    setIsComplete(false);
+    setImagesFound(0);
 
-    // Simulate processing
-    setTimeout(() => {
-      setIsProcessing(false);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("page_range", pageRange);
+    form.append("image_format", imageFormat);
+    form.append("min_width", minWidth.toString());
+    form.append("min_height", minHeight.toString());
+
+    try {
+      const res = await fetch("/api/extract-images", { method: "POST", body: form });
+      if (!res.ok) throw new Error(res.statusText);
+      const countHeader = res.headers.get("x-image-count") || "0";
+      setImagesFound(parseInt(countHeader, 10));
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "images.zip";
+      a.click();
+      URL.revokeObjectURL(url);
+
       setIsComplete(true);
-      setImagesFound(Math.floor(Math.random() * 15) + 3);
-    }, 2000);
+    } catch (err) {
+      console.error(err);
+      // optionally show user feedback
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -190,30 +213,17 @@ export function PdfExtractImagesTool() {
 
           {isComplete && (
             <div className="p-4 bg-primary/10 rounded-md">
-              <div className="flex flex-col space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium">
-                    {t("tools.extractImages.extractComplete")}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">
-                    {t("tools.extractImages.extractCompleteDesc")}
-                  </p>
-                  <p className="text-sm mt-2">
-                    <strong>{imagesFound}</strong>{" "}
-                    {t("tools.extractImages.imagesFound")}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <Button className="flex items-center gap-1">
-                    <Download className="h-4 w-4" />
-                    <span>{t("tools.extractImages.downloadAll")}</span>
-                  </Button>
-                  <Button variant="outline" className="flex items-center gap-1">
-                    <Archive className="h-4 w-4" />
-                    <span>{t("tools.extractImages.downloadZip")}</span>
-                  </Button>
-                </div>
+              <h3 className="text-sm font-medium">
+                {t("tools.extractImages.extractCompleteDesc")}
+              </h3>
+              <p className="text-sm mt-2">
+                <strong>{imagesFound}</strong> {t("tools.extractImages.imagesFound")}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={handleExtract} className="flex items-center gap-1">
+                  <Download className="h-4 w-4" />
+                  <span>{t("tools.extractImages.downloadZip")}</span>
+                </Button>
               </div>
             </div>
           )}
