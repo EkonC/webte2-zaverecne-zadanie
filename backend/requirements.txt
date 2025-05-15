@@ -1,3 +1,4 @@
+bcrypt>=4.0.0
 fastapi
 uvicorn[standard]
 sqlalchemy
@@ -12,3 +13,5 @@ pytest
 httpx
 pypdf
 pillow
+alembic
+psycopg2-binary
