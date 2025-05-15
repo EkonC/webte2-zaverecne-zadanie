@@ -11,6 +11,20 @@
 9. Export do JPG - Export to JPG
 10. Viac strán na jednom liste - Multiple pages on one sheet
 
+# Práca s Dockerom
+```bash
+cd backend
+docker-compose up --build
+```
+```bash
+cd backend
+docker-compose down --volumes
+```
+```bash
+cd backend
+docker-compose run --rm tests
+```
+
 # AI SDK Python Streaming Preview
 
 This template demonstrates the usage of [Data Stream Protocol](https://sdk.vercel.ai/docs/ai-sdk-ui/stream-protocol#data-stream-protocol) to stream chat completions from a Python endpoint ([FastAPI](https://fastapi.tiangolo.com)) and display them using the [useChat](https://sdk.vercel.ai/docs/ai-sdk-ui/chatbot#chatbot) hook in your Next.js application.
