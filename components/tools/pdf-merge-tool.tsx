@@ -10,32 +10,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowDown, ArrowUp, Download, FileUp, Trash2 } from "lucide-react";
 
-type PdfFile = {
-  id: string;
-  name: string;
-  size: number;
-};
-
 export function PdfMergeTool() {
   const { t } = useTranslation("common");
-  const [files, setFiles] = useState<PdfFile[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const newFiles = Array.from(e.target.files).map((file) => ({
-        id: Math.random().toString(36).substring(2, 9),
-        name: file.name,
-        size: file.size,
-      }));
-
-      setFiles((prev) => [...prev, ...newFiles]);
+    const fileList = e.currentTarget.files;
+    if (fileList && fileList.length > 0) {
+      setFiles(prev => [...prev, ...Array.from(fileList)]);
     }
   };
 
   const handleRemoveFile = (id: string) => {
-    setFiles((prev) => prev.filter((file) => file.id !== id));
+    setFiles((prev) => prev.filter((file) => file.name !== id));
   };
 
   const handleMoveUp = (index: number) => {
@@ -60,16 +49,33 @@ export function PdfMergeTool() {
     setFiles(newFiles);
   };
 
-  const handleMerge = () => {
+  const handleMerge = async () => {
     if (files.length < 2) return;
-
     setIsProcessing(true);
 
-    // Simulate processing
-    setTimeout(() => {
+    // 1) Build a FormData with the actual File objects
+    const form = new FormData();
+    files.forEach((fileObj) => form.append("files", fileObj));
+
+    // 2) POST to your new FastAPI endpoint
+    const res = await fetch("/api/merge-pdf", { method: "POST", body: form });
+    if (!res.ok) {
+      // handle error…
       setIsProcessing(false);
-      setIsComplete(true);
-    }, 2000);
+      return;
+    }
+
+    // 3) Download the merged PDF
+    const blob = await res.blob();
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = "merged.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
+
+    setIsProcessing(false);
+    setIsComplete(true);
   };
 
   return (
@@ -118,7 +124,7 @@ export function PdfMergeTool() {
 
               <div className="border rounded-md divide-y">
                 {files.map((file, index) => (
-                  <div key={file.id} className="flex items-center p-3 gap-2">
+                  <div key={file.name} className="flex items-center p-3 gap-2">
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
                         {file.name}
@@ -158,7 +164,7 @@ export function PdfMergeTool() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleRemoveFile(file.id)}
+                        onClick={() => handleRemoveFile(file.name)}
                         className="h-8 w-8 text-destructive"
                       >
                         <Trash2 className="h-4 w-4" />
