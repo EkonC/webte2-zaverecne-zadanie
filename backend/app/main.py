@@ -1,0 +1,1 @@
+# vstupný bod aplikácie (Fast API)

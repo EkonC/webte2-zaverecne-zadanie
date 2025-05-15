@@ -1,0 +1,1 @@
+# base pre automatický import modelov

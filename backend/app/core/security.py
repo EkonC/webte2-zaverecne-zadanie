@@ -1,0 +1,1 @@
+# JWT, heslá, OAuth nastavenie

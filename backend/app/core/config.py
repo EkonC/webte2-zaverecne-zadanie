@@ -1,0 +1,1 @@
+# načítanie env premenných
