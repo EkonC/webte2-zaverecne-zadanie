@@ -1,12 +1,11 @@
-import os
-import json
+
 from typing import List
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
-from .utils.tools import get_current_weather
 from .utils.merge_pdf import merge_pdfs_bytes
 from .utils.extract_text import extract_text_from_pdf_bytes
+from .utils.extract_images import extract_images_from_pdf_bytes
 
 
 load_dotenv(".env.local")
@@ -42,4 +41,27 @@ async def extract_text_endpoint(
     content = await file.read()
     text = extract_text_from_pdf_bytes(content, page_range, preserve_layout)
     return JSONResponse({"text": text})
+
+@app.post("/api/extract-images")
+async def extract_images_endpoint(
+    file: UploadFile = File(..., description="Select one PDF"),
+    page_range: str = Form("", description="e.g. '1-3,5-7'"),
+    image_format: str = Form("all", description="jpeg, png, or all"),
+    min_width: int = Form(0, description="Min image width in px"),
+    min_height: int = Form(0, description="Min image height in px")
+):
+    # Add debug print
+    print(f"Received min_width={min_width}, min_height={min_height}")
+    content = await file.read()
+    zip_io, count = extract_images_from_pdf_bytes(
+        content, page_range, image_format, min_width, min_height
+    )
+    return StreamingResponse(
+        zip_io,
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": 'attachment; filename="images.zip"',
+            "x-image-count": str(count)
+        }
+    )
 
