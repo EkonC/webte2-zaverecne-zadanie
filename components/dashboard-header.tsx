@@ -49,6 +49,12 @@ export function DashboardHeader() {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
+                <Link href="/files">
+                  <History className="mr-2 h-4 w-4" />
+                  {t("nav.files")}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/history">
                   <History className="mr-2 h-4 w-4" />
                   {t("nav.history")}
@@ -78,6 +84,14 @@ export function DashboardHeader() {
               }`}
             >
               {t("nav.dashboard")}
+            </Link>
+            <Link
+              href="/files"
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive("/files") ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {t("nav.files")}
             </Link>
             <Link
               href="/history"

@@ -5,6 +5,7 @@
   },
   "nav": {
     "dashboard": "Nástenka",
+    "files": "Súbory",
     "history": "História",
     "documentation": "Dokumentácia",
     "profile": "Profil",
@@ -25,7 +26,11 @@
   "dashboard": {
     "title": "Nástenka PDF nástrojov",
     "subtitle": "Nahrajte PDF súbor a začnite používať naše výkonné nástroje na manipuláciu s PDF.",
-    "availableTools": "Dostupné PDF nástroje"
+    "availableTools": "Dostupné PDF nástroje",
+    "recentFiles": "Nedávne súbory",
+    "viewAllFiles": "Zobraziť všetky súbory",
+    "noRecentFiles": "Žiadne nedávne súbory na zobrazenie. Nahrajte nejaké, aby sa tu zobrazili!",
+    "loadingRecentFiles": "Načítavajú sa nedávne súbory..."
   },
   "upload": {
     "title": "Nahrajte svoj PDF súbor",
@@ -304,6 +309,43 @@
     "namePlaceholder": "Ján Novák",
     "createAccount": "Vytvoriť účet",
     "creatingAccount": "Vytváranie účtu..."
+  },
+  "files":{
+    "title": "Moje PDF súbory",
+    "upload": "Nahrať PDF",
+    "deleteSelected": "Odstrániť vybrané ({{count}})",
+    "noFiles": "Nenašli sa žiadne PDF súbory. Skúste nejaké nahrať.",
+    "downloading": "Sťahovanie {{fileName}}...",
+    "confirmDelete": "Naozaj chcete odstrániť {{fileName}}?",
+    "deleted": "{{fileName}} odstránený.",
+    "noFilesSelected": "Nie sú vybrané žiadne súbory na odstránenie.",
+    "confirmDeleteSelected": "Naozaj chcete odstrániť {{count}} vybraných súborov?",
+    "selectedDeleted": "{{count}} súborov odstránených.",
+    "filesUploaded": "{{count}} súbor(ov) úspešne nahraných (lokálne).",
+    "loadingFiles": "Načítavajú sa súbory..."
+  },
+  "pdfCard": {
+    "selectFile": "Vybrať {{fileName}}",
+    "actions": "Akcie",
+    "view": "Zobraziť",
+    "download": "Stiahnuť",
+    "delete": "Odstrániť",
+    "viewFile": "Zobraziť {{fileName}}",
+    "previewErrorText": "Náhľad nedostupný",
+    "loadingPreview": "Načítava sa náhľad...",
+    "numPages": "{{count}} strán",
+    "action": {
+      "merge": "Zlúčiť PDF",
+      "extractText": "Extrahovať text",
+      "extractImages": "Extrahovať obrázky",
+      "removePages": "Odstrániť strany",
+      "rotatePages": "Rotovať strany",
+      "editText": "Upraviť text",
+      "addWatermark": "Pridať vodoznak",
+      "exportToPng": "Exportovať do PNG",
+      "exportToJpg": "Exportovať do JPG",
+      "multiplePagesSheet": "Viac strán na list"
+    }
   },
   "history": {
     "title": "História použitia",
