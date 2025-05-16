@@ -10,9 +10,10 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY wait-for.sh ./
-COPY . .
+RUN sed -i 's/\r$//' wait-for.sh \
+ && chmod +x wait-for.sh
 
-RUN chmod +x ./wait-for.sh
+COPY . .
 
 EXPOSE 8000
 
