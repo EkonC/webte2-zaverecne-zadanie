@@ -43,7 +43,7 @@ export function DashboardHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-56">
               <DropdownMenuItem asChild>
-                <Link href="/">
+                <Link href="/public">
                   <Home className="mr-2 h-4 w-4" />
                   {t("nav.dashboard")}
                 </Link>
@@ -63,7 +63,7 @@ export function DashboardHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/public" className="flex items-center gap-2">
             <FileText className="h-6 w-6" />
             <span className="font-bold text-xl hidden sm:inline-block">
               {t("app.name")}
@@ -72,7 +72,7 @@ export function DashboardHeader() {
 
           <nav className="hidden md:flex items-center gap-6 ml-6">
             <Link
-              href="/"
+              href="/public"
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive("/") ? "text-primary" : "text-muted-foreground"
               }`}
