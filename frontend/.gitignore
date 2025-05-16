@@ -9,7 +9,7 @@
 /coverage
 
 # next.js
-/.next/
+.next
 /out/
 
 # python
@@ -37,4 +37,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+frontend/next-env.d.ts
+/backend/test.db

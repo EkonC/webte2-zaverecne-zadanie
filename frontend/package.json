@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "fastapi-dev": "pip3 install -r requirements.txt && python3 -m uvicorn api.index:app --reload",
+    "fastapi-dev": "cd ../backend && pip3 install --no-cache-dir -r requirements.txt && uvicorn app.main:app --reload",
     "next-dev": "next dev",
     "dev": "concurrently \"npm run next-dev\" \"npm run fastapi-dev\"",
+    "dev:frontend": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -38,7 +39,7 @@
     "lucide-react": "^0.460.0",
     "next": "15.3.2",
     "next-themes": "^0.4.6",
-    "postcss": "8.4.23",
+    "postcss": "8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "^15.5.1",
@@ -52,5 +53,6 @@
     "types": "link:next-themes/dist/types",
     "typescript": "5.0.4",
     "usehooks-ts": "^3.1.0"
-  }
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }
