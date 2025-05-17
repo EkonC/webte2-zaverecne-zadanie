@@ -33,12 +33,9 @@ services:
   #    - backend
   #  ports:
   #    - "3000:3000"
-  #  volumes:
-  #    - ./frontend:/usr/src/app
-  #    - /usr/src/app/node_modules
   #  environment:
-  #    - NEXT_PUBLIC_API_URL=http://backend:8000 # daj to env
-  #  command: ["pnpm", "run", "dev:frontend"]
+  #    - NEXT_PUBLIC_API_URL=http://backend:8000 # daj do env
+  #  restart: unless-stopped
 
   tests:
     build:
