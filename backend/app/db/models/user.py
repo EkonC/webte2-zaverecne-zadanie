@@ -15,3 +15,5 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     role_id = Column(Integer, ForeignKey('roles.id'))
     role = relationship("Role")
+
+    histories = relationship("History", back_populates="user")

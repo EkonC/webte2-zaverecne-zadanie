@@ -1,10 +1,11 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 import jwt
-from app.core.security import decode_access_token
+from app.core.security import decode_access_token, get_current_active_user
 from app.db.session import SessionLocal
 from app.db.models.user import User
+from app.services.history_service import log_action
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -37,3 +38,21 @@ def get_admin_user(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role.name != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     return current_user
+
+def _detect_source(request: Request) -> str:
+    ref = (request.headers.get("Referer") or "").lower()
+    if "/docs" in ref or "/redoc" in ref:
+        return "api"
+    if not ref:
+        return "api"
+    return "frontend"
+
+def make_history_dep(action: str):
+    async def _history(
+        request: Request,
+        db: Session = Depends(get_db),
+        user = Depends(get_current_active_user),
+    ):
+        source = _detect_source(request)
+        await log_action(db, user, action, request, source)
+    return _history
