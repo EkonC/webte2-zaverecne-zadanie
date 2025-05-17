@@ -2,9 +2,9 @@
 
 import { useTranslation } from "react-i18next";
 import { DashboardHeader } from "@/components/dashboard-header";
-import { PdfAddPagesTool } from "@/components/tools/pdf-add-pages-tool";
+import { PdfAddWatermarkTool } from "@/components/tools/pdf-add-watermark-tool";
 
-export default function AddPagesPage() {
+export default function AddWatermarkPage() {
   const { t } = useTranslation("common");
 
   return (
@@ -12,13 +12,13 @@ export default function AddPagesPage() {
       <DashboardHeader />
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">
-          {t("tools.addPages.pageTitle")}
+          {t("tools.addWatermark.title")}
         </h1>
         <p className="text-muted-foreground mb-8">
-          {t("tools.addPages.pageSubtitle")}
+          {t("tools.addWatermark.pageSubtitle")}
         </p>
 
-        <PdfAddPagesTool />
+        <PdfAddWatermarkTool />
       </main>
     </div>
   );

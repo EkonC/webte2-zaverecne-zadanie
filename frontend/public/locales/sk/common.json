@@ -177,39 +177,6 @@
         "tip3": "Môžete si prehliadnuť dokument pre potvrdenie, ktoré strany chcete odstrániť."
       }
     },
-    "addPages": {
-      "title": "Pridať strany",
-      "description": "Vložte nové strany do vášho PDF dokumentu",
-      "pageTitle": "Pridať strany",
-      "pageSubtitle": "Vložte nové strany do vášho PDF dokumentu",
-      "uploadPdfFile": "Nahrať PDF súbor",
-      "addOptions": "Možnosti pridania",
-      "insertPosition": "Pozícia vloženia",
-      "insertPositionDesc": "Zadajte, kam vložiť nové strany",
-      "beginning": "Na začiatok",
-      "end": "Na koniec",
-      "afterPage": "Za stranu",
-      "pageNumber": "Číslo strany",
-      "sourceOptions": "Možnosti zdroja",
-      "blankPages": "Prázdne strany",
-      "fromAnotherPdf": "Z iného PDF",
-      "numberOfPages": "Počet prázdnych strán na pridanie",
-      "uploadSecondPdf": "Nahrať PDF na vloženie",
-      "addButton": "Pridať strany",
-      "processing": "Spracovávanie...",
-      "addComplete": "Pridanie dokončené!",
-      "addCompleteDesc": "Strany boli úspešne pridané do vášho PDF.",
-      "download": "Stiahnuť",
-      "howTo": "Ako pridať strany do PDF súborov",
-      "steps": {
-        "step1": "Nahrajte PDF súbor pomocou prehliadača súborov vyššie.",
-        "step2": "Vyberte, kam vložiť nové strany (začiatok, koniec alebo za konkrétnu stranu).",
-        "step3": "Vyberte zdroj nových strán (prázdne strany alebo z iného PDF).",
-        "step4": "Nakonfigurujte možnosti podľa vášho výberu.",
-        "step5": "Kliknite na tlačidlo \"Pridať strany\" pre spracovanie súboru.",
-        "step6": "Po dokončení spracovania si stiahnite upravený PDF súbor."
-      }
-    },
     "extractImages": {
       "title": "Extrahovať obrázky",
       "description": "Extrahujte všetky obrázky z vášho PDF dokumentu",
@@ -280,10 +247,6 @@
       "note": "Poznámka:",
       "noteDesc": "Extrakcia textu funguje najlepšie s PDF, ktoré obsahujú skutočný text. Skenované dokumenty môžu vyžadovať OCR spracovanie pre presnú extrakciu textu."
     },
-    "toc": {
-      "title": "Vytvoriť obsah",
-      "description": "Vygenerujte klikateľný obsah pre váš PDF"
-    },
     "compress": {
       "title": "Zmenšiť veľkosť súboru",
       "description": "Komprimujte svoj PDF a znížte veľkosť súboru",
@@ -323,7 +286,7 @@
       "note": "Poznámka:",
       "noteDesc": "Vyššie úrovne kompresie môžu ovplyvniť kvalitu obrázkov a textu v PDF. Pri dokumentoch s mnohými obrázkami bude mať najväčší vplyv na veľkosť súboru zníženie kvality obrázkov."
     },
-    "watermark": {
+    "addWatermark": {
       "title": "Pridať vodoznak",
       "description": "Pridať textové alebo obrazové vodoznaky do vášho PDF",
       "pageTitle": "Pridať vodoznak do PDF",

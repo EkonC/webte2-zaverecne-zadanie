@@ -177,39 +177,6 @@
         "tip3": "You can preview the document to confirm which pages to delete."
       }
     },
-    "addPages": {
-      "title": "Add Pages",
-      "description": "Insert new pages into your PDF document",
-      "pageTitle": "Add Pages",
-      "pageSubtitle": "Insert new pages into your PDF document",
-      "uploadPdfFile": "Upload PDF File",
-      "addOptions": "Add Options",
-      "insertPosition": "Insert Position",
-      "insertPositionDesc": "Specify where to insert the new pages",
-      "beginning": "At the beginning",
-      "end": "At the end",
-      "afterPage": "After page",
-      "pageNumber": "Page number",
-      "sourceOptions": "Source Options",
-      "blankPages": "Blank pages",
-      "fromAnotherPdf": "From another PDF",
-      "numberOfPages": "Number of blank pages to add",
-      "uploadSecondPdf": "Upload PDF to insert",
-      "addButton": "Add Pages",
-      "processing": "Processing...",
-      "addComplete": "Add Complete!",
-      "addCompleteDesc": "Pages have been successfully added to your PDF.",
-      "download": "Download",
-      "howTo": "How to Add Pages to PDF Files",
-      "steps": {
-        "step1": "Upload a PDF file using the file browser above.",
-        "step2": "Choose where to insert the new pages (beginning, end, or after a specific page).",
-        "step3": "Select the source of new pages (blank pages or from another PDF).",
-        "step4": "Configure the options based on your selection.",
-        "step5": "Click the \"Add Pages\" button to process the file.",
-        "step6": "Once processing is complete, download the modified PDF file."
-      }
-    },
     "extractImages": {
       "title": "Extract Images",
       "description": "Extract all images from your PDF document",
@@ -280,14 +247,6 @@
       "note": "Note:",
       "noteDesc": "Text extraction works best with PDFs that contain actual text. Scanned documents may require OCR processing for accurate text extraction."
     },
-    "toc": {
-      "title": "Create Table of Contents",
-      "description": "Generate a clickable table of contents for your PDF"
-    },
-    "convert": {
-      "title": "Convert to Images",
-      "description": "Transform your PDF pages into image formats"
-    },
     "compress": {
       "title": "Reduce File Size",
       "description": "Compress your PDF to reduce its file size",
@@ -327,7 +286,7 @@
       "note": "Note:",
       "noteDesc": "Higher compression levels may affect the quality of images and text in your PDF. For documents with many images, reducing image quality will have the greatest impact on file size."
     },
-    "watermark": {
+    "addWatermark": {
       "title": "Add Watermark",
       "description": "Add text or image watermarks to your PDF",
       "pageTitle": "Add Watermark to PDF",
