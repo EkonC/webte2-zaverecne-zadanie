@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useState, FormEvent, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,114 +15,106 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-// import { ThemeSwitcher } from "@/components/theme-switcher"; // Assuming these are present elsewhere
-// import LanguageSwitcher from "@/components/language-switcher"; // Assuming these are present elsewhere
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+import { useAuth } from "@/components/providers/auth-provider";
 
 export default function AuthPage() {
   const { t } = useTranslation("common");
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
+  const {
+    login,
+    register,
+    isLoadingAuth: isInitialAuthLoading, // Renamed for clarity
+    user,
+    setAuthError, // To clear global context errors
+    setAuthSuccess,
+  } = useAuth();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+  const [isSubmitting, setIsSubmitting] = useState(false); // Local state for form submission
 
   // Login state
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [loginError, setLoginError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null); // Form-specific error
 
   // Register state
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const [registerError, setRegisterError] = useState<string | null>(null);
-  const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
+  const [registerError, setRegisterError] = useState<string | null>(null); // Form-specific error
+  const [registerSuccess, setRegisterSuccess] = useState<string | null>(null); // Form-specific success
+
+  useEffect(() => {
+    // If user is already authenticated (and initial check is done), redirect from login page
+    if (user && !isInitialAuthLoading) {
+      router.push("/");
+    }
+  }, [user, isInitialAuthLoading, router]);
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
     setLoginError(null);
-
-    const formData = new URLSearchParams();
-    formData.append("username", loginEmail); // FastAPI's OAuth2PasswordRequestForm uses 'username'
-    formData.append("password", loginPassword);
+    setAuthError(null); // Clear any global auth error from context
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setLoginError(data.detail || "Login failed. Please check your credentials.");
-      } else {
-        localStorage.setItem("accessToken", data.access_token);
-        localStorage.setItem("tokenType", data.token_type);
-        router.push("/"); // Redirect to dashboard or home page
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setLoginError("An unexpected error occurred. Please try again.");
+      await login(loginEmail, loginPassword);
+      // Redirect on success is handled by the login function in AuthContext
+    } catch (error: any) {
+      setLoginError(error.message || "Login failed. Please check your credentials.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
+    setIsSubmitting(true);
     setRegisterError(null);
     setRegisterSuccess(null);
-
-    // Note: The backend UserCreate schema must support `full_name` or similar for the name to be used.
-    // If your UserCreate schema only has email and password, the `full_name` field will be ignored by Pydantic
-    // or might cause an error if it's not defined as an optional field in UserCreate.
-    const payload = {
-      email: registerEmail,
-      password: registerPassword,
-      full_name: registerName, // Or 'name', depending on your backend UserCreate schema
-    };
+    setAuthError(null); // Clear any global auth error
+    setAuthSuccess(null); // Clear any global auth success
 
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setRegisterError(data.detail || "Registration failed. Please try again.");
-      } else {
-        setRegisterSuccess("Registration successful! You can now log in.");
-        // Clear form
-        setRegisterName("");
-        setRegisterEmail("");
-        setRegisterPassword("");
-        // Optionally switch to login tab
-        setActiveTab("login"); 
-      }
-    } catch (error) {
-      console.error("Registration error:", error);
-      setRegisterError("An unexpected error occurred. Please try again.");
+      await register(registerName, registerEmail, registerPassword);
+      setRegisterSuccess("Registration successful! You can now log in.");
+      // Clear form
+      setRegisterName("");
+      setRegisterEmail("");
+      setRegisterPassword("");
+      setActiveTab("login"); // Switch to login tab
+    } catch (error: any) {
+      setRegisterError(error.message || "Registration failed. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
+
+  // Show loading during initial auth check, or if user exists (implies redirection is happening)
+  if (isInitialAuthLoading || user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex max-h-screen items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => {
+            setActiveTab(value);
+            // Clear form-specific messages and global context messages on tab change
+            setLoginError(null);
+            setRegisterError(null);
+            setRegisterSuccess(null);
+            setAuthError(null);
+            setAuthSuccess(null);
+          }}
+          className="w-full"
+        >
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="login">{t("auth.login")}</TabsTrigger>
             <TabsTrigger value="register">{t("auth.register")}</TabsTrigger>
@@ -151,7 +143,7 @@ export default function AuthPage() {
                       required
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div className="space-y-2">
@@ -160,7 +152,7 @@ export default function AuthPage() {
                         {t("auth.password")}
                       </Label>
                       <a
-                        href="#" //TODO: Add forgot password link
+                        href="#"
                         className="text-sm text-primary hover:underline"
                         onClick={(e) => {
                             e.preventDefault();
@@ -176,13 +168,13 @@ export default function AuthPage() {
                       required
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                     />
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting
                       ? t("auth.loggingIn", "Logging in...")
                       : t("auth.login", "Login")}
                   </Button>
@@ -207,7 +199,7 @@ export default function AuthPage() {
                       required
                       value={registerName}
                       onChange={(e) => setRegisterName(e.target.value)}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div className="space-y-2">
@@ -219,7 +211,7 @@ export default function AuthPage() {
                       required
                       value={registerEmail}
                       onChange={(e) => setRegisterEmail(e.target.value)}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div className="space-y-2">
@@ -232,13 +224,13 @@ export default function AuthPage() {
                       required
                       value={registerPassword}
                       onChange={(e) => setRegisterPassword(e.target.value)}
-                      disabled={isLoading}
+                      disabled={isSubmitting}
                     />
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting
                       ? t("auth.creatingAccount", "Creating account...")
                       : t("auth.createAccount", "Create account")}
                   </Button>

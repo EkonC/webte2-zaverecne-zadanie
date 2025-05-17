@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FileUpload } from "@/components/file-upload";
 import { FeatureGrid } from "@/components/feature-grid";
@@ -10,79 +10,65 @@ import { RecentFilesGrid } from "@/components/recent-files-grid";
 import { PdfFile } from "@/components/pdf-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-
-// Mock data - in a real app, fetch this from your backend
+import { useAuth } from "@/components/providers/auth-provider";
+import { Skeleton } from "@/components/ui/skeleton";
+// Mock data
 const allMockPdfs: PdfFile[] = [
   { id: "1", name: "Sample Document Alpha.pdf", url: "/sample1.pdf" },
   { id: "2", name: "Annual Report 2023.pdf", url: "/sample2.pdf" },
-  { id: "3", name: "Product Presentation Q4.pdf", url: "/sample3.pdf" },
-  { id: "4", name: "Invoice_INV12345.pdf", url: "/sample-does-not-exist.pdf" },
-  { id: "5", name: "User Manual Version 2.1.pdf", url: "/sample1.pdf" },
-  { id: "6", name: "Contract Agreement Final.pdf", url: "/sample2.pdf" },
-  { id: "7", name: "Research Paper on AI.pdf", url: "/sample3.pdf" },
+  { id: "3", name: "Project Proposal Beta.pdf", url: "/sample3.pdf" },
+  { id: "4", name: "Meeting Notes.pdf", url: "/sample4.pdf" },
+  { id: "5", name: "Research Paper Gamma.pdf", url: "/sample5.pdf" },
+  { id: "6", name: "Design Mockup Delta.pdf", url: "/sample6.pdf" },
+  { id: "7", name: "Financial Overview Epsilon.pdf", url: "/sample7.pdf" },
+  { id: "8", name: "User Guide Zeta.pdf", url: "/sample8.pdf" },
 ];
-
 const MAX_RECENT_FILES_DISPLAY = 5;
 
 export default function Home() {
   const { t } = useTranslation("common");
   const router = useRouter();
+  const { user, isLoadingAuth, logout } = useAuth();
 
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [recentFilesData, setRecentFilesData] = useState<PdfFile[]>([]);
   const [isLoadingRecentFiles, setIsLoadingRecentFiles] = useState<boolean>(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      setIsLoadingAuth(false);
-      // TODO: Optionally, you could verify the token with a backend endpoint here
-      // For now, we'll assume if a token exists, it's valid.
-    } else {
-      router.push("/login"); // Redirect to login if no token
+    // Redirect to login if auth check is complete and no user is found
+    if (!isLoadingAuth && !user) {
+      router.push("/login");
     }
-  }, [router]);
+  }, [user, isLoadingAuth, router]);
 
-  // Fetch recent files only after auth check is complete and successful
   useEffect(() => {
-    if (!isLoadingAuth) {
+    // Fetch recent files only if authenticated and auth check is complete
+    if (user && !isLoadingAuth) {
       setIsLoadingRecentFiles(true);
       // Simulate fetching recent files
       setTimeout(() => {
         setRecentFilesData(allMockPdfs.slice(0, MAX_RECENT_FILES_DISPLAY));
         setIsLoadingRecentFiles(false);
       }, 1000);
+    } else if (!user && !isLoadingAuth) {
+      // If not authenticated (and auth check done), clear files and stop loading
+      setRecentFilesData([]);
+      setIsLoadingRecentFiles(false);
     }
-  }, [isLoadingAuth]);
+  }, [user, isLoadingAuth]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("tokenType");
-    router.push("/login");
-  };
-
-  if (isLoadingAuth) {
+  // Show loading screen while checking auth or if user is not yet available (and redirecting)
+  if (isLoadingAuth || !user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <p>Loading authentication...</p> {/* Or a more sophisticated loader */}
+      <div className="flex min-h-screen flex-col items-center justify-start bg-background space-y-4 py-8">
+        {/* Loading state */}
       </div>
     );
   }
 
+  // At this point, user is authenticated
   return (
     <div className="flex min-h-screen flex-col">
-      {/* Basic Header with Logout */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
-          <Link href="/" className="font-bold">
-            My App
-          </Link>
-          <Button onClick={handleLogout} variant="outline" size="sm">
-            {t("auth.logout", "Logout")}
-          </Button>
-        </div>
-      </header>
-
+      
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">{t("dashboard.title")}</h1>
         <p className="text-muted-foreground mb-8">{t("dashboard.subtitle")}</p>
@@ -110,7 +96,6 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-
           <RecentFilesGrid
             files={recentFilesData}
             isLoading={isLoadingRecentFiles}

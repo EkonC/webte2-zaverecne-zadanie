@@ -22,9 +22,12 @@ import {
   User,
 } from "lucide-react";
 
+import { useAuth } from "@/components/providers/auth-provider";
+
 export function DashboardHeader() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -126,7 +129,7 @@ export function DashboardHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
               <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 {t("nav.logout")}
               </DropdownMenuItem>
