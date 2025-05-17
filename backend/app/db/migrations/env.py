@@ -1,5 +1,8 @@
 import os, sys
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
 
 from logging.config import fileConfig
@@ -11,6 +14,7 @@ from alembic import context
 
 from app.db.base import Base
 import app.db.models.user
+import app.db.models.history
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
