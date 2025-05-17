@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import { useRouter } from "next/navigation"; // Import useRouter
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,52 +15,114 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import LanguageSwitcher from "@/components/language-switcher";
+// import { ThemeSwitcher } from "@/components/theme-switcher"; // Assuming these are present elsewhere
+// import LanguageSwitcher from "@/components/language-switcher"; // Assuming these are present elsewhere
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function AuthPage() {
   const { t } = useTranslation("common");
+  const router = useRouter(); // Initialize router
+
   const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("login");
+
+  // Login state
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  // Register state
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [registerError, setRegisterError] = useState<string | null>(null);
+  const [registerSuccess, setRegisterSuccess] = useState<string | null>(null);
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    console.log("Login attempt with:", {
-      email: loginEmail,
-      password: loginPassword,
-    });
-    // TODO: login logic
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
-    setIsLoading(false);
+    setLoginError(null);
+
+    const formData = new URLSearchParams();
+    formData.append("username", loginEmail); // FastAPI's OAuth2PasswordRequestForm uses 'username'
+    formData.append("password", loginPassword);
+
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setLoginError(data.detail || "Login failed. Please check your credentials.");
+      } else {
+        localStorage.setItem("accessToken", data.access_token);
+        localStorage.setItem("tokenType", data.token_type);
+        router.push("/"); // Redirect to dashboard or home page
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    console.log("Register attempt with:", {
-      name: registerName,
+    setRegisterError(null);
+    setRegisterSuccess(null);
+
+    // Note: The backend UserCreate schema must support `full_name` or similar for the name to be used.
+    // If your UserCreate schema only has email and password, the `full_name` field will be ignored by Pydantic
+    // or might cause an error if it's not defined as an optional field in UserCreate.
+    const payload = {
       email: registerEmail,
       password: registerPassword,
-    });
-    // TODO: registration logic
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API call
-    setIsLoading(false);
+      full_name: registerName, // Or 'name', depending on your backend UserCreate schema
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setRegisterError(data.detail || "Registration failed. Please try again.");
+      } else {
+        setRegisterSuccess("Registration successful! You can now log in.");
+        // Clear form
+        setRegisterName("");
+        setRegisterEmail("");
+        setRegisterPassword("");
+        // Optionally switch to login tab
+        setActiveTab("login"); 
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setRegisterError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
-      <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-        <ThemeSwitcher />
-        <LanguageSwitcher />
-      </div>
-
+    <div className="flex max-h-screen items-center justify-center bg-background px-4 py-12">
       <div className="w-full max-w-md">
-        <Tabs defaultValue="login" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-6">
             <TabsTrigger value="login">{t("auth.login")}</TabsTrigger>
             <TabsTrigger value="register">{t("auth.register")}</TabsTrigger>
@@ -76,6 +139,9 @@ export default function AuthPage() {
             <TabsContent value="login">
               <form onSubmit={handleLogin}>
                 <CardContent className="space-y-4 pt-4">
+                  {loginError && (
+                    <p className="text-sm text-red-500 text-center">{loginError}</p>
+                  )}
                   <div className="space-y-2">
                     <Label htmlFor="login-email">{t("auth.email")}</Label>
                     <Input
@@ -96,7 +162,10 @@ export default function AuthPage() {
                       <a
                         href="#" //TODO: Add forgot password link
                         className="text-sm text-primary hover:underline"
-                        onClick={(e) => e.preventDefault()} // Prevent default for demo
+                        onClick={(e) => {
+                            e.preventDefault();
+                            alert("Forgot password functionality not yet implemented.");
+                        }}
                       >
                         {t("auth.forgotPassword")}
                       </a>
@@ -124,6 +193,12 @@ export default function AuthPage() {
             <TabsContent value="register">
               <form onSubmit={handleRegister}>
                 <CardContent className="space-y-4 pt-4">
+                  {registerError && (
+                    <p className="text-sm text-red-500 text-center">{registerError}</p>
+                  )}
+                  {registerSuccess && (
+                    <p className="text-sm text-green-500 text-center">{registerSuccess}</p>
+                  )}
                   <div className="space-y-2">
                     <Label htmlFor="register-name">{t("auth.name")}</Label>
                     <Input
@@ -164,8 +239,8 @@ export default function AuthPage() {
                 <CardFooter>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading
-                      ? t("auth.creatingAccount")
-                      : t("auth.createAccount")}
+                      ? t("auth.creatingAccount", "Creating account...")
+                      : t("auth.createAccount", "Create account")}
                   </Button>
                 </CardFooter>
               </form>

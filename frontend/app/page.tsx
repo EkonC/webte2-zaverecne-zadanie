@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation"; // Import useRouter
 import Link from "next/link";
 import { FileUpload } from "@/components/file-upload";
 import { FeatureGrid } from "@/components/feature-grid";
 import { RecentFilesGrid } from "@/components/recent-files-grid";
-import { PdfFile } from "@/components/pdf-card"; // PdfFile type is still needed
+import { PdfFile } from "@/components/pdf-card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
@@ -26,27 +26,63 @@ const MAX_RECENT_FILES_DISPLAY = 5;
 
 export default function Home() {
   const { t } = useTranslation("common");
+  const router = useRouter();
+
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
   const [recentFilesData, setRecentFilesData] = useState<PdfFile[]>([]);
   const [isLoadingRecentFiles, setIsLoadingRecentFiles] = useState<boolean>(true);
 
-  //TODO: Check if the user is authenticated
-  const isAuthenticated = true; // For demo purposes
-
-  if (!isAuthenticated) {
-    redirect("/login");
-  }
-
   useEffect(() => {
-    setIsLoadingRecentFiles(true);
-    setTimeout(() => {
-      // Slice the data here before passing to the component
-      setRecentFilesData(allMockPdfs.slice(0, MAX_RECENT_FILES_DISPLAY));
-      setIsLoadingRecentFiles(false);
-    }, 1000);
-  }, []);
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setIsLoadingAuth(false);
+      // TODO: Optionally, you could verify the token with a backend endpoint here
+      // For now, we'll assume if a token exists, it's valid.
+    } else {
+      router.push("/login"); // Redirect to login if no token
+    }
+  }, [router]);
+
+  // Fetch recent files only after auth check is complete and successful
+  useEffect(() => {
+    if (!isLoadingAuth) {
+      setIsLoadingRecentFiles(true);
+      // Simulate fetching recent files
+      setTimeout(() => {
+        setRecentFilesData(allMockPdfs.slice(0, MAX_RECENT_FILES_DISPLAY));
+        setIsLoadingRecentFiles(false);
+      }, 1000);
+    }
+  }, [isLoadingAuth]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("tokenType");
+    router.push("/login");
+  };
+
+  if (isLoadingAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p>Loading authentication...</p> {/* Or a more sophisticated loader */}
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
+      {/* Basic Header with Logout */}
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center justify-between">
+          <Link href="/" className="font-bold">
+            My App
+          </Link>
+          <Button onClick={handleLogout} variant="outline" size="sm">
+            {t("auth.logout", "Logout")}
+          </Button>
+        </div>
+      </header>
+
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">{t("dashboard.title")}</h1>
         <p className="text-muted-foreground mb-8">{t("dashboard.subtitle")}</p>
@@ -60,7 +96,6 @@ export default function Home() {
           <FeatureGrid />
         </div>
 
-        {/* Recent Files Section */}
         <div className="mt-16">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
             <h2 className="text-2xl font-semibold">
