@@ -7,6 +7,7 @@ from app.api.utils.merge_pdf import merge_pdfs_bytes
 from app.api.utils.extract_text import extract_text_from_pdf_bytes
 from app.api.utils.extract_images import extract_images_from_pdf_bytes
 from app.core.security import get_current_active_user
+from app.api.utils.remove_pages import remove_pages_bytes
 
 router = APIRouter(
     prefix="/pdf",
@@ -68,6 +69,31 @@ async def extract_images_endpoint(
         headers={
             "Content-Disposition": 'attachment; filename="images.zip"',
             "x-image-count": str(count)
+        }
+    )
+
+@router.post(
+    "/remove-pages",
+    dependencies=[Depends(make_history_dep("remove_pages"))]
+)
+async def remove_pages_endpoint(
+    file: UploadFile = File(
+        ..., description="Select one PDF to remove pages from"
+    ),
+    page_range: str = Form(
+        "", description="e.g. '1-3,5-7' pages to delete"
+    ),
+):
+    """
+    Delete the given pages from a single PDF and return the new PDF.
+    """
+    content = await file.read()
+    modified_pdf = remove_pages_bytes(content, page_range)
+    return StreamingResponse(
+        modified_pdf,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": 'attachment; filename="modified.pdf"'
         }
     )
 
