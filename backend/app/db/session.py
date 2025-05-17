@@ -1,4 +1,5 @@
 # SQLAlchemy SessionLocal
+from typing import Generator
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -16,3 +17,10 @@ SessionLocal = sessionmaker(
     bind=engine,
 )
 
+
+def get_db() -> Generator:
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

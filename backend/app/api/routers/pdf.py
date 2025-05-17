@@ -1,11 +1,16 @@
 from typing import List
-from fastapi import UploadFile, File, Form, HTTPException, APIRouter
+from fastapi import UploadFile, File, Form, HTTPException, APIRouter, Depends
 from fastapi.responses import StreamingResponse, JSONResponse
 from app.api.utils.merge_pdf import merge_pdfs_bytes
 from app.api.utils.extract_text import extract_text_from_pdf_bytes
 from app.api.utils.extract_images import extract_images_from_pdf_bytes
+from app.core.security import get_current_active_user
 
-router = APIRouter(prefix="/pdf", tags=["pdf"])
+router = APIRouter(
+    prefix="/pdf",
+    tags=["pdf"],
+    dependencies=[Depends(get_current_active_user)]
+)
 
 
 @router.post("/merge-pdf")
