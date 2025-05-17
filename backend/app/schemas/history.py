@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict
 
 class HistoryRead(BaseModel):
     id: int
+    user_email: str
     action: str
     source: str
     city: str | None
