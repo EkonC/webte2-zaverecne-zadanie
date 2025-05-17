@@ -16,7 +16,7 @@ export default function NotFound() {
         {t("errors.notFoundDesc")}
       </p>
       <Button asChild>
-        <Link href="/public">{t("errors.backHome")}</Link>
+        <Link href="/">{t("errors.backHome")}</Link>
       </Button>
     </div>
   );
