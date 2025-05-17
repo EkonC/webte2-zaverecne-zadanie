@@ -5,11 +5,13 @@ from fastapi import FastAPI
 from app.api.routers.auth import router as auth_router
 from app.api.routers.pdf import router as pdf_router
 from app.api.routers.history import router as history_router
+from app.startup import lifespan
 
 app = FastAPI(
     title="PDF Service API",
     version="1.0.0",
-    description="Back-end pre PDF úpravy"
+    description="Back-end pre PDF úpravy",
+    lifespan=lifespan,
 )
 
 app.include_router(auth_router)
