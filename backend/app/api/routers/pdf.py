@@ -7,6 +7,9 @@ from app.api.utils.extract_images import extract_images_from_pdf_bytes
 
 router = APIRouter(prefix="/pdf", tags=["pdf"])
 
+@router.get("/health")
+async def health_check():
+    return JSONResponse({"status": "ok"})
 
 @router.post("/merge-pdf")
 async def merge_pdf_endpoint(
