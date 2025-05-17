@@ -39,11 +39,20 @@ def get_admin_user(current_user: User = Depends(get_current_user)) -> User:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     return current_user
 
-def make_history_dep(action: str, source: str = "api"):
+def _detect_source(request: Request) -> str:
+    ref = (request.headers.get("Referer") or "").lower()
+    if "/docs" in ref or "/redoc" in ref:
+        return "api"
+    if not ref:
+        return "api"
+    return "frontend"
+
+def make_history_dep(action: str):
     async def _history(
         request: Request,
         db: Session = Depends(get_db),
         user = Depends(get_current_active_user),
     ):
+        source = _detect_source(request)
         await log_action(db, user, action, request, source)
     return _history
