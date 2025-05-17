@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.api.routers.auth import router as auth_router
 from app.api.routers.pdf import router as pdf_router
+from app.api.routers.history import router as history_router
 
 app = FastAPI(
     title="PDF Service API",
@@ -13,6 +14,7 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(pdf_router)
+app.include_router(history_router)
 
 @app.get("/", tags=["health"])
 async def read_root():
