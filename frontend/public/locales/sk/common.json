@@ -103,52 +103,6 @@
         "step5": "Po dokončení spracovania si stiahnite rozdelené PDF súbory."
       }
     },
-    "edit": {
-      "title": "Upraviť PDF",
-      "description": "Upravte text, obrázky a iný obsah vo vašich PDF súboroch",
-      "pageTitle": "Upraviť PDF",
-      "pageSubtitle": "Upravte text, obrázky a iný obsah vo vašich PDF súboroch",
-      "uploadPdfFile": "Nahrať PDF súbor na úpravu",
-      "previous": "Predchádzajúca",
-      "next": "Ďalšia",
-      "page": "Strana",
-      "of": "z",
-      "saveChanges": "Uložiť zmeny",
-      "saving": "Ukladanie...",
-      "pdfPreview": "Náhľad PDF",
-      "text": "Text",
-      "images": "Obrázky",
-      "annotations": "Anotácie",
-      "editText": "Upraviť text",
-      "textPlaceholder": "Vyberte text v náhľade PDF pre jeho úpravu tu",
-      "applyTextChanges": "Aplikovať zmeny textu",
-      "imageOperations": "Operácie s obrázkami",
-      "addImage": "Pridať obrázok",
-      "replaceImage": "Nahradiť obrázok",
-      "removeImage": "Odstrániť obrázok",
-      "imageDesc": "Vyberte obrázok v náhľade PDF pre jeho nahradenie alebo odstránenie, alebo pridajte nový obrázok na pozíciu kurzora.",
-      "addAnnotation": "Pridať anotáciu",
-      "highlightText": "Zvýrazniť text",
-      "addComment": "Pridať komentár",
-      "annotationDesc": "Vyberte text v náhľade PDF pre jeho zvýraznenie alebo pridanie komentára, alebo pridajte voľnú anotáciu.",
-      "editComplete": "Úprava dokončená!",
-      "editCompleteDesc": "Váš PDF súbor bol úspešne upravený.",
-      "download": "Stiahnuť",
-      "howTo": "Ako upraviť PDF súbory",
-      "steps": {
-        "step1": "Nahrajte PDF súbor pomocou prehliadača súborov vyššie.",
-        "step2": "Prechádzajte stranami pomocou tlačidiel Predchádzajúca a Ďalšia.",
-        "step3": "Použite karty pre prístup k rôznym nástrojom úprav:",
-        "step3a": "Text: Upravte textový obsah v PDF",
-        "step3b": "Obrázky: Pridajte, nahraďte alebo odstráňte obrázky",
-        "step3c": "Anotácie: Pridajte zvýraznenia, komentáre alebo iné anotácie",
-        "step4": "Vykonajte požadované zmeny obsahu PDF.",
-        "step5": "Kliknite na tlačidlo \"Uložiť zmeny\" pre aplikovanie úprav.",
-        "step6": "Po dokončení spracovania si stiahnite upravený PDF súbor."
-      },
-      "note": "Poznámka:",
-      "noteDesc": "Možnosti úpravy PDF sa môžu líšiť v závislosti od štruktúry PDF súboru. Niektoré PDF, najmä skenované dokumenty alebo tie s bezpečnostnými obmedzeniami, môžu mať obmedzené možnosti úprav."
-    },
     "delete": {
       "title": "Odstrániť strany",
       "description": "Odstráňte konkrétne strany z vášho PDF dokumentu",
@@ -403,7 +357,7 @@
         "step6": "Po dokončení spracovania si stiahnite obrázky JPG."
       }
     },
-    "nup": {
+    "nUp": {
       "title": "Viac strán na jeden list",
       "description": "Usporiadajte viac PDF stránok na jeden list",
       "pageTitle": "Viac strán na jeden list",

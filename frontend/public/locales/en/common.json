@@ -103,52 +103,6 @@
         "step5": "Once processing is complete, download the split PDF files."
       }
     },
-    "edit": {
-      "title": "Edit PDF",
-      "description": "Modify text, images, and other content in your PDF files",
-      "pageTitle": "Edit PDF",
-      "pageSubtitle": "Modify text, images, and other content in your PDF files",
-      "uploadPdfFile": "Upload PDF File to Edit",
-      "previous": "Previous",
-      "next": "Next",
-      "page": "Page",
-      "of": "of",
-      "saveChanges": "Save Changes",
-      "saving": "Saving...",
-      "pdfPreview": "PDF Preview",
-      "text": "Text",
-      "images": "Images",
-      "annotations": "Annotations",
-      "editText": "Edit Text",
-      "textPlaceholder": "Select text in the PDF preview to edit it here",
-      "applyTextChanges": "Apply Text Changes",
-      "imageOperations": "Image Operations",
-      "addImage": "Add Image",
-      "replaceImage": "Replace Image",
-      "removeImage": "Remove Image",
-      "imageDesc": "Select an image in the PDF preview to replace or remove it, or add a new image at the cursor position.",
-      "addAnnotation": "Add Annotation",
-      "highlightText": "Highlight Text",
-      "addComment": "Add Comment",
-      "annotationDesc": "Select text in the PDF preview to highlight it or add a comment, or add a freeform annotation.",
-      "editComplete": "Edit Complete!",
-      "editCompleteDesc": "Your PDF has been successfully edited.",
-      "download": "Download",
-      "howTo": "How to Edit PDF Files",
-      "steps": {
-        "step1": "Upload a PDF file using the file browser above.",
-        "step2": "Navigate through the pages using the Previous and Next buttons.",
-        "step3": "Use the tabs to access different editing tools:",
-        "step3a": "Text: Edit text content in the PDF",
-        "step3b": "Images: Add, replace, or remove images",
-        "step3c": "Annotations: Add highlights, comments, or other annotations",
-        "step4": "Make your desired changes to the PDF content.",
-        "step5": "Click the \"Save Changes\" button to apply your edits.",
-        "step6": "Once processing is complete, download the edited PDF file."
-      },
-      "note": "Note:",
-      "noteDesc": "PDF editing capabilities may vary depending on the structure of the PDF file. Some PDFs, especially scanned documents or those with security restrictions, may have limited editing options."
-    },
     "delete": {
       "title": "Delete Pages",
       "description": "Remove specific pages from your PDF document",
@@ -403,7 +357,7 @@
         "step6": "Once processing is complete, download the JPG images."
       }
     },
-    "nup": {
+    "nUp": {
       "title": "Multiple Pages Per Sheet",
       "description": "Arrange multiple PDF pages on a single sheet",
       "pageTitle": "Multiple Pages Per Sheet",

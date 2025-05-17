@@ -51,9 +51,9 @@ const features = [
     href: "/tools/extract-text",
   },
   {
-    key: "reduceSize",
+    key: "compress",
     icon: FileDown,
-    href: "/tools/reduce-size",
+    href: "/tools/compress",
   },
   {
     key: "addWatermark",
