@@ -33,8 +33,9 @@ docker-compose run --rm tests
 3. Extrahovať obrázky z PDF - Extract images from PDF
 4. Odstraňovanie stránok - Remove pages
 5. Rotácia stránok - Rotate pages
-6. Úprava textu - Edit text
-7. Pridanie vodoznaku - Add watermark
-8. Export do PNG - Export to PNG
-9. Export do JPG - Export to JPG
-10. Viac strán na jednom liste - Multiple pages on one sheet
+6. Úprava textu - Edit text (dal by som skip)
+7. Zmenšenie velkosti pdf - https://pypdf.readthedocs.io/en/latest/user/file-size.html
+8. Pridanie vodoznaku - Add watermark
+9. Export do PNG - Export to PNG
+10. Export do JPG - Export to JPG
+11. Viac strán na jednom liste - Multiple pages on one sheet
