@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from fastapi import UploadFile, File, Form, HTTPException, APIRouter, Depends
 from fastapi.responses import StreamingResponse, JSONResponse
 from io import BytesIO
@@ -15,6 +15,11 @@ from app.api.utils.split_pdf import (
     split_by_interval_bytes,
     extract_pages_bytes,
 )
+from app.api.utils.compress import compress_pdf_bytes
+from app.api.utils.add_watermark import add_watermark_bytes, add_text_watermark_bytes
+from app.api.utils.convert_to_png import pdf_to_png_zip_bytes
+from app.api.utils.convert_to_jpg import pdf_to_jpg_zip_bytes
+from app.api.utils.multiple_pages_on_one import n_up_pdf_bytes
 
 router = APIRouter(
     prefix="/pdf",
@@ -139,5 +144,103 @@ async def split_pdf_endpoint(
         zip_io,
         media_type="application/zip",
         headers={"Content-Disposition": 'attachment; filename="split.zip"'}
+    )
+
+@router.post("/compress-pdf",
+             dependencies=[Depends(make_history_dep("compress_pdf"))])
+async def compress_pdf_endpoint(
+    file: UploadFile = File(..., description="Select one PDF to compress"),
+    remove_duplicates: bool = Form(True, description="Remove duplicate objects"),
+    remove_images: bool = Form(False, description="Remove all images"),
+    reduce_image_quality: Optional[int] = Form(
+        None,
+        description="If set, re-encode all images to this JPEG quality (0–100)"
+    )
+):
+    content = await file.read()
+    compressed_io = compress_pdf_bytes(
+        content,
+        remove_duplicates=remove_duplicates,
+        remove_images=remove_images,
+        reduce_image_quality=reduce_image_quality
+    )
+    return StreamingResponse(
+        compressed_io,
+        media_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="compressed.pdf"'}
+    )
+
+@router.post("/add-text-watermark",
+             dependencies=[Depends(make_history_dep("add_text_watermark"))])
+async def add_text_watermark_endpoint(
+    file: UploadFile = File(..., description="Select one PDF to watermark"),
+    text: str = Form(..., description="Watermark text"),
+    color: str = Form("#888888", description="Hex color (e.g. #FF0000)"),
+    font_size: int = Form(48, description="Font size in pt"),
+    opacity: float = Form(0.3, description="Opacity (0.0–1.0)"),
+    rotation: float = Form(45, description="Rotation in degrees"),
+    position: str = Form("center",
+                        description="Position: topLeft, topCenter, topRight, center, bottomLeft, bottomCenter, bottomRight"),
+):
+    """
+    Add a pure-text watermark to every page.
+    """
+    data = await file.read()
+    watermarked = add_text_watermark_bytes(
+        data, text, color, font_size, opacity, rotation, position
+    )
+    return StreamingResponse(
+        watermarked,
+        media_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="watermarked.pdf"'}
+    )
+
+@router.post("/pdf-to-png",
+             dependencies=[Depends(make_history_dep("pdf_to_png"))])
+async def pdf_to_png_endpoint(
+    file: UploadFile = File(..., description="Select one PDF to convert to PNG"),
+    dpi: int = Form(300, description="Resolution in DPI"),
+):
+    """
+    Convert each page of the uploaded PDF into a PNG and return a ZIP of images.
+    """
+    content = await file.read()
+    zip_io = pdf_to_png_zip_bytes(content, dpi=dpi)
+    return StreamingResponse(
+        zip_io,
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="pages.zip"'}
+    )
+
+@router.post("/pdf-to-jpg",
+             dependencies=[Depends(make_history_dep("pdf_to_jpg"))])
+async def pdf_to_jpg_endpoint(
+    file: UploadFile = File(..., description="Select one PDF to convert to JPEG"),
+    dpi: int = Form(300, description="Resolution in DPI"),
+):
+    """
+    Convert each page of the uploaded PDF into a JPEG and return a ZIP archive.
+    """
+    content = await file.read()
+    zip_io = pdf_to_jpg_zip_bytes(content, dpi=dpi)
+    return StreamingResponse(
+        zip_io,
+        media_type="application/zip",
+        headers={"Content-Disposition": 'attachment; filename="pages_jpg.zip"'}
+    )
+
+@router.post("/n-up",
+             dependencies=[Depends(make_history_dep("n_up"))])
+async def n_up_endpoint(
+    file: UploadFile = File(..., description="Select one PDF"),
+    cols: int = Form(4, description="Columns per sheet"),
+    rows: int = Form(4, description="Rows per sheet")
+):
+    data = await file.read()
+    out_io = n_up_pdf_bytes(data, cols=cols, rows=rows)
+    return StreamingResponse(
+        out_io,
+        media_type="application/pdf",
+        headers={"Content-Disposition": 'attachment; filename="nup.pdf"'}
     )
 
