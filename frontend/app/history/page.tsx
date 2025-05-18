@@ -11,9 +11,19 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Download, Trash2 } from "lucide-react";
+import {useRequireAdmin} from "@/hooks/use-require-admin";
 
 export default function HistoryPage() {
   const { t } = useTranslation("common");
+  const { loading } = useRequireAdmin();
+
+    if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <span className="text-muted-foreground">{t("common.loading")}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
