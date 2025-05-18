@@ -424,20 +424,6 @@
     "createAccount": "Create account",
     "creatingAccount": "Creating account..."
   },
-  "files":{
-    "title": "My PDF Files",
-    "upload": "Upload PDF",
-    "deleteSelected": "Delete Selected ({{count}})",
-    "noFiles": "No PDF files found. Try uploading some.",
-    "downloading": "Downloading {{fileName}}...",
-    "confirmDelete": "Are you sure you want to delete {{fileName}}?",
-    "deleted": "{{fileName}} deleted.",
-    "noFilesSelected": "No files selected for deletion.",
-    "confirmDeleteSelected": "Are you sure you want to delete {{count}} selected files?",
-    "selectedDeleted": "{{count}} files deleted.",
-    "filesUploaded": "{{count}} file(s) uploaded successfully (locally).",
-    "loadingFiles": "Loading files..."
-  },
   "pdfCard": {
     "selectFile": "Select {{fileName}}",
     "actions": "Actions",
@@ -482,48 +468,6 @@
     "of": "of",
     "entries": "entries",
     "page": "Page"
-  },
-  "docs": {
-    "title": "Documentation",
-    "userManual": "User Manual",
-    "userManualDesc": "Learn how to use our PDF manipulation tools effectively",
-    "apiDocs": "API Documentation",
-    "apiDocsDesc": "Technical documentation for integrating with our PDF API",
-    "userGuide": "PDF Manipulator User Guide",
-    "exportAsPdf": "Export as PDF",
-    "gettingStarted": "Getting Started",
-    "tools": "Tools",
-    "faq": "FAQ",
-    "welcome": "Welcome to PDF Manipulator",
-    "welcomeDesc": "PDF Manipulator is a powerful web application that allows you to perform various operations on PDF files. This guide will help you get started with the application and make the most of its features.",
-    "quickStart": "Quick Start",
-    "quickStartSteps": {
-      "step1": "Upload a PDF file using the drag-and-drop area or file browser on the dashboard.",
-      "step2": "Select the operation you want to perform from the available tools.",
-      "step3": "Configure the operation settings as needed.",
-      "step4": "Click the \"Process\" button to perform the operation.",
-      "step5": "Download the resulting PDF file."
-    },
-    "accountManagement": "Account Management",
-    "accountManagementDesc": "To access all features of PDF Manipulator, you need to create an account. Once logged in, you can:",
-    "accountFeatures": {
-      "feature1": "Save your PDF files for future use",
-      "feature2": "Access your operation history",
-      "feature3": "Generate API keys for programmatic access",
-      "feature4": "Customize your application settings"
-    },
-    "faqQuestions": {
-      "q1": "Is my data secure?",
-      "a1": "Yes, all uploaded files are encrypted and automatically deleted after processing unless you choose to save them to your account.",
-      "q2": "What file size limits are there?",
-      "a2": "Free accounts can upload files up to 10MB. Premium accounts can upload files up to 100MB.",
-      "q3": "Can I use the application offline?",
-      "a3": "No, PDF Manipulator is a web-based application and requires an internet connection to function.",
-      "q4": "How do I report issues or request features?",
-      "a4": "You can contact our support team through the \"Help\" section or email us at support@pdfmanipulator.com.",
-      "q5": "Is there an API available?",
-      "a5": "Yes, we offer a RESTful API for programmatic access to all PDF manipulation features. See the API Documentation for details."
-    }
   },
   "api": {
     "title": "PDF Manipulator API",
