@@ -1,33 +1,49 @@
-# Vývoj
+# Inštrukcie pre Docker a vývoj frontendovej časti
 
-## Spustenie lokálneho development servera (pnpm)
-1. `pnpm install` nainštaluje potrebné Node závislosti.
-2. `virtualenv venv` vytvorí virtuálne prostredie.
-3. `source venv/bin/activate` aktivuje virtuálne prostredie.
-4. `pip install -r backend/requirements.txt` nainštaluje potrebné Python závislosti.
-5. spustenie development servera + backendu
+> **Poznámka:** Frontend zatiaľ **nie je súčasťou `docker-compose`** (stav k dnešnému dňu 17.5. 2025).
+
+## Docker – dôležité poznámky
+
+Frontendová časť potrebuje **doplniť Dockerfile** na koniec – buď na základe servera alebo statického buildu, cez `pnpm build` @adykulik @Bonderukk @EkonC.
+
+### Spustenie prostredia pomocou Docker Compose
+
+Aby sa predišlo problémom pri aktualizácii kontajnerov, odporúčame nasledovný postup:
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up
+```
+
+Alternatívne (po prvotnej aktualizácii):
+
+```bash
+docker compose up
+# alebo
+docker compose up --build
+```
+
+## Vývoj frontendovej časti
+
+Keďže frontend zatiaľ nie je zahrnutý v `docker-compose`, vývoj frontendovej časti prebieha nasledovne:
+
+1. Prejdi do priečinka `frontend`:
+
 ```bash
 cd frontend
-pnpm dev
 ```
 
+2. Spusti vývojové prostredie podľa aktuálnych inštrukcií (napr. `pnpm dev`, `pnpm install`, atď.).
 
-## Docker
+3. Po dokončení práce sa vráť späť do koreňového adresára:
 
-Znovu zostavenie všetkých image-ov a spustenie definovaných služieb.
 ```bash
-docker-compose up --build
-```
-Vypnutie a zmazanie kontajnerov, sietí a volumes, vrátane dát.
-```bash
-docker-compose down --volumes
-```
-Jednorazové spustenie testov v Docker kontajneri.
-```bash
-docker-compose run --rm tests
+cd ..
 ```
 
 # Implementované funkcie na úpravu PDF
+
 1. Zlúčiť PDF - Merge PDF
 2. Extrahovať text z PDF - Extract text from PDF
 3. Extrahovať obrázky z PDF - Extract images from PDF

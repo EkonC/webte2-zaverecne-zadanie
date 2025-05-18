@@ -22,6 +22,9 @@ router = APIRouter(
     dependencies=[Depends(get_current_active_user)]
 )
 
+@router.get("/health")
+async def health_check():
+    return JSONResponse({"status": "ok"})
 
 @router.post("/merge-pdf",
              dependencies=[Depends(make_history_dep("merge_pdf"))])
