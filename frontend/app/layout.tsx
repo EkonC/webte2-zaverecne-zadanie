@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import I18nProviderComponent from "@/components/providers/i18n-provider";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { ToastProvider } from "@/components/providers/toast-provider";
+import { AuthProvider } from "@/components/providers/auth-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,18 +23,20 @@ export default function RootLayout({
   return (
     <html lang="sk" suppressHydrationWarning>
       <body className={inter.className}>
-        <I18nProviderComponent>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <DashboardHeader />
-            <ToastProvider />
-            {children}
-          </ThemeProvider>
-        </I18nProviderComponent>
+        <AuthProvider>
+          <I18nProviderComponent>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <DashboardHeader />
+              <ToastProvider />
+              {children}
+            </ThemeProvider>
+          </I18nProviderComponent>
+        </AuthProvider>
       </body>
     </html>
   );

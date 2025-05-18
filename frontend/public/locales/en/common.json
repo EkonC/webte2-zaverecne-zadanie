@@ -5,6 +5,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "files": "Files",
     "history": "History",
     "documentation": "Documentation",
     "profile": "Profile",
@@ -25,7 +26,11 @@
   "dashboard": {
     "title": "PDF Tools Dashboard",
     "subtitle": "Upload a PDF file to get started with our powerful PDF manipulation tools.",
-    "availableTools": "Available PDF Tools"
+    "availableTools": "Available PDF Tools",
+    "recentFiles": "Recent Files",
+    "viewAllFiles": "View All Files",
+    "noRecentFiles": "No recent files to display. Upload some to see them here!",
+    "loadingRecentFiles": "Loading recent files..."
   },
   "upload": {
     "title": "Upload your PDF file",
@@ -418,6 +423,43 @@
     "namePlaceholder": "John Doe",
     "createAccount": "Create account",
     "creatingAccount": "Creating account..."
+  },
+  "files":{
+    "title": "My PDF Files",
+    "upload": "Upload PDF",
+    "deleteSelected": "Delete Selected ({{count}})",
+    "noFiles": "No PDF files found. Try uploading some.",
+    "downloading": "Downloading {{fileName}}...",
+    "confirmDelete": "Are you sure you want to delete {{fileName}}?",
+    "deleted": "{{fileName}} deleted.",
+    "noFilesSelected": "No files selected for deletion.",
+    "confirmDeleteSelected": "Are you sure you want to delete {{count}} selected files?",
+    "selectedDeleted": "{{count}} files deleted.",
+    "filesUploaded": "{{count}} file(s) uploaded successfully (locally).",
+    "loadingFiles": "Loading files..."
+  },
+  "pdfCard": {
+    "selectFile": "Select {{fileName}}",
+    "actions": "Actions",
+    "view": "View",
+    "download": "Download",
+    "delete": "Delete",
+    "viewFile": "View {{fileName}}",
+    "previewErrorText": "Preview unavailable",
+    "loadingPreview": "Loading preview...",
+    "numPages": "{{count}} pages",
+    "action": {
+      "merge": "Merge PDF",
+      "extractText": "Extract text",
+      "extractImages": "Extract images",
+      "removePages": "Remove pages",
+      "rotatePages": "Rotate pages",
+      "editText": "Edit text",
+      "addWatermark": "Add watermark",
+      "exportToPng": "Export to PNG",
+      "exportToJpg": "Export to JPG",
+      "multiplePagesSheet": "Multiple pages per sheet"
+    }
   },
   "history": {
     "title": "Usage History",
