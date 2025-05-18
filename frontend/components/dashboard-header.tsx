@@ -27,7 +27,10 @@ import { useAuth } from "@/components/providers/auth-provider";
 export function DashboardHeader() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+  const role = user?.role ?? null;
+
+  const isAdmin = role === "admin";
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -57,12 +60,14 @@ export function DashboardHeader() {
                   {t("nav.files")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/history">
-                  <History className="mr-2 h-4 w-4" />
-                  {t("nav.history")}
-                </Link>
-              </DropdownMenuItem>
+              {isAdmin && (
+                <DropdownMenuItem asChild>
+                  <Link href="/history">
+                    <History className="mr-2 h-4 w-4" />
+                    {t("nav.history")}
+                  </Link>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuItem asChild>
                 <Link href="/docs">
                   <BookOpen className="mr-2 h-4 w-4" />
@@ -96,14 +101,16 @@ export function DashboardHeader() {
             >
               {t("nav.files")}
             </Link>
-            <Link
-              href="/history"
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive("/history") ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {t("nav.history")}
-            </Link>
+            {isAdmin && (
+              <Link
+                href="/history"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  isActive("/history") ? "text-primary" : "text-muted-foreground"
+                }`}
+              >
+                {t("nav.history")}
+              </Link>
+            )}
             <Link
               href="/docs"
               className={`text-sm font-medium transition-colors hover:text-primary ${

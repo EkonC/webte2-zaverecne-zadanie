@@ -9,17 +9,26 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
+import {jwtDecode} from "jwt-decode";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+interface JwtPayload {
+  sub: string;
+  role?: string;
+  exp: number;
+}
 
 interface User {
   token: string;
   tokenType: string;
+  role: string | null;
   // You can add more user details here if fetched after login, e.g., email, name
 }
 
 interface AuthContextType {
   user: User | null;
+  role: string | null;
   isLoadingAuth: boolean; // True during initial token check from localStorage
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
@@ -31,6 +40,15 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+function extractRole(token: string): string | null {
+  try {
+    const payload = jwtDecode<JwtPayload>(token);
+    return payload.role ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -44,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const token = localStorage.getItem("accessToken");
     const tokenType = localStorage.getItem("tokenType");
     if (token && tokenType) {
-      setUser({ token, tokenType });
+      setUser({ token, tokenType, role: extractRole(token) });
       // TODO: Optionally, verify the token with a backend endpoint here
     }
     setIsLoadingAuth(false); // Initial check is complete
@@ -77,7 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } else {
           localStorage.setItem("accessToken", data.access_token);
           localStorage.setItem("tokenType", data.token_type);
-          setUser({ token: data.access_token, tokenType: data.token_type });
+          setUser({ token: data.access_token, tokenType: data.token_type, role: extractRole(data.access_token)});
           // setAuthSuccess("Login successful!"); // Success message can be handled by component or redirect
           router.push("/"); // Redirect to dashboard or home page
         }
@@ -147,6 +165,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        role: user?.role ?? null,
         isLoadingAuth,
         login,
         register,
