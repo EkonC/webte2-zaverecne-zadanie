@@ -26,5 +26,10 @@ def create_user(db: Session, user_in: UserCreate) -> User:
 
 
 def create_tokens_for_user(user: User) -> TokenSchema:
-    access_token = create_access_token({"sub": str(user.id)})
+    access_token = create_access_token(
+        {
+            "sub": str(user.id),
+            "role": user.role.name,
+        }
+    )
     return TokenSchema(access_token=access_token, token_type="bearer")
