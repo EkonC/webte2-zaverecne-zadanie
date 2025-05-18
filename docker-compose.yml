@@ -25,17 +25,21 @@ services:
     volumes:
       - ./backend:/usr/src/app
 
-  #frontend:
-  #  build:
-  #      context: ./frontend
-  #      dockerfile: Dockerfile
-  #  depends_on:
-  #    - backend
-  #  ports:
-  #    - "3000:3000"
-  #  environment:
-  #    - NEXT_PUBLIC_API_URL=http://backend:8000 # daj do env
-  #  restart: unless-stopped
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Táto hodnota sa načíta z .env súboru (načítaného docker-compose)
+        # alebo z prostredia shellu, ak .env súbor túto premennú nedefinuje.
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000" # Mapuje port 3000 na hostiteľovi na port 3000 v kontajneri (kde Nginx počúva)
+    env_file:
+      - .env
+    restart: unless-stopped
 
   tests:
     build:
@@ -63,4 +67,3 @@ services:
 
 volumes:
   pgdata:
-
