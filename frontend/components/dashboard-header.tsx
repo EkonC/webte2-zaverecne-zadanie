@@ -22,9 +22,12 @@ import {
   User,
 } from "lucide-react";
 
+import { useAuth } from "@/components/providers/auth-provider";
+
 export function DashboardHeader() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
+  const { logout } = useAuth();
 
   const isActive = (path: string) => {
     return pathname === path;
@@ -46,6 +49,12 @@ export function DashboardHeader() {
                 <Link href="/">
                   <Home className="mr-2 h-4 w-4" />
                   {t("nav.dashboard")}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/files">
+                  <History className="mr-2 h-4 w-4" />
+                  {t("nav.files")}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -80,6 +89,14 @@ export function DashboardHeader() {
               {t("nav.dashboard")}
             </Link>
             <Link
+              href="/files"
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive("/files") ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {t("nav.files")}
+            </Link>
+            <Link
               href="/history"
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive("/history") ? "text-primary" : "text-muted-foreground"
@@ -112,7 +129,7 @@ export function DashboardHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
               <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 {t("nav.logout")}
               </DropdownMenuItem>

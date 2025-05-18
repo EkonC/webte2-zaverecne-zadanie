@@ -19,6 +19,9 @@ import {
   FilePlus,
   FileText,
   ImageIcon,
+  FileDown,
+  Stamp,
+  LayoutGrid,
 } from "lucide-react";
 
 const features = [
@@ -33,19 +36,9 @@ const features = [
     href: "/tools/split",
   },
   {
-    key: "edit",
-    icon: FileEdit,
-    href: "/tools/edit",
-  },
-  {
     key: "delete",
     icon: Trash2,
     href: "/tools/delete",
-  },
-  {
-    key: "addPages",
-    icon: FilePlus,
-    href: "/tools/add-pages",
   },
   {
     key: "extractImages",
@@ -58,14 +51,29 @@ const features = [
     href: "/tools/extract-text",
   },
   {
-    key: "toc",
-    icon: ListTree,
-    href: "/tools/create-toc",
+    key: "compress",
+    icon: FileDown,
+    href: "/tools/compress",
   },
   {
-    key: "convert",
+    key: "addWatermark",
+    icon: Stamp,
+    href: "/tools/add-watermark",
+  },
+  {
+    key: "exportPng",
     icon: ImageIcon,
-    href: "/tools/convert",
+    href: "/tools/export-png",
+  },
+  {
+    key: "exportJpg",
+    icon: ImageIcon,
+    href: "/tools/export-jpg",
+  },
+  {
+    key: "nUp",
+    icon: LayoutGrid,
+    href: "/tools/n-up",
   },
 ];
 
