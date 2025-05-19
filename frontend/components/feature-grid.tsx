@@ -37,7 +37,7 @@ const features = [
   {
     key: "delete",
     icon: Trash2,
-    href: "/tools/delete?initAction=upload", 
+    href: "/tools/delete-pages?initAction=upload", 
   },
   {
     key: "extractImages",
