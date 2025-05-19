@@ -62,7 +62,12 @@ export function DashboardHeader() {
                   </Link>
                 </DropdownMenuItem>
               )}
-              
+              <DropdownMenuItem asChild>
+                <Link href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"} target="_blank">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  {t("nav.documentation")}
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -82,7 +87,6 @@ export function DashboardHeader() {
             >
               {t("nav.dashboard")}
             </Link>
-            
             {isAdmin && (
               <Link
                 href="/history"
@@ -93,6 +97,13 @@ export function DashboardHeader() {
                 {t("nav.history")}
               </Link>
             )}
+            <Link
+              href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"}
+              className={`text-sm font-medium transition-colors hover:text-primary`}
+              target="_blank"
+            >
+              {t("nav.documentation")}
+            </Link>
           </nav>
         </div>
 
