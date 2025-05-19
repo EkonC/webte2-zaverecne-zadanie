@@ -20,7 +20,7 @@ import { FileUp } from "lucide-react"; // Import FileUp icon
 const FASTAPI_BASE_URL = process.env.NEXT_PUBLIC_API_URL + '/pdf';
 
 export function PdfCompressTool() {
-  const { t } = useTranslation(["common", "tools"]);
+  const { t } = useTranslation("common");
   const { sharedFile, setSharedFile, toolTarget, setToolTarget } = useFile();
   const router = useRouter();
   const { user } = useAuth();
@@ -77,7 +77,7 @@ export function PdfCompressTool() {
 
   const handleCompress = async () => {
     if (!currentFile) {
-      toast.error(t("tools:compress.noFileSelectedError"));
+      toast.error(t("tools.compress.noFileSelectedError"));
       return;
     }
 
@@ -165,12 +165,12 @@ export function PdfCompressTool() {
         reader.onload = function() {
             try {
                 const errorJson = JSON.parse(reader.result as string);
-                toast.error(`${t("tools:compress.errorProcessing")} ${errorJson.detail || "Invalid server response"}`);
+                toast.error(`${t("tools.compress.errorProcessing")} ${errorJson.detail || "Invalid server response"}`);
             } catch (e) {
-                toast.error(t("tools:compress.invalidResponseError"));
+                toast.error(t("tools.compress.invalidResponseError"));
             }
         };
-        reader.onerror = function() { toast.error(t("tools:compress.invalidResponseError")); };
+        reader.onerror = function() { toast.error(t("tools.compress.invalidResponseError")); };
         reader.readAsText(blob);
         setIsProcessing(false);
         return;
@@ -180,12 +180,12 @@ export function PdfCompressTool() {
       const newUrl = URL.createObjectURL(blob);
       setDownloadUrl(newUrl);
       setIsComplete(true);
-      toast.success(t("tools:compress.compressionComplete"));
+      toast.success(t("tools.compress.compressionComplete"));
 
     } catch (error) {
       console.error("Error compressing PDF:", error);
       toast.error(
-        `${t("tools:compress.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`
+        `${t("tools.compress.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`
       );
     } finally {
       setIsProcessing(false);
@@ -271,14 +271,14 @@ export function PdfCompressTool() {
       <Card>
         <CardHeader>
             <div className="flex justify-between items-center">
-                <CardTitle>{t("tools:titles.compress")}</CardTitle>
+                <CardTitle>{t("tools.titles.compress")}</CardTitle>
                 <Button variant="outline" size="sm" onClick={handleResetAndUploadNew}>
                     <RefreshCw className="h-3 w-3 mr-1.5" />
-                    {t("tools:changeFile")}
+                    {t("tools.changeFile")}
                 </Button>
             </div>
             <p className="text-sm text-muted-foreground pt-1">
-                {t("tools:descriptions.compress")}
+                {t("tools.compress.description")}
             </p>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -287,7 +287,7 @@ export function PdfCompressTool() {
                 <div>
                 <p className="text-sm font-medium truncate max-w-xs sm:max-w-md" title={currentFile?.name}>{currentFile?.name}</p>
                 <p className="text-xs text-muted-foreground">
-                    {t("tools:compress.originalSizeLabel")} {formatFileSize(originalSize)}
+                    {t("tools.compress.originalSizeLabel")} {formatFileSize(originalSize)}
                 </p>
                 </div>
             </div>
@@ -296,10 +296,10 @@ export function PdfCompressTool() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                     <h3 className="text-base font-medium">
-                        {t("tools:compress.compressionOptions")}
+                        {t("tools.compress.compressionOptions")}
                     </h3>
                     <div className="space-y-2">
-                        <Label>{t("tools:compress.compressionLevel")}</Label>
+                        <Label>{t("tools.compress.compressionLevel")}</Label>
                         <RadioGroup
                         value={compressionLevel}
                         onValueChange={setCompressionLevel}
@@ -309,7 +309,7 @@ export function PdfCompressTool() {
                             <div key={level} className="flex items-center space-x-2">
                                 <RadioGroupItem value={level} id={`level-${level}`} />
                                 <Label htmlFor={`level-${level}`} className="font-normal">
-                                    {t(`tools:compress.levels.${level}`)}
+                                    {t(`tools.compress.levels.${level}`)}
                                 </Label>
                             </div>
                         ))}
@@ -319,10 +319,10 @@ export function PdfCompressTool() {
                     <div className="space-y-2">
                         <div className="flex justify-between items-center">
                             <Label htmlFor="image-quality">
-                            {t("tools:compress.imageQuality")}
+                            {t("tools.compress.imageQuality")}
                             </Label>
                             <span className="text-sm text-muted-foreground">
-                                {imageQuality !== null ? `${imageQuality}%` : t("tools:compress.autoQuality")}
+                                {imageQuality !== null ? `${imageQuality}%` : t("tools.compress.autoQuality")}
                             </span>
                         </div>
                         <Slider
@@ -340,17 +340,17 @@ export function PdfCompressTool() {
                             className="p-0 h-auto text-xs"
                             onClick={() => setImageQuality(null)}
                         >
-                            {t("tools:compress.resetToAutoQuality")}
+                            {t("tools.compress.resetToAutoQuality")}
                         </Button>
                         <p className="text-xs text-muted-foreground">
-                        {t("tools:compress.imageQualityDesc")}
+                        {t("tools.compress.imageQualityDesc")}
                         </p>
                     </div>
                 </div>
 
                 <div className="space-y-4">
                     <h3 className="text-base font-medium">
-                        {t("tools:compress.advancedOptions")}
+                        {t("tools.compress.advancedOptions")}
                     </h3>
                      <div className="flex items-center space-x-2">
                         <Checkbox
@@ -361,18 +361,18 @@ export function PdfCompressTool() {
                         }
                         />
                         <Label htmlFor="remove-duplicates" className="font-normal">
-                        {t("tools:compress.removeDuplicates")}
+                        {t("tools.compress.removeDuplicates")}
                         </Label>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                        {t("tools:compress.removeDuplicatesDesc")}
+                        {t("tools.compress.removeDuplicatesDesc")}
                     </p>
                     {/*
                     // Placeholders for options not in current backend endpoint:
                     <div className="flex items-center space-x-2 opacity-50">
                         <Checkbox id="remove-bookmarks" disabled />
                         <Label htmlFor="remove-bookmarks" className="font-normal">
-                        {t("tools:compress.removeBookmarks")} (Not available)
+                        {t("tools.compress.removeBookmarks")} (Not available)
                         </Label>
                     </div>
                     */}
@@ -384,10 +384,10 @@ export function PdfCompressTool() {
             {isProcessing ? (
               <>
                 <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                {t("tools:compress.compressing")}
+                {t("tools.compress.compressing")}
               </>
             ) : (
-              t("tools:compress.compressButton")
+              t("tools.compress.compressButton")
             )}
           </Button>
 
@@ -396,17 +396,17 @@ export function PdfCompressTool() {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="text-center sm:text-left">
                   <h3 className="text-base font-semibold text-green-700 dark:text-green-300">
-                    {t("tools:compress.compressionResultTitle")}
+                    {t("tools.compress.compressionResultTitle")}
                   </h3>
                   <p className="text-xs text-green-600 dark:text-green-400">
-                    {t("tools:compress.originalSizeLabel")} {formatFileSize(originalSize)} → {" "}
-                    {t("tools:compress.newSizeLabel")} {formatFileSize(newSize)} ({t("tools:compress.reductionLabel")} {calculateReduction()})
+                    {t("tools.compress.originalSizeLabel")} {formatFileSize(originalSize)} → {" "}
+                    {t("tools.compress.newSizeLabel")} {formatFileSize(newSize)} ({t("tools.compress.reductionLabel")} {calculateReduction()})
                   </p>
                 </div>
                 <Button asChild className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
                   <a href={downloadUrl} download={`${currentFile?.name.replace(/\.pdf$/i, '') || 'document'}_compressed.pdf`}>
                     <DownloadIcon className="mr-2 h-4 w-4" />
-                    <span>{t("tools:compress.downloadButton")}</span>
+                    <span>{t("tools.compress.downloadButton")}</span>
                   </a>
                 </Button>
               </div>
@@ -418,14 +418,14 @@ export function PdfCompressTool() {
       {/* How To Card (Optional - can be a separate component or at the bottom) */}
       <Card>
         <CardHeader>
-            <CardTitle>{t("tools:compress.howToTitle")}</CardTitle>
+            <CardTitle>{t("tools.compress.howToTitle")}</CardTitle>
         </CardHeader>
         <CardContent>
             <ol className="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
-                <li>{t("tools:compress.steps.step1")}</li>
-                <li>{t("tools:compress.steps.step2")}</li>
-                <li>{t("tools:compress.steps.step3")}</li>
-                <li>{t("tools:compress.steps.step4")}</li>
+                <li>{t("tools.compress.steps.step1")}</li>
+                <li>{t("tools.compress.steps.step2")}</li>
+                <li>{t("tools.compress.steps.step3")}</li>
+                <li>{t("tools.compress.steps.step4")}</li>
             </ol>
         </CardContent>
       </Card>

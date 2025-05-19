@@ -16,7 +16,7 @@ import { FileUp } from "lucide-react"; // Import FileUp icon
 const FASTAPI_BASE_URL = process.env.NEXT_PUBLIC_API_URL + '/pdf';
 
 export function PdfDeletePagesTool() {
-  const { t } = useTranslation(["common", "tools"]);
+  const { t } = useTranslation("common");
   const { sharedFile, setSharedFile, toolTarget, setToolTarget } = useFile();
   const router = useRouter();
   const { user } = useAuth();
@@ -56,12 +56,12 @@ export function PdfDeletePagesTool() {
           } catch (error) {
               console.error("Failed to get page count:", error);
               setTotalPages(0); // Set to 0 or handle error
-              toast.error(t("tools:deletePages.errorGettingPageCount"));
+              toast.error(t("tools.deletePages.errorGettingPageCount"));
           }
       };
       reader.onerror = () => {
           setTotalPages(0);
-          toast.error(t("tools:deletePages.errorReadingFile"));
+          toast.error(t("tools.deletePages.errorReadingFile"));
       };
       setTotalPages(0);
 
@@ -87,7 +87,7 @@ export function PdfDeletePagesTool() {
 
   const handleDeletePages = async () => {
     if (!currentFile || !pageRange.trim()) {
-      toast.error(t("tools:deletePages.fileOrRangeMissing"));
+      toast.error(t("tools.deletePages.fileOrRangeMissing"));
       return;
     }
 
@@ -117,7 +117,7 @@ export function PdfDeletePagesTool() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.detail || t("tools:deletePages.errorDeletingPages"));
+        throw new Error(errorData.detail || t("tools.deletePages.errorDeletingPages"));
       }
 
       const blob = await response.blob();
@@ -127,12 +127,12 @@ export function PdfDeletePagesTool() {
       const newUrl = URL.createObjectURL(blob);
       setDownloadUrl(newUrl);
       setIsComplete(true);
-      toast.success(t("tools:merge.mergeComplete"));
+      toast.success(t("tools.merge.mergeComplete"));
     } catch (error: any) {
       setIsProcessing(false);
       setIsComplete(false);
       setDownloadUrl(null);
-      toast.error(error.message || t("tools:deletePages.errorDeletingPages"));
+      toast.error(error.message || t("tools.deletePages.errorDeletingPages"));
     }finally {
       setIsProcessing(false);
     }
@@ -191,12 +191,12 @@ export function PdfDeletePagesTool() {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>{t("tools:titles.deletePages")}</CardTitle>
+            <CardTitle>{t("tools.titles.deletePages")}</CardTitle>
             <Button variant="outline" size="sm" onClick={handleResetAndUploadNew}>
-              <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools:changeFile")}
+              <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.changeFile")}
             </Button>
           </div>
-          <p className="text-sm text-muted-foreground pt-1">{t("tools:descriptions.deletePages")}</p>
+          <p className="text-sm text-muted-foreground pt-1">{t("tools.deletePages.description")}</p>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="p-4 bg-muted rounded-md">
@@ -205,22 +205,22 @@ export function PdfDeletePagesTool() {
                 <p className="text-sm font-medium truncate max-w-xs sm:max-w-md" title={currentFile?.name}>{currentFile?.name}</p>
                 <p className="text-xs text-muted-foreground">
                   {currentFile ? (currentFile.size / 1024 / 1024).toFixed(2) : "0.00"} MB
-                    {totalPages > 0 ? ` • ${totalPages} ${t("tools:common.pages")}` : ""}
+                    {totalPages > 0 ? ` • ${totalPages} ${t("tools.common.pages")}` : ""}
                 </p>
               </div>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="page-range">{t("tools:deletePages.pageRangeLabel")}</Label>
+            <Label htmlFor="page-range">{t("tools.deletePages.pageRangeLabel")}</Label>
             <Input
               id="page-range"
-              placeholder={t("tools:deletePages.pageRangePlaceholder")}
+              placeholder={t("tools.deletePages.pageRangePlaceholder")}
               value={pageRange}
               onChange={(e) => setPageRange(e.target.value)}
               className="max-w-md"
             />
-            <p className="text-xs text-muted-foreground">{t("tools:deletePages.pageRangeDesc")}</p>
+            <p className="text-xs text-muted-foreground">{t("tools.deletePages.pageRangeDesc")}</p>
           </div>
 
           <Button
@@ -229,9 +229,9 @@ export function PdfDeletePagesTool() {
             className="w-full sm:w-auto" size="lg"
           >
             {isProcessing ? (
-              <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools:deletePages.processing")}</>
+              <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools.deletePages.processing")}</>
             ) : (
-              <><FileMinus2 className="mr-2 h-4 w-4" />{t("tools:deletePages.deleteButton")}</>
+              <><FileMinus2 className="mr-2 h-4 w-4" />{t("tools.deletePages.deleteButton")}</>
             )}
           </Button>
 
@@ -239,8 +239,8 @@ export function PdfDeletePagesTool() {
             <div className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700/50 rounded-md mt-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div className="text-center sm:text-left">
-                  <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools:deletePages.deleteCompleteTitle")}</h3>
-                  <p className="text-xs text-green-600 dark:text-green-400">{t("tools:deletePages.deleteCompleteDesc")}</p>
+                  <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools.deletePages.deleteCompleteTitle")}</h3>
+                  <p className="text-xs text-green-600 dark:text-green-400">{t("tools.deletePages.deleteCompleteDesc")}</p>
                 </div>
                 <Button
                   asChild={!!downloadUrl && downloadUrl !== "#"} // Only make it a link if URL is real
@@ -249,11 +249,11 @@ export function PdfDeletePagesTool() {
                 >
                   {downloadUrl && downloadUrl !== "#" ? (
                     <a href={downloadUrl} download={`${currentFile?.name.replace(/\.pdf$/i, '') || 'document'}_modified.pdf`}>
-                      <DownloadIcon className="mr-2 h-4 w-4" />{t("tools:deletePages.downloadButton")}
+                      <DownloadIcon className="mr-2 h-4 w-4" />{t("tools.deletePages.downloadButton")}
                     </a>
                   ) : (
                     <> {/* Button for simulated completion */}
-                      <DownloadIcon className="mr-2 h-4 w-4" />{t("tools:deletePages.downloadButton")} (Simulated)
+                      <DownloadIcon className="mr-2 h-4 w-4" />{t("tools.deletePages.downloadButton")} (Simulated)
                     </>
                   )}
                 </Button>
@@ -263,13 +263,13 @@ export function PdfDeletePagesTool() {
         </CardContent>
       </Card>
       <Card>
-        <CardHeader><CardTitle>{t("tools:deletePages.howToTitle")}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t("tools.deletePages.howToTitle")}</CardTitle></CardHeader>
         <CardContent>
             <ol className="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
-                <li>{t("tools:deletePages.steps.step1")}</li>
-                <li>{t("tools:deletePages.steps.step2", { totalPages: totalPages > 0 ? totalPages : 'N' })}</li>
-                <li>{t("tools:deletePages.steps.step3")}</li>
-                <li>{t("tools:deletePages.steps.step4")}</li>
+                <li>{t("tools.deletePages.steps.step1")}</li>
+                <li>{t("tools.deletePages.steps.step2", { totalPages: totalPages > 0 ? totalPages : 'N' })}</li>
+                <li>{t("tools.deletePages.steps.step3")}</li>
+                <li>{t("tools.deletePages.steps.step4")}</li>
             </ol>
         </CardContent>
       </Card>

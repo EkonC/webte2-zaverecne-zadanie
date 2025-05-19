@@ -19,7 +19,7 @@ import { FileUp } from "lucide-react"; // Import FileUp icon
 const FASTAPI_BASE_URL =  process.env.NEXT_PUBLIC_API_URL + '/pdf';
 
 export function PdfExtractTextTool() {
-  const { t } = useTranslation(["common", "tools"]);
+  const { t } = useTranslation("common");
   const { sharedFile, setSharedFile, toolTarget, setToolTarget } = useFile();
   const router = useRouter();
   const { user } = useAuth();
@@ -54,7 +54,7 @@ export function PdfExtractTextTool() {
 
   const handleExtractText = async () => {
     if (!currentFile) {
-      toast.error(t("tools:extractText.noFileSelectedError"));
+      toast.error(t("tools.extractText.noFileSelectedError"));
       return;
     }
     setIsProcessing(true); setIsComplete(false); setExtractedText("");
@@ -82,11 +82,11 @@ export function PdfExtractTextTool() {
       const data = await response.json();
       setExtractedText(data.text || "");
       setIsComplete(true);
-      toast.success(t("tools:extractText.extractComplete"));
+      toast.success(t("tools.extractText.extractComplete"));
 
     } catch (error) {
       console.error("Error extracting text:", error);
-      toast.error(`${t("tools:extractText.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
+      toast.error(`${t("tools.extractText.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsProcessing(false);
     }
@@ -95,8 +95,8 @@ export function PdfExtractTextTool() {
   const handleCopyToClipboard = () => {
     if (!extractedText) return;
     navigator.clipboard.writeText(extractedText)
-      .then(() => toast.success(t("tools:extractText.copiedToClipboard")))
-      .catch(err => toast.error(t("tools:extractText.copyFailed")));
+      .then(() => toast.success(t("tools.extractText.copiedToClipboard")))
+      .catch(err => toast.error(t("tools.extractText.copyFailed")));
   };
 
   const handleDownloadText = () => {
@@ -165,48 +165,48 @@ export function PdfExtractTextTool() {
       <Card>
         <CardHeader>
             <div className="flex justify-between items-center">
-                <CardTitle>{t("tools:titles.extractText")}</CardTitle>
+                <CardTitle>{t("tools.titles.extractText")}</CardTitle>
                 <Button variant="outline" size="sm" onClick={handleResetAndUploadNew}>
-                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools:changeFile")}
+                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.changeFile")}
                 </Button>
             </div>
-            <p className="text-sm text-muted-foreground pt-1">{t("tools:descriptions.extractText")}</p>
+            <p className="text-sm text-muted-foreground pt-1">{t("tools.extractText.description")}</p>
         </CardHeader>
         <CardContent className="space-y-6">
             <div className="p-4 bg-muted rounded-md"> {/* File Info */}
                 <p className="text-sm font-medium truncate max-w-xs sm:max-w-md" title={currentFile?.name}>{currentFile?.name}</p>
                 <p className="text-xs text-muted-foreground">
                     {currentFile ? (currentFile.size / 1024 / 1024).toFixed(2) : "0.00"} MB
-                    {totalPages > 0 ? ` • ${totalPages} ${t("tools:common.pages")}` : ""}
+                    {totalPages > 0 ? ` • ${totalPages} ${t("tools.common.pages")}` : ""}
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4"> {/* Column 1 */}
-                    <h3 className="text-base font-medium">{t("tools:extractText.optionsTitle")}</h3>
+                    <h3 className="text-base font-medium">{t("tools.extractText.optionsTitle")}</h3>
                     <div className="space-y-2">
-                        <Label htmlFor="page-range-extract-text">{t("tools:extractText.pageRangeLabel")}</Label>
+                        <Label htmlFor="page-range-extract-text">{t("tools.extractText.pageRangeLabel")}</Label>
                         <Input id="page-range-extract-text" placeholder="e.g., 1-3, 5 or blank for all" value={pageRange} onChange={(e) => setPageRange(e.target.value)} />
-                        <p className="text-xs text-muted-foreground">{t("tools:extractText.pageRangeDesc")}</p>
+                        <p className="text-xs text-muted-foreground">{t("tools.extractText.pageRangeDesc")}</p>
                     </div>
                 </div>
                 <div className="space-y-4 pt-8"> {/* Column 2 - align with options title */}
                     <div className="flex items-start space-x-2">
                         <Checkbox id="preserve-layout-text" checked={preserveLayout} onCheckedChange={(c) => setPreserveLayout(c as boolean)} />
                         <div className="grid gap-1.5 leading-none">
-                            <Label htmlFor="preserve-layout-text">{t("tools:extractText.preserveLayoutLabel")}</Label>
-                            <p className="text-xs text-muted-foreground">{t("tools:extractText.preserveLayoutDesc")}</p>
+                            <Label htmlFor="preserve-layout-text">{t("tools.extractText.preserveLayoutLabel")}</Label>
+                            <p className="text-xs text-muted-foreground">{t("tools.extractText.preserveLayoutDesc")}</p>
                         </div>
                     </div>
                      {/* Text Format (UI Only for now) */}
                     {/*
                     <div className="space-y-2 opacity-70 group">
-                        <Label>{t("tools:extractText.textFormatLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools:common.uiOnlyFeature")})</span></Label>
+                        <Label>{t("tools.extractText.textFormatLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
                         <RadioGroup value={textFormat} onValueChange={setTextFormat} className="mt-1">
                             {["plainText", "richText", "html"].map(format => (
                                 <div key={format} className="flex items-center space-x-2">
                                     <RadioGroupItem value={format} id={`tf-${format}`} />
-                                    <Label htmlFor={`tf-${format}`} className="font-normal">{t(`tools:extractText.formats.${format}`)}</Label>
+                                    <Label htmlFor={`tf-${format}`} className="font-normal">{t(`tools.extractText.formats.${format}`)}</Label>
                                 </div>
                             ))}
                         </RadioGroup>
@@ -217,27 +217,27 @@ export function PdfExtractTextTool() {
 
             <Button onClick={handleExtractText} disabled={isProcessing || !currentFile} className="w-full sm:w-auto" size="lg">
                 {isProcessing ? (
-                    <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools:extractText.processing")}</>
+                    <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools.extractText.processing")}</>
                 ) : (
-                    <><FileText className="mr-2 h-4 w-4" />{t("tools:extractText.extractButton")}</>
+                    <><FileText className="mr-2 h-4 w-4" />{t("tools.extractText.extractButton")}</>
                 )}
             </Button>
 
             {isComplete && (
                 <div className="space-y-4 pt-4 border-t">
-                    <h3 className="text-base font-medium">{t("tools:extractText.extractedContentTitle")}</h3>
+                    <h3 className="text-base font-medium">{t("tools.extractText.extractedContentTitle")}</h3>
                     <Textarea
                         value={extractedText}
                         readOnly
                         className="min-h-[200px] max-h-[400px] font-mono text-sm bg-muted/50"
-                        placeholder={t("tools:extractText.noTextExtracted")}
+                        placeholder={t("tools.extractText.noTextExtracted")}
                     />
                     <div className="flex flex-wrap gap-2">
                         <Button onClick={handleDownloadText} disabled={!extractedText}>
-                            <DownloadIcon className="mr-2 h-4 w-4" />{t("tools:extractText.downloadButton")}
+                            <DownloadIcon className="mr-2 h-4 w-4" />{t("tools.extractText.downloadButton")}
                         </Button>
                         <Button variant="outline" onClick={handleCopyToClipboard} disabled={!extractedText}>
-                            <Copy className="mr-2 h-4 w-4" />{t("tools:extractText.copyButton")}
+                            <Copy className="mr-2 h-4 w-4" />{t("tools.extractText.copyButton")}
                         </Button>
                     </div>
                 </div>
@@ -245,13 +245,13 @@ export function PdfExtractTextTool() {
         </CardContent>
       </Card>
       <Card> {/* How To Card */}
-        <CardHeader><CardTitle>{t("tools:extractText.howToTitle")}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t("tools.extractText.howToTitle")}</CardTitle></CardHeader>
         <CardContent>
             <ol className="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
-                <li>{t("tools:extractText.steps.step1")}</li>
-                <li>{t("tools:extractText.steps.step2")}</li>
-                <li>{t("tools:extractText.steps.step3")}</li>
-                <li>{t("tools:extractText.steps.step4")}</li>
+                <li>{t("tools.extractText.steps.step1")}</li>
+                <li>{t("tools.extractText.steps.step2")}</li>
+                <li>{t("tools.extractText.steps.step3")}</li>
+                <li>{t("tools.extractText.steps.step4")}</li>
             </ol>
         </CardContent>
       </Card>

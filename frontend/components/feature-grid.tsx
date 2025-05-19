@@ -35,7 +35,7 @@ const features = [
     href: "/tools/split?initAction=upload", 
   },
   {
-    key: "delete",
+    key: "deletePages",
     icon: Trash2,
     href: "/tools/delete-pages?initAction=upload", 
   },
@@ -92,7 +92,7 @@ export function FeatureGrid() {
               {t(`tools.${feature.key}.description`)}
             </CardDescription>
           </CardHeader>
-          <CardFooter className="mt-auto pt-2">
+          <CardFooter className="mt-auto">
             <Button asChild className="w-full">
               <Link href={feature.href}>{t("tools.useTool")}</Link>
             </Button>

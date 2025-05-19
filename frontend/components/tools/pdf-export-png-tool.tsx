@@ -19,7 +19,7 @@ import { FileUp } from "lucide-react"; // Import FileUp icon
 const FASTAPI_BASE_URL = process.env.NEXT_PUBLIC_API_URL + '/pdf';
 
 export function PdfExportPngTool() {
-  const { t } = useTranslation(["common", "tools"]);
+  const { t } = useTranslation("common");
   const { sharedFile, setSharedFile, toolTarget, setToolTarget } = useFile();
   const router = useRouter();
   const { user } = useAuth();
@@ -72,7 +72,7 @@ export function PdfExportPngTool() {
 
   const handleExportPng = async () => {
     if (!currentFile) {
-      toast.error(t("tools:exportPng.noFileSelectedError"));
+      toast.error(t("tools.exportPng.noFileSelectedError"));
       return;
     }
 
@@ -108,11 +108,11 @@ export function PdfExportPngTool() {
       // so we'll estimate based on totalPages or pageRange if it were used.
       setConvertedImagesCount(totalPages); // Or parse pageRange if it was sent & backend supported it
       setIsComplete(true);
-      toast.success(t("tools:exportPng.exportComplete"));
+      toast.success(t("tools.exportPng.exportComplete"));
 
     } catch (error) {
       console.error("Error exporting to PNG:", error);
-      toast.error(`${t("tools:exportPng.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
+      toast.error(`${t("tools.exportPng.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsProcessing(false);
     }
@@ -174,12 +174,12 @@ export function PdfExportPngTool() {
       <Card>
         <CardHeader>
             <div className="flex justify-between items-center">
-                <CardTitle>{t("tools:titles.exportPng")}</CardTitle>
+                <CardTitle>{t("tools.titles.exportPng")}</CardTitle>
                 <Button variant="outline" size="sm" onClick={handleResetAndUploadNew}>
-                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools:changeFile")}
+                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.changeFile")}
                 </Button>
             </div>
-            <p className="text-sm text-muted-foreground pt-1">{t("tools:descriptions.exportPng")}</p>
+            <p className="text-sm text-muted-foreground pt-1">{t("tools.exportPng.description")}</p>
         </CardHeader>
         <CardContent className="space-y-6">
             <div className="p-4 bg-muted rounded-md">
@@ -187,28 +187,28 @@ export function PdfExportPngTool() {
                 <p className="text-sm font-medium truncate max-w-xs sm:max-w-md" title={currentFile?.name}>{currentFile?.name}</p>
                 <p className="text-xs text-muted-foreground">
                     {currentFile ? (currentFile.size / 1024 / 1024).toFixed(2) : "0.00"} MB
-                    {totalPages > 0 ? ` • ${totalPages} ${t("tools:common.pages")}` : ""}
+                    {totalPages > 0 ? ` • ${totalPages} ${t("tools.common.pages")}` : ""}
                 </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4"> {/* Column 1 */}
-                    <h3 className="text-base font-medium">{t("tools:exportPng.optionsTitle")}</h3>
+                    <h3 className="text-base font-medium">{t("tools.exportPng.optionsTitle")}</h3>
                     {/* DPI Slider */}
                     <div className="space-y-2">
                         <div className="flex justify-between items-center">
-                            <Label htmlFor="dpi-png">{t("tools:exportPng.resolutionLabel")}</Label>
+                            <Label htmlFor="dpi-png">{t("tools.exportPng.resolutionLabel")}</Label>
                             <span className="text-sm text-muted-foreground">{dpi} DPI</span>
                         </div>
                         <Slider id="dpi-png" value={[dpi]} min={72} max={600} step={12} onValueChange={([v]) => setDpi(v)} />
-                        <p className="text-xs text-muted-foreground">{t("tools:exportPng.resolutionDesc")}</p>
+                        <p className="text-xs text-muted-foreground">{t("tools.exportPng.resolutionDesc")}</p>
                     </div>
 
                     {/* Page Range (UI only, not sent to current backend) */}
                     <div className="space-y-2 opacity-70 group">
-                        <Label htmlFor="page-range-png">{t("tools:exportPng.pageRangeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools:common.uiOnlyFeature")})</span></Label>
+                        <Label htmlFor="page-range-png">{t("tools.exportPng.pageRangeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
                         <Input id="page-range-png" placeholder="e.g., 1-3, 5" value={pageRange} onChange={(e) => setPageRange(e.target.value)} />
-                        <p className="text-xs text-muted-foreground">{t("tools:exportPng.pageRangeDesc")}</p>
+                        <p className="text-xs text-muted-foreground">{t("tools.exportPng.pageRangeDesc")}</p>
                     </div>
                 </div>
 
@@ -217,20 +217,20 @@ export function PdfExportPngTool() {
                      <div className="flex items-start space-x-2 pt-2 opacity-70 group">
                         <Checkbox id="transparent-bg-png" checked={transparent} onCheckedChange={(c) => setTransparent(c as boolean)} />
                         <div className="grid gap-1.5 leading-none">
-                            <Label htmlFor="transparent-bg-png">{t("tools:exportPng.transparentBackgroundLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools:common.uiOnlyFeature")})</span></Label>
-                            <p className="text-xs text-muted-foreground">{t("tools:exportPng.transparentBackgroundDesc")}</p>
+                            <Label htmlFor="transparent-bg-png">{t("tools.exportPng.transparentBackgroundLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
+                            <p className="text-xs text-muted-foreground">{t("tools.exportPng.transparentBackgroundDesc")}</p>
                         </div>
                     </div>
 
                     {/* Color Mode (UI only) */}
                     <div className="space-y-2 opacity-70 group">
-                        <Label>{t("tools:exportPng.colorModeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools:common.uiOnlyFeature")})</span></Label>
+                        <Label>{t("tools.exportPng.colorModeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
                         <RadioGroup value={colorMode} onValueChange={setColorMode} className="space-y-1">
                             {/* Radio items */}
                             {(["color", "grayscale", "blackwhite"] as const).map(mode => (
                                 <div key={mode} className="flex items-center space-x-2">
                                     <RadioGroupItem value={mode} id={`cm-png-${mode}`} />
-                                    <Label htmlFor={`cm-png-${mode}`} className="font-normal">{t(`tools:exportPng.colorModes.${mode}`)}</Label>
+                                    <Label htmlFor={`cm-png-${mode}`} className="font-normal">{t(`tools.exportPng.colorModes.${mode}`)}</Label>
                                 </div>
                             ))}
                         </RadioGroup>
@@ -241,9 +241,9 @@ export function PdfExportPngTool() {
             <Button onClick={handleExportPng} disabled={isProcessing || !currentFile} className="w-full sm:w-auto" size="lg">
                 {/* Button content */}
                 {isProcessing ? (
-                <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools:exportPng.processing")}</>
+                <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools.exportPng.processing")}</>
                 ) : (
-                <><ImageIcon className="mr-2 h-4 w-4" />{t("tools:exportPng.exportButton")}</>
+                <><ImageIcon className="mr-2 h-4 w-4" />{t("tools.exportPng.exportButton")}</>
                 )}
             </Button>
 
@@ -251,15 +251,15 @@ export function PdfExportPngTool() {
                 <div className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700/50 rounded-md mt-6">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div>
-                            <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools:exportPng.exportCompleteTitle")}</h3>
+                            <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools.exportPng.exportCompleteTitle")}</h3>
                             <p className="text-xs text-green-600 dark:text-green-400">
-                                {t("tools:exportPng.exportCompleteDesc", { count: convertedImagesCount })}
+                                {t("tools.exportPng.exportCompleteDesc", { count: convertedImagesCount })}
                             </p>
                         </div>
                         <Button asChild className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
                         <a href={downloadUrl} download={`${currentFile?.name.replace(/\.pdf$/i, '') || 'document'}_png_images.zip`}>
                             <Archive className="mr-2 h-4 w-4" />
-                            <span>{t("tools:exportPng.downloadZipButton")}</span>
+                            <span>{t("tools.exportPng.downloadZipButton")}</span>
                         </a>
                         </Button>
                     </div>
@@ -269,13 +269,13 @@ export function PdfExportPngTool() {
       </Card>
       <Card>
         {/* How To Card content */}
-        <CardHeader><CardTitle>{t("tools:exportPng.howToTitle")}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t("tools.exportPng.howToTitle")}</CardTitle></CardHeader>
         <CardContent>
             <ol className="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
-                <li>{t("tools:exportPng.steps.step1")}</li>
-                <li>{t("tools:exportPng.steps.step2")}</li>
-                <li>{t("tools:exportPng.steps.step3")}</li>
-                <li>{t("tools:exportPng.steps.step4")}</li>
+                <li>{t("tools.exportPng.steps.step1")}</li>
+                <li>{t("tools.exportPng.steps.step2")}</li>
+                <li>{t("tools.exportPng.steps.step3")}</li>
+                <li>{t("tools.exportPng.steps.step4")}</li>
             </ol>
         </CardContent>
       </Card>

@@ -11,10 +11,10 @@ export default function ExtractImagesPage() {
     <div className="flex max-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">
-          {t("tools.extractImages.pageTitle")}
+          {t("tools.extractImages.title")}
         </h1>
         <p className="text-muted-foreground mb-8">
-          {t("tools.extractImages.pageSubtitle")}
+          {t("tools.extractImages.description")}
         </p>
 
         <PdfExtractImagesTool />

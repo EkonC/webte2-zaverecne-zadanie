@@ -14,7 +14,7 @@ export default function AddWatermarkPage() {
           {t("tools.addWatermark.title")}
         </h1>
         <p className="text-muted-foreground mb-8">
-          {t("tools.addWatermark.pageSubtitle")}
+          {t("tools.addWatermark.description")}
         </p>
 
         <PdfAddWatermarkTool />

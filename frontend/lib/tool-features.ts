@@ -36,70 +36,70 @@ export const toolFeatures: ToolFeature[] = [
     icon: Merge, // Using 'Combine' as per your DropdownMenuItem
     href: "/tools/merge",
     titleKey: "tools.titles.merge",
-    descriptionKey: "tools.descriptions.merge",
+    descriptionKey: "tools.merge.description",
   },
   {
     key: "split",
     icon: Scissors,
     href: "/tools/split",
     titleKey: "tools.titles.split",
-    descriptionKey: "tools.descriptions.split",
+    descriptionKey: "tools.split.description",
   },
   {
     key: "deletePages", // Changed key to be more specific than just "delete" (which might mean delete file)
     icon: Delete, // Using 'FileMinus2' as per your DropdownMenuItem
     href: "/tools/delete-pages",
     titleKey: "tools.titles.deletePages",
-    descriptionKey: "tools.descriptions.deletePages",
+    descriptionKey: "tools.deletePages.description",
   },
   {
     key: "extractImages",
     icon: ImageIcon, // Using 'FileImage' as per your DropdownMenuItem
     href: "/tools/extract-images",
     titleKey: "tools.titles.extractImages",
-    descriptionKey: "tools.descriptions.extractImages",
+    descriptionKey: "tools.extractImages.description",
   },
   {
     key: "extractText",
     icon: FileText, // Using 'Baseline' as per your DropdownMenuItem
     href: "/tools/extract-text",
     titleKey: "tools.titles.extractText",
-    descriptionKey: "tools.descriptions.extractText",
+    descriptionKey: "tools.extractText.description",
   },
   {
     key: "compress",
     icon: FileDown,
     href: "/tools/compress",
     titleKey: "tools.titles.compress",
-    descriptionKey: "tools.descriptions.compress",
+    descriptionKey: "tools.compress.description",
   },
   {
     key: "addWatermark",
     icon: Stamp, // Using 'Layers' as per your DropdownMenuItem for consistency
     href: "/tools/add-watermark",
     titleKey: "tools.titles.addWatermark",
-    descriptionKey: "tools.descriptions.addWatermark",
+    descriptionKey: "tools.addWatermark.description",
   },
   {
     key: "exportPng",
     icon: ImageIcon,
     href: "/tools/export-png",
     titleKey: "tools.titles.exportPng",
-    descriptionKey: "tools.descriptions.exportPng",
+    descriptionKey: "tools.exportPng.description",
   },
   {
     key: "exportJpg",
     icon: ImageIcon,
     href: "/tools/export-jpg",
     titleKey: "tools.titles.exportJpg",
-    descriptionKey: "tools.descriptions.exportJpg",
+    descriptionKey: "tools.exportJpg.description",
   },
   {
     key: "nUp",
     icon: LayoutGrid,
     href: "/tools/n-up",
     titleKey: "tools.titles.nUp",
-    descriptionKey: "tools.descriptions.nUp",
+    descriptionKey: "tools.nUp.description",
   },
 ];
 

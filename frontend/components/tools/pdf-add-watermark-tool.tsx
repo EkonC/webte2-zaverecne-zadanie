@@ -223,7 +223,7 @@ export function PdfAddWatermarkTool() {
   // Fallback if no file is loaded (e.g., direct navigation)
   if (!currentFile && !sharedFile) {
     return (
-      <Card className="p-6 text-center max-w-lg mx-auto">
+      <Card className="p-6 text-center w-full mx-auto">
         <FileUp className="mx-auto h-12 w-12 text-gray-400 mb-4" />
         <h3 className="text-xl font-semibold mb-2">{t("tools.addWatermark.noFileLoadedTitle")}</h3>
         <p className="text-muted-foreground mb-4">{t("tools.addWatermark.noFileLoadedDesc")}</p>

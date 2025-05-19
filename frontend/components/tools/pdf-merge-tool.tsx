@@ -16,7 +16,7 @@ import { useAuth } from "../providers/auth-provider";
 const FASTAPI_BASE_URL = process.env.NEXT_PUBLIC_API_URL + '/pdf';
 
 export function PdfMergeTool() {
-  const { t } = useTranslation(["common", "tools"]);
+  const { t } = useTranslation("common");
   const { sharedFile, setSharedFile, toolTarget, setToolTarget } = useFile();
   const { user } = useAuth();
   const router = useRouter();
@@ -54,7 +54,7 @@ export function PdfMergeTool() {
                    !filesToMerge.find(existing => existing.name === file.name && existing.lastModified === file.lastModified)
       );
       if (newFiles.length < event.target.files.length) {
-        toast.error(t("tools:merge.onlyPdfsOrDuplicates"));
+        toast.error(t("tools.merge.onlyPdfsOrDuplicates"));
       }
       setFilesToMerge(prev => [...prev, ...newFiles]);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -81,7 +81,7 @@ export function PdfMergeTool() {
     }
 
     if (filesToMerge.length < 2) {
-      toast.error(t("tools:merge.atLeastTwoFiles"));
+      toast.error(t("tools.merge.atLeastTwoFiles"));
       return;
     }
     setIsProcessing(true); setIsComplete(false);
@@ -120,12 +120,12 @@ export function PdfMergeTool() {
       const newUrl = URL.createObjectURL(blob);
       setDownloadUrl(newUrl);
       setIsComplete(true);
-      toast.success(t("tools:merge.mergeComplete"));
+      toast.success(t("tools.merge.mergeComplete"));
     } catch (error) {
       console.error("Error merging PDFs:", error);
       // Avoid showing "Unauthorized" if already handled by the 401 check
       if ((error as Error).message !== "Unauthorized") {
-        toast.error(`${t("tools:merge.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
+        toast.error(`${t("tools.merge.errorProcessing")} ${error instanceof Error ? error.message : String(error)}`);
       }
     } finally {
       setIsProcessing(false);
@@ -146,16 +146,16 @@ export function PdfMergeTool() {
       <Card>
         <CardHeader>
             <div className="flex justify-between items-center">
-                <CardTitle>{t("tools:titles.merge")}</CardTitle>
+                <CardTitle>{t("tools.titles.merge")}</CardTitle>
                 <Button variant="outline" size="sm" onClick={handleReset}>
-                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools:resetTool")}
+                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.resetTool")}
                 </Button>
             </div>
-            <p className="text-sm text-muted-foreground pt-1">{t("tools:descriptions.merge")}</p>
+            <p className="text-sm text-muted-foreground pt-1">{t("tools.merge.description")}</p>
         </CardHeader>
         <CardContent className="space-y-6">
             <div>
-                <Label htmlFor="merge-file-upload" className="mb-1 block">{t("tools:merge.addPdfsLabel")}</Label>
+                <Label htmlFor="merge-file-upload" className="mb-1 block">{t("tools.merge.addPdfsLabel")}</Label>
                 <div className="flex items-center gap-2">
                     <Input
                         id="merge-file-upload"
@@ -170,12 +170,12 @@ export function PdfMergeTool() {
                         <FileUp className="h-4 w-4" />
                     </Button>
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">{t("tools:merge.addMorePrompt")}</p>
+                <p className="text-xs text-muted-foreground mt-1">{t("tools.merge.addMorePrompt")}</p>
             </div>
 
             {filesToMerge.length > 0 && (
                 <div className="space-y-3">
-                    <h3 className="text-base font-medium">{t("tools:merge.filesToMergeTitle")} ({filesToMerge.length})</h3>
+                    <h3 className="text-base font-medium">{t("tools.merge.filesToMergeTitle")} ({filesToMerge.length})</h3>
                     <div className="border rounded-md">
                         {filesToMerge.map((file, index) => (
                             <div key={`${file.name}-${file.lastModified}-${index}`} className={`flex items-center p-3 gap-3 ${index > 0 ? 'border-t' : ''}`}>
@@ -207,9 +207,9 @@ export function PdfMergeTool() {
                 className="w-full sm:w-auto" size="lg"
             >
                 {isProcessing ? (
-                    <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools:merge.processing")}</>
+                    <><RefreshCw className="mr-2 h-4 w-4 animate-spin" />{t("tools.merge.processing")}</>
                 ) : (
-                    <><Combine className="mr-2 h-4 w-4" />{t("tools:merge.mergeButton", { count: filesToMerge.length })}</>
+                    <><Combine className="mr-2 h-4 w-4" />{t("tools.merge.mergeButton", { count: filesToMerge.length })}</>
                 )}
             </Button>
 
@@ -217,12 +217,12 @@ export function PdfMergeTool() {
                 <div className="p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700/50 rounded-md mt-6">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div>
-                            <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools:merge.mergeCompleteTitle")}</h3>
-                            <p className="text-xs text-green-600 dark:text-green-400">{t("tools:merge.mergeCompleteDesc")}</p>
+                            <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools.merge.mergeCompleteTitle")}</h3>
+                            <p className="text-xs text-green-600 dark:text-green-400">{t("tools.merge.mergeCompleteDesc")}</p>
                         </div>
                         <Button asChild className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
                             <a href={downloadUrl} download="merged_document.pdf">
-                                <DownloadIcon className="mr-2 h-4 w-4" />{t("tools:merge.downloadButton")}
+                                <DownloadIcon className="mr-2 h-4 w-4" />{t("tools.merge.downloadButton")}
                             </a>
                         </Button>
                     </div>
@@ -231,13 +231,13 @@ export function PdfMergeTool() {
         </CardContent>
       </Card>
       <Card> {/* How To Card */}
-        <CardHeader><CardTitle>{t("tools:merge.howToTitle")}</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t("tools.merge.howToTitle")}</CardTitle></CardHeader>
         <CardContent>
             <ol className="space-y-2 list-decimal list-inside text-sm text-muted-foreground">
-                <li>{t("tools:merge.steps.step1")}</li>
-                <li>{t("tools:merge.steps.step2")}</li>
-                <li>{t("tools:merge.steps.step3")}</li>
-                <li>{t("tools:merge.steps.step4")}</li>
+                <li>{t("tools.merge.steps.step1")}</li>
+                <li>{t("tools.merge.steps.step2")}</li>
+                <li>{t("tools.merge.steps.step3")}</li>
+                <li>{t("tools.merge.steps.step4")}</li>
             </ol>
         </CardContent>
       </Card>
