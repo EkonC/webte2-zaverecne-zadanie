@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     try {
-      const response = await fetch(`${API_URL}/auth/renew`, {
+      const response = await fetch(`${API_URL}/auth/refresh`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${currentToken}`,
