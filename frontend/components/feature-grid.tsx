@@ -1,3 +1,4 @@
+// FeatureGrid.tsx (Only the features array needs modification)
 "use client";
 
 import Link from "next/link";
@@ -13,14 +14,12 @@ import { Button } from "@/components/ui/button";
 import {
   Scissors,
   Merge,
-  FileEdit,
-  ListTree,
   Trash2,
-  FilePlus,
   FileText,
-  ImageIcon,
   FileDown,
+  ImageIcon,
   Stamp,
+
   LayoutGrid,
 } from "lucide-react";
 
@@ -28,52 +27,52 @@ const features = [
   {
     key: "merge",
     icon: Merge,
-    href: "/tools/merge",
+    href: "/tools/merge?initAction=upload", 
   },
   {
     key: "split",
     icon: Scissors,
-    href: "/tools/split",
+    href: "/tools/split?initAction=upload", 
   },
   {
     key: "delete",
     icon: Trash2,
-    href: "/tools/delete",
+    href: "/tools/delete?initAction=upload", 
   },
   {
     key: "extractImages",
     icon: ImageIcon,
-    href: "/tools/extract-images",
+    href: "/tools/extract-images?initAction=upload", 
   },
   {
     key: "extractText",
     icon: FileText,
-    href: "/tools/extract-text",
+    href: "/tools/extract-text?initAction=upload", 
   },
   {
     key: "compress",
     icon: FileDown,
-    href: "/tools/compress",
+    href: "/tools/compress?initAction=upload", 
   },
   {
     key: "addWatermark",
     icon: Stamp,
-    href: "/tools/add-watermark",
+    href: "/tools/add-watermark?initAction=upload", 
   },
   {
     key: "exportPng",
     icon: ImageIcon,
-    href: "/tools/export-png",
+    href: "/tools/export-png?initAction=upload", 
   },
   {
     key: "exportJpg",
     icon: ImageIcon,
-    href: "/tools/export-jpg",
+    href: "/tools/export-jpg?initAction=upload", 
   },
   {
     key: "nUp",
     icon: LayoutGrid,
-    href: "/tools/n-up",
+    href: "/tools/n-up?initAction=upload", 
   },
 ];
 

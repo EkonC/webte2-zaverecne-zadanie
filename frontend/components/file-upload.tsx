@@ -171,6 +171,7 @@ export function FileUpload() {
                   className="flex flex-col items-center justify-center h-28 p-4 text-center"
                   onClick={() => handleToolSelection(tool)}
                 >
+                  <tool.icon className="h-6 w-6 mb-2" />
                   <span className="text-xs sm:text-sm font-medium">{t(tool.titleKey)}</span>
                 </Button>
               ))}
