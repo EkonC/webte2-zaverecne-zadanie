@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"; // Keep if you want a fallback uploader
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { FileDown, RefreshCw, Download as DownloadIcon } from "lucide-react"; // Updated icons
@@ -26,13 +25,9 @@ export function PdfCompressTool() {
   const { user } = useAuth();
 
   const [currentFile, setCurrentFile] = useState<File | null>(null);
-  // Compression level on frontend can map to backend parameters
-  const [compressionLevel, setCompressionLevel] = useState<string>("medium"); // "low", "medium", "high", "extreme"
-  const [imageQuality, setImageQuality] = useState<number | null>(null); // null means backend default or not set
-  const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(true); // Corresponds to backend `remove_duplicates`
-  // `remove_images` is not directly exposed in your original UI, but can be an "extreme" option
-  // `removeBookmarks`, `removeAnnotations`, `removeMetadata` don't have direct backend equivalents in the provided endpoint
-  // We will map `compressionLevel` and `imageQuality` to the backend parameters.
+  const [imageQuality, setImageQuality] = useState<number | null>(null);
+  const [removeDuplicates, setRemoveDuplicates] = useState<boolean>(true);
+  const [removeImages, setRemoveImages] = useState<boolean>(false);
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
@@ -61,7 +56,7 @@ export function PdfCompressTool() {
       setIsComplete(false);
       setNewSize(0);
     }
-  }, [currentFile, compressionLevel, imageQuality, removeDuplicates]);
+  }, [currentFile, imageQuality, removeDuplicates, removeImages]);
 
 
   // Cleanup for downloadUrl when component unmounts or downloadUrl itself is replaced
@@ -90,50 +85,12 @@ export function PdfCompressTool() {
     const formData = new FormData();
     formData.append("file", currentFile);
 
-    // Map frontend options to backend parameters
+    // Directly send only the API-supported options:
     formData.append("remove_duplicates", String(removeDuplicates));
-
-    let backendImageQuality: number | null = null;
-    let removeAllImages = false;
-
-    // Interpret compressionLevel and imageQuality setting
-    switch (compressionLevel) {
-        case "low":
-            backendImageQuality = imageQuality !== null ? Math.max(85, imageQuality) : 90; // Higher quality for low compression
-            break;
-        case "medium":
-            backendImageQuality = imageQuality !== null ? imageQuality : 75; // Default or user-set
-            break;
-        case "high":
-            backendImageQuality = imageQuality !== null ? Math.min(60, imageQuality) : 50; // Lower quality for high compression
-            break;
-        case "extreme":
-            // For "extreme", we might choose to remove images or set very low quality
-            // This specific endpoint doesn't have a "remove all text" or "simplify paths" type of extreme.
-            // Let's assume extreme means lowest image quality or remove images if that becomes an option.
-            // For now, let's make it very low quality if user hasn't set imageQuality to null.
-            // Or, if you had a "remove_images" checkbox, you'd use it here.
-            // For now, just set quality very low or remove images if the backend supported it directly.
-            // Your backend has `remove_images`, let's tie "extreme" to that if imageQuality slider is not touched OR very low.
-            if (imageQuality === null || imageQuality <= 30) { // Threshold for considering image removal
-                // This is a UI decision: if "extreme" is selected, and user hasn't specified a higher image quality,
-                // we might want to enable `remove_images`.
-                // For now, let's just set a very low quality for "extreme"
-                backendImageQuality = 20; // Very low quality
-                // formData.append("remove_images", "true"); // If you want extreme to mean remove images
-            } else {
-                backendImageQuality = imageQuality !== null ? Math.min(40, imageQuality) : 40;
-            }
-            break;
-        default: // medium
-            backendImageQuality = imageQuality !== null ? imageQuality : 75;
+    formData.append("remove_images",    String(removeImages));
+    if (imageQuality !== null) {
+      formData.append("reduce_image_quality", String(imageQuality));
     }
-
-    if (backendImageQuality !== null) {
-        formData.append("reduce_image_quality", String(backendImageQuality));
-    }
-    // If you add a checkbox for `remove_images` in UI:
-    // formData.append("remove_images", String(yourRemoveImagesState));
 
     const headers: HeadersInit = {};
       if (user && user.token) {
@@ -202,9 +159,9 @@ export function PdfCompressTool() {
     setOriginalSize(0);
     setNewSize(0);
     // Reset options
-    setCompressionLevel("medium");
-    setImageQuality(null); // Reset to null to let backend decide or user to explicitly set
+    setImageQuality(null);
     setRemoveDuplicates(true);
+    setRemoveImages(false);
     router.push("/");
   };
 
@@ -295,87 +252,42 @@ export function PdfCompressTool() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                    <h3 className="text-base font-medium">
-                        {t("tools.compress.compressionOptions")}
-                    </h3>
+                    <h3 className="text-base font-medium">{t("tools.compress.optionsTitle")}</h3>
                     <div className="space-y-2">
-                        <Label>{t("tools.compress.compressionLevel")}</Label>
-                        <RadioGroup
-                        value={compressionLevel}
-                        onValueChange={setCompressionLevel}
-                        className="space-y-1"
-                        >
-                        {(["low", "medium", "high", "extreme"] as const).map((level) => (
-                            <div key={level} className="flex items-center space-x-2">
-                                <RadioGroupItem value={level} id={`level-${level}`} />
-                                <Label htmlFor={`level-${level}`} className="font-normal">
-                                    {t(`tools.compress.levels.${level}`)}
-                                </Label>
-                            </div>
-                        ))}
-                        </RadioGroup>
-                    </div>
-
-                    <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                            <Label htmlFor="image-quality">
-                            {t("tools.compress.imageQuality")}
-                            </Label>
-                            <span className="text-sm text-muted-foreground">
-                                {imageQuality !== null ? `${imageQuality}%` : t("tools.compress.autoQuality")}
-                            </span>
-                        </div>
+                        <Label htmlFor="image-quality">{t("tools.compress.imageQuality")}</Label>
                         <Slider
                         id="image-quality"
                         min={20}
                         max={100}
                         step={5}
-                        value={imageQuality !== null ? [imageQuality] : [75]} // Default visual if null
-                        onValueChange={([v]: number[]) => setImageQuality(v)}
-                        disabled={compressionLevel === "extreme"} // Example: disable if extreme implies remove images
+                        value={imageQuality !== null ? [imageQuality] : [75]}
+                        onValueChange={([v]) => setImageQuality(v)}
                         />
-                        <Button
-                            variant="link"
-                            size="sm"
-                            className="p-0 h-auto text-xs"
-                            onClick={() => setImageQuality(null)}
-                        >
-                            {t("tools.compress.resetToAutoQuality")}
-                        </Button>
-                        <p className="text-xs text-muted-foreground">
-                        {t("tools.compress.imageQualityDesc")}
-                        </p>
+                        <p className="text-xs text-muted-foreground">{t("tools.compress.imageQualityDesc")}</p>
                     </div>
                 </div>
 
                 <div className="space-y-4">
-                    <h3 className="text-base font-medium">
-                        {t("tools.compress.advancedOptions")}
-                    </h3>
-                     <div className="flex items-center space-x-2">
+                    <h3 className="text-base font-medium">{t("tools.compress.advancedOptions")}</h3>
+                    <div className="flex items-center space-x-2">
                         <Checkbox
                         id="remove-duplicates"
                         checked={removeDuplicates}
-                        onCheckedChange={(checked: boolean | "indeterminate") =>
-                            setRemoveDuplicates(checked === true)
-                        }
+                        onCheckedChange={(c) => setRemoveDuplicates(c === true)}
                         />
-                        <Label htmlFor="remove-duplicates" className="font-normal">
-                        {t("tools.compress.removeDuplicates")}
-                        </Label>
+                        <Label htmlFor="remove-duplicates">{t("tools.compress.removeDuplicates")}</Label>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                        {t("tools.compress.removeDuplicatesDesc")}
-                    </p>
-                    {/*
-                    // Placeholders for options not in current backend endpoint:
-                    <div className="flex items-center space-x-2 opacity-50">
-                        <Checkbox id="remove-bookmarks" disabled />
-                        <Label htmlFor="remove-bookmarks" className="font-normal">
-                        {t("tools.compress.removeBookmarks")} (Not available)
-                        </Label>
+                    <p className="text-xs text-muted-foreground">{t("tools.compress.removeDuplicatesDesc")}</p>
+
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                        id="remove-images"
+                        checked={removeImages}
+                        onCheckedChange={(c) => setRemoveImages(c === true)}
+                        />
+                        <Label htmlFor="remove-images">{t("Odstrániť všetky obrázky")}</Label>
                     </div>
-                    */}
+                    <p className="text-xs text-muted-foreground">{t("Odstráni všetky obrázky")}</p>
                 </div>
             </div>
 
