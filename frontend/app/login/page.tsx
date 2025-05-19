@@ -151,16 +151,6 @@ export default function AuthPage() {
                       <Label htmlFor="login-password">
                         {t("auth.password")}
                       </Label>
-                      <a
-                        href="#"
-                        className="text-sm text-primary hover:underline"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            alert("Forgot password functionality not yet implemented.");
-                        }}
-                      >
-                        {t("auth.forgotPassword")}
-                      </a>
                     </div>
                     <Input
                       id="login-password"

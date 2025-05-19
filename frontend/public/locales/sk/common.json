@@ -417,26 +417,11 @@
     "email": "Email",
     "emailPlaceholder": "meno@priklad.sk",
     "password": "Heslo",
-    "forgotPassword": "Zabudli ste heslo?",
     "loggingIn": "Prihlasovanie...",
     "name": "Meno",
     "namePlaceholder": "Ján Novák",
     "createAccount": "Vytvoriť účet",
     "creatingAccount": "Vytváranie účtu..."
-  },
-  "files":{
-    "title": "Moje PDF súbory",
-    "upload": "Nahrať PDF",
-    "deleteSelected": "Odstrániť vybrané ({{count}})",
-    "noFiles": "Nenašli sa žiadne PDF súbory. Skúste nejaké nahrať.",
-    "downloading": "Sťahovanie {{fileName}}...",
-    "confirmDelete": "Naozaj chcete odstrániť {{fileName}}?",
-    "deleted": "{{fileName}} odstránený.",
-    "noFilesSelected": "Nie sú vybrané žiadne súbory na odstránenie.",
-    "confirmDeleteSelected": "Naozaj chcete odstrániť {{count}} vybraných súborov?",
-    "selectedDeleted": "{{count}} súborov odstránených.",
-    "filesUploaded": "{{count}} súbor(ov) úspešne nahraných (lokálne).",
-    "loadingFiles": "Načítavajú sa súbory..."
   },
   "pdfCard": {
     "selectFile": "Vybrať {{fileName}}",
@@ -459,70 +444,6 @@
       "exportToPng": "Exportovať do PNG",
       "exportToJpg": "Exportovať do JPG",
       "multiplePagesSheet": "Viac strán na list"
-    }
-  },
-  "history": {
-    "title": "História použitia",
-    "subtitle": "Zobrazte a spravujte históriu manipulácie s PDF",
-    "exportCsv": "Exportovať CSV",
-    "clearHistory": "Vymazať históriu",
-    "activityLog": "Záznam aktivít",
-    "activityLogDesc": "Vaše nedávne aktivity manipulácie s PDF",
-    "operationId": "ID operácie",
-    "action": "Akcia",
-    "dateTime": "Dátum a čas",
-    "location": "Lokalita",
-    "files": "Súbory",
-    "actions": "Akcie",
-    "viewDetails": "Zobraziť detaily",
-    "downloadResult": "Stiahnuť výsledok",
-    "deleteRecord": "Vymazať záznam",
-    "showing": "Zobrazuje sa",
-    "to": "až",
-    "of": "z",
-    "entries": "záznamov",
-    "page": "Strana"
-  },
-  "docs": {
-    "title": "Dokumentácia",
-    "userManual": "Používateľská príručka",
-    "userManualDesc": "Naučte sa efektívne používať naše nástroje na manipuláciu s PDF",
-    "apiDocs": "API dokumentácia",
-    "apiDocsDesc": "Technická dokumentácia pre integráciu s našim PDF API",
-    "userGuide": "Používateľská príručka PDF Manipulátora",
-    "exportAsPdf": "Exportovať ako PDF",
-    "gettingStarted": "Začíname",
-    "tools": "Nástroje",
-    "faq": "Často kladené otázky",
-    "welcome": "Vitajte v PDF Manipulátore",
-    "welcomeDesc": "PDF Manipulátor je výkonná webová aplikácia, ktorá vám umožňuje vykonávať rôzne operácie s PDF súbormi. Táto príručka vám pomôže začať s aplikáciou a využiť jej funkcie naplno.",
-    "quickStart": "Rýchly štart",
-    "quickStartSteps": {
-      "step1": "Nahrajte PDF súbor pomocou oblasti pre pretiahnutie a pustenie alebo prehliadača súborov na nástenke.",
-      "step2": "Vyberte operáciu, ktorú chcete vykonať, z dostupných nástrojov.",
-      "step3": "Nakonfigurujte nastavenia operácie podľa potreby.",
-      "step4": "Kliknite na tlačidlo \"Spracovať\" pre vykonanie operácie.",
-      "step5": "Stiahnite si výsledný PDF súbor."
-    },
-    "accountManagement": "Správa účtu",
-    "accountManagementDesc": "Pre prístup ku všetkým funkciám PDF Manipulátora si musíte vytvoriť účet. Po prihlásení môžete:",
-    "accountFeatures": {
-      "feature1": "Ukladať PDF súbory pre budúce použitie",
-      "feature2": "Pristupovať k histórii operácií",
-      "feature3": "Generovať API kľúče pre programový prístup",
-      "feature4": "Prispôsobiť nastavenia aplikácie"
-    },
-    "faqQuestions": {
-      "q1": "Sú moje údaje bezpečné?",
-      "a1": "Áno, všetky nahrané súbory sú šifrované a automaticky odstránené po spracovaní, pokiaľ sa nerozhodnete ich uložiť do svojho účtu.",
-      "q2": "Aké sú limity veľkosti súborov?",
-      "a2": "Bezplatné účty môžu nahrávať súbory do 10MB. Prémiové účty môžu nahrávať súbory do 100MB.",
-      "q3": "Môžem používať aplikáciu offline?",
-      "a3": "Nie, PDF Manipulátor je webová aplikácia a vyžaduje pripojenie na internet.",
-      "q4": "Ako môžem nahlásiť problémy alebo požiadať o funkcie?",
-      "a4": "Môžete kontaktovať náš tím podpory cez sekciu \"Pomoc\" alebo nám poslať email na support@pdfmanipulator.com.",
-      "q5": "Je k dispozícii API?",
-      "a5": "Áno, ponúkame RESTful API pre programový prístup ku všetkým funkciám manipulácie s PDF. Pozrite si API dokumentáciu pre detaily."
     }
   },
   "api": {
