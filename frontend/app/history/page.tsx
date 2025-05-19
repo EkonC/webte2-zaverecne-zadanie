@@ -82,12 +82,8 @@ export default function HistoryPage() {
       toast.error(t("errors.unauthenticated", "Authentication required."));
       return;
     }
-
-    if (!window.confirm(t("history.confirmClear", "Are you sure you want to clear all history records? This action cannot be undone."))) {
-      return;
-    }
-
     setIsDeleting(true);
+
     try {
       const response = await fetch(`${API_URL}/history/delete`, {
         method: "DELETE",
