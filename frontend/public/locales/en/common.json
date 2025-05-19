@@ -36,7 +36,7 @@
     "title": "Upload your PDF file",
     "subtitle": "Drag and drop your PDF file here, or click to browse",
     "browseFiles": "Browse files",
-    "upload": "Upload",
+    "continue": "Continue",
     "uploading": "Uploading...",
     "selectedFile": "Selected file:",
     "mb": "MB",
