@@ -164,7 +164,7 @@ export function PdfCompressTool() {
                   max={100}
                   step={5}
                   value={[imageQuality]}
-                  onValueChange={(value) => setImageQuality(value[0])}
+                  onValueChange={([v]: number[]) => setImageQuality(v)}
                 />
                 <p className="text-xs text-muted-foreground">
                   {t("tools.compress.imageQualityDesc")}
@@ -178,8 +178,8 @@ export function PdfCompressTool() {
                     <Checkbox
                       id="remove-bookmarks"
                       checked={removeBookmarks}
-                      onCheckedChange={(checked) =>
-                        setRemoveBookmarks(checked as boolean)
+                      onCheckedChange={(checked: boolean | "indeterminate") =>
+                        setRemoveAnnotations(checked === true)
                       }
                     />
                     <Label htmlFor="remove-bookmarks">
@@ -190,8 +190,8 @@ export function PdfCompressTool() {
                     <Checkbox
                       id="remove-annotations"
                       checked={removeAnnotations}
-                      onCheckedChange={(checked) =>
-                        setRemoveAnnotations(checked as boolean)
+                      onCheckedChange={(checked: boolean | "indeterminate") =>
+                        setRemoveAnnotations(checked === true)
                       }
                     />
                     <Label htmlFor="remove-annotations">
@@ -202,8 +202,8 @@ export function PdfCompressTool() {
                     <Checkbox
                       id="remove-metadata"
                       checked={removeMetadata}
-                      onCheckedChange={(checked) =>
-                        setRemoveMetadata(checked as boolean)
+                      onCheckedChange={(checked: boolean | "indeterminate") =>
+                        setRemoveAnnotations(checked === true)
                       }
                     />
                     <Label htmlFor="remove-metadata">

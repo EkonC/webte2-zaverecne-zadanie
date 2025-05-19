@@ -30,6 +30,19 @@ export function PdfNUpTool() {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [resultPages, setResultPages] = useState<number>(0);
 
+  // map "pages per sheet" → [cols, rows]
+  const layoutMap: Record<string, [number, number]> = {
+    "2":  [2, 1],
+    "4":  [2, 2],
+    "6":  [3, 2],
+    "8":  [4, 2],
+    "9":  [3, 3],
+    "16": [4, 4],
+  };
+
+  // derive cols/rows so you can post them
+  const [cols, rows] = layoutMap[pagesPerSheet] || [2, 2];
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
@@ -40,21 +53,31 @@ export function PdfNUpTool() {
     }
   };
 
-  const handleProcess = () => {
+  async function handleProcess() {
     if (!file) return;
-
     setIsProcessing(true);
 
-    // Simulate processing
-    setTimeout(() => {
-      setIsProcessing(false);
-      setIsComplete(true);
+    const form = new FormData();
+    form.append("file", file);
+    form.append("cols", String(cols));
+    form.append("rows", String(rows));
 
-      // Calculate result pages based on pages per sheet
-      const pagesPerSheetNum = Number.parseInt(pagesPerSheet);
-      setResultPages(Math.ceil(totalPages / pagesPerSheetNum));
-    }, 2000);
-  };
+    const res = await fetch("/api/pdf/n-up", {
+      method: "POST",
+      body: form,
+    });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+
+    // trigger download
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "nup.pdf";
+    a.click();
+
+    setIsProcessing(false);
+    setIsComplete(true);
+  }
 
   return (
     <div className="space-y-6">
