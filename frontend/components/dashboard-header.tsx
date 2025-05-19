@@ -54,12 +54,6 @@ export function DashboardHeader() {
                   {t("nav.dashboard")}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/files">
-                  <History className="mr-2 h-4 w-4" />
-                  {t("nav.files")}
-                </Link>
-              </DropdownMenuItem>
               {isAdmin && (
                 <DropdownMenuItem asChild>
                   <Link href="/history">
@@ -69,7 +63,7 @@ export function DashboardHeader() {
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem asChild>
-                <Link href="/docs">
+                <Link href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"} target="_blank">
                   <BookOpen className="mr-2 h-4 w-4" />
                   {t("nav.documentation")}
                 </Link>
@@ -93,14 +87,6 @@ export function DashboardHeader() {
             >
               {t("nav.dashboard")}
             </Link>
-            <Link
-              href="/files"
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive("/files") ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {t("nav.files")}
-            </Link>
             {isAdmin && (
               <Link
                 href="/history"
@@ -112,10 +98,9 @@ export function DashboardHeader() {
               </Link>
             )}
             <Link
-              href="/docs"
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive("/docs") ? "text-primary" : "text-muted-foreground"
-              }`}
+              href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"}
+              className={`text-sm font-medium transition-colors hover:text-primary text-muted-foreground`}
+              target="_blank"
             >
               {t("nav.documentation")}
             </Link>
@@ -134,8 +119,6 @@ export function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
-              <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 {t("nav.logout")}

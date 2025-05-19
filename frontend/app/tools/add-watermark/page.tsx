@@ -8,13 +8,13 @@ export default function AddWatermarkPage() {
   const { t } = useTranslation("common");
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex max-h-screen flex-col">
       <main className="flex-1 container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-2">
           {t("tools.addWatermark.title")}
         </h1>
         <p className="text-muted-foreground mb-8">
-          {t("tools.addWatermark.pageSubtitle")}
+          {t("tools.addWatermark.description")}
         </p>
 
         <PdfAddWatermarkTool />
