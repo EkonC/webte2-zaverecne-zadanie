@@ -119,8 +119,6 @@ export function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
-              <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 {t("nav.logout")}
