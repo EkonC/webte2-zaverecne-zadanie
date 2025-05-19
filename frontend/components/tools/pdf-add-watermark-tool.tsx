@@ -28,7 +28,6 @@ export function PdfAddWatermarkTool() {
   const [currentFile, setCurrentFile] = useState<File | null>(null);
   const [watermarkType, setWatermarkType] = useState<string>("text");
   const [watermarkText, setWatermarkText] = useState<string>("");
-  const [watermarkImage, setWatermarkImage] = useState<File | null>(null);
   const [position, setPosition] = useState<string>("center");
   const [opacity, setOpacity] = useState<number>(30); // Frontend 0-100
   const [rotation, setRotation] = useState<number>(45);
@@ -59,7 +58,7 @@ export function PdfAddWatermarkTool() {
     }
     // This effect runs when any of these dependencies change,
     // ensuring that any previous "completed" state is invalidated.
-  }, [currentFile, watermarkType, watermarkText, watermarkImage, position, opacity, rotation, fontSize, color]);
+  }, [currentFile, watermarkType, watermarkText, position, opacity, rotation, fontSize, color]);
 
   // Cleanup for downloadUrl when component unmounts or downloadUrl itself is replaced
   useEffect(() => {
@@ -84,14 +83,6 @@ export function PdfAddWatermarkTool() {
         setCurrentFile(null);
         if (e.target) e.target.value = ""; // Reset file input
       }
-    }
-  };
-
-  const handleWatermarkImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setWatermarkImage(e.target.files[0]);
     }
   };
 
@@ -127,26 +118,6 @@ export function PdfAddWatermarkTool() {
       formData.append("rotation", String(rotation));
       formData.append("position", position);
 
-    } else if (watermarkType === "image") {
-      // This part is a placeholder for when you implement image watermarking backend
-      if (!watermarkImage) {
-        toast.error(t("tools.addWatermark.imageRequiredError"));
-        setIsProcessing(false);
-        return;
-      }
-      // apiEndpoint = `${FASTAPI_BASE_URL}/add-image-watermark`; // Example
-      // formData.append("image_file", watermarkImage);
-      // // Add other relevant image parameters for backend:
-      // formData.append("opacity", String(opacity / 100));
-      // formData.append("rotation", String(rotation));
-      // formData.append("position", position);
-      toast.info(t("tools.addWatermark.imageWatermarkNotImplemented"));
-      setIsProcessing(false);
-      return; // Stop here for now as image endpoint is not defined
-    } else {
-      toast.error("Invalid watermark type.");
-      setIsProcessing(false);
-      return;
     }
 
     const headers: HeadersInit = {};
@@ -277,10 +248,6 @@ export function PdfAddWatermarkTool() {
                     <Type className="h-4 w-4" />
                     <span>{t("tools.addWatermark.textWatermark")}</span>
                   </TabsTrigger>
-                  <TabsTrigger value="image" className="flex items-center gap-1.5">
-                    <ImageIcon className="h-4 w-4" />
-                    <span>{t("tools.addWatermark.imageWatermark")}</span>
-                  </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="text" className="space-y-4">
@@ -304,19 +271,6 @@ export function PdfAddWatermarkTool() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="image" className="space-y-4">
-                  {/* Image Watermark Inputs */}
-                  <div className="space-y-2">
-                    <Label htmlFor="watermark-image">{t("tools.addWatermark.uploadWatermarkImage")}</Label>
-                    <Input id="watermark-image" type="file" accept="image/*" onChange={handleWatermarkImageChange} />
-                    {watermarkImage && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {watermarkImage.name} ({(watermarkImage.size / 1024).toFixed(2)} KB)
-                      </p>
-                    )}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{t("tools.addWatermark.imageSettingsNote")}</p>
-                </TabsContent>
               </Tabs>
 
               {/* Common settings for both watermark types */}
@@ -364,8 +318,7 @@ export function PdfAddWatermarkTool() {
                 disabled={
                   isProcessing ||
                   !currentFile ||
-                  (watermarkType === "text" && !watermarkText) ||
-                  (watermarkType === "image" && !watermarkImage) // This check is for future image implementation
+                  (watermarkType === "text" && !watermarkText)
                 }
                 className="w-full"
                 size="lg"

@@ -25,16 +25,11 @@ export function PdfExportPngTool() {
   const { user } = useAuth();
 
   const [currentFile, setCurrentFile] = useState<File | null>(null);
-  const [pageRange, setPageRange] = useState<string>(""); // Not used by backend
   const [dpi, setDpi] = useState<number>(300);
-  const [transparent, setTransparent] = useState<boolean>(false); // Not used by backend
-  const [colorMode, setColorMode] = useState<string>("color"); // Not used by backend
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [totalPages, setTotalPages] = useState<number>(0);
-  const [convertedImagesCount, setConvertedImagesCount] = useState<number>(0); // For display
 
   useEffect(() => {
     if (sharedFile) {
@@ -44,26 +39,17 @@ export function PdfExportPngTool() {
           URL.revokeObjectURL(downloadUrl); 
           setDownloadUrl(null);             
       }
-      setPageRange("");
       setDpi(300);
-      setTransparent(false);
-      setColorMode("color");
-      setConvertedImagesCount(0);
-      setTotalPages(0);
     }
   }, [sharedFile, router, t]);
 
   useEffect(() => {
-    let needsReset = false;
-
-    if (downloadUrl) { 
-        URL.revokeObjectURL(downloadUrl);
-        setDownloadUrl(null);
+    if (downloadUrl) {
+      URL.revokeObjectURL(downloadUrl);
+      setDownloadUrl(null);
     }
     setIsComplete(false);
-    setConvertedImagesCount(0);
-
-  }, [currentFile, pageRange, dpi, transparent, colorMode]);
+  }, [currentFile, dpi]);
 
   useEffect(() => {
     const currentUrl = downloadUrl;
@@ -78,12 +64,11 @@ export function PdfExportPngTool() {
 
     setIsProcessing(true); setIsComplete(false);
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
-    setDownloadUrl(null); setConvertedImagesCount(0);
+    setDownloadUrl(null);
 
     const formData = new FormData();
     formData.append("file", currentFile);
     formData.append("dpi", String(dpi));
-    // pageRange, transparent, colorMode are NOT sent as backend doesn't support them
 
     const headers: HeadersInit = {};
     if (user && user.token) {
@@ -100,13 +85,11 @@ export function PdfExportPngTool() {
       if (!response.ok) { /* ... error handling ... */ throw new Error(`HTTP error! status: ${response.status}`); }
 
       const blob = await response.blob();
-      if (blob.type !== "application/zip") { /* ... error handling for non-zip ... */ throw new Error("Invalid response type, expected ZIP."); }
-
+      if (blob.type !== "application/zip") {
+        throw new Error("Invalid response type, expected ZIP.");
+      }
       const newUrl = URL.createObjectURL(blob);
       setDownloadUrl(newUrl);
-      // We don't know the exact number of images from this endpoint response,
-      // so we'll estimate based on totalPages or pageRange if it were used.
-      setConvertedImagesCount(totalPages); // Or parse pageRange if it was sent & backend supported it
       setIsComplete(true);
       toast.success(t("tools.exportPng.exportComplete"));
 
@@ -118,22 +101,19 @@ export function PdfExportPngTool() {
     }
   };
 
-  const handleResetAndUploadNew = () => { /* ... same as other tools ... */
+  const handleResetAndUploadNew = () => {
     setCurrentFile(null); setSharedFile(null); setToolTarget(null);
     if (downloadUrl) URL.revokeObjectURL(downloadUrl);
     setDownloadUrl(null); setIsComplete(false);
-    setPageRange(""); setDpi(300); setTransparent(false); setColorMode("color");
-    setTotalPages(0); setConvertedImagesCount(0);
+    setDpi(300);
     router.push("/");
   };
-
 
   const handleLocalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
           const selectedFile = e.target.files[0];
           if (selectedFile.type === "application/pdf") {
             setCurrentFile(selectedFile);
-            setTotalPages(Math.floor(Math.random() * 20) + 5);
             if (sharedFile) setSharedFile(null); // Clear context if local is chosen
           } else {
             toast.error(t("upload.errorMessage"));
@@ -187,54 +167,25 @@ export function PdfExportPngTool() {
                 <p className="text-sm font-medium truncate max-w-xs sm:max-w-md" title={currentFile?.name}>{currentFile?.name}</p>
                 <p className="text-xs text-muted-foreground">
                     {currentFile ? (currentFile.size / 1024 / 1024).toFixed(2) : "0.00"} MB
-                    {totalPages > 0 ? ` • ${totalPages} ${t("tools.common.pages")}` : ""}
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4"> {/* Column 1 */}
-                    <h3 className="text-base font-medium">{t("tools.exportPng.optionsTitle")}</h3>
-                    {/* DPI Slider */}
-                    <div className="space-y-2">
-                        <div className="flex justify-between items-center">
-                            <Label htmlFor="dpi-png">{t("tools.exportPng.resolutionLabel")}</Label>
-                            <span className="text-sm text-muted-foreground">{dpi} DPI</span>
-                        </div>
-                        <Slider id="dpi-png" value={[dpi]} min={72} max={600} step={12} onValueChange={([v]) => setDpi(v)} />
-                        <p className="text-xs text-muted-foreground">{t("tools.exportPng.resolutionDesc")}</p>
+            <div className="space-y-4">
+                <h3 className="text-base font-medium">{t("tools.exportPng.optionsTitle")}</h3>
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                        <Label htmlFor="dpi-png">{t("tools.exportPng.resolutionLabel")}</Label>
+                        <span className="text-sm text-muted-foreground">{dpi} DPI</span>
                     </div>
-
-                    {/* Page Range (UI only, not sent to current backend) */}
-                    <div className="space-y-2 opacity-70 group">
-                        <Label htmlFor="page-range-png">{t("tools.exportPng.pageRangeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
-                        <Input id="page-range-png" placeholder="e.g., 1-3, 5" value={pageRange} onChange={(e) => setPageRange(e.target.value)} />
-                        <p className="text-xs text-muted-foreground">{t("tools.exportPng.pageRangeDesc")}</p>
-                    </div>
-                </div>
-
-                <div className="space-y-4"> {/* Column 2 */}
-                    {/* Transparent Background (UI only) */}
-                     <div className="flex items-start space-x-2 pt-2 opacity-70 group">
-                        <Checkbox id="transparent-bg-png" checked={transparent} onCheckedChange={(c) => setTransparent(c as boolean)} />
-                        <div className="grid gap-1.5 leading-none">
-                            <Label htmlFor="transparent-bg-png">{t("tools.exportPng.transparentBackgroundLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
-                            <p className="text-xs text-muted-foreground">{t("tools.exportPng.transparentBackgroundDesc")}</p>
-                        </div>
-                    </div>
-
-                    {/* Color Mode (UI only) */}
-                    <div className="space-y-2 opacity-70 group">
-                        <Label>{t("tools.exportPng.colorModeLabel")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></Label>
-                        <RadioGroup value={colorMode} onValueChange={setColorMode} className="space-y-1">
-                            {/* Radio items */}
-                            {(["color", "grayscale", "blackwhite"] as const).map(mode => (
-                                <div key={mode} className="flex items-center space-x-2">
-                                    <RadioGroupItem value={mode} id={`cm-png-${mode}`} />
-                                    <Label htmlFor={`cm-png-${mode}`} className="font-normal">{t(`tools.exportPng.colorModes.${mode}`)}</Label>
-                                </div>
-                            ))}
-                        </RadioGroup>
-                    </div>
+                    <Slider
+                        id="dpi-png"
+                        value={[dpi]}
+                        min={72}
+                        max={600}
+                        step={12}
+                        onValueChange={([v]) => setDpi(v)}
+                    />
+                    <p className="text-xs text-muted-foreground">{t("tools.exportPng.resolutionDesc")}</p>
                 </div>
             </div>
 
@@ -253,7 +204,7 @@ export function PdfExportPngTool() {
                         <div>
                             <h3 className="text-base font-semibold text-green-700 dark:text-green-300">{t("tools.exportPng.exportCompleteTitle")}</h3>
                             <p className="text-xs text-green-600 dark:text-green-400">
-                                {t("tools.exportPng.exportCompleteDesc", { count: convertedImagesCount })}
+                                {t("tools.exportPng.exportCompleteDesc")}
                             </p>
                         </div>
                         <Button asChild className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto">
