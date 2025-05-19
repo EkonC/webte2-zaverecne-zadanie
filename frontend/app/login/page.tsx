@@ -41,8 +41,13 @@ export default function AuthPage() {
   const [registerName, setRegisterName] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const [registerPasswordConfirm, setRegisterPasswordConfirm] = useState("");
   const [registerError, setRegisterError] = useState<string | null>(null); // Form-specific error
   const [registerSuccess, setRegisterSuccess] = useState<string | null>(null); // Form-specific success
+
+  const passwordsMatch =
+  registerPassword.length >= 8 &&
+  registerPassword === registerPasswordConfirm;
 
   useEffect(() => {
     // If user is already authenticated (and initial check is done), redirect from login page
@@ -182,17 +187,6 @@ export default function AuthPage() {
                     <p className="text-sm text-green-500 text-center">{registerSuccess}</p>
                   )}
                   <div className="space-y-2">
-                    <Label htmlFor="register-name">{t("auth.name")}</Label>
-                    <Input
-                      id="register-name"
-                      placeholder={t("auth.namePlaceholder")}
-                      required
-                      value={registerName}
-                      onChange={(e) => setRegisterName(e.target.value)}
-                      disabled={isSubmitting}
-                    />
-                  </div>
-                  <div className="space-y-2">
                     <Label htmlFor="register-email">{t("auth.email")}</Label>
                     <Input
                       id="register-email"
@@ -217,6 +211,26 @@ export default function AuthPage() {
                       disabled={isSubmitting}
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="register-password-confirm">
+                      {t("auth.passwordConfirm")}
+                    </Label>
+                    <Input
+                      id="register-password-confirm"
+                      type="password"
+                      required
+                      value={registerPasswordConfirm}          // ← use its own state
+                      onChange={(e) => setRegisterPasswordConfirm(e.target.value)}
+                      disabled={isSubmitting}
+                    />
+                  </div>
+
+                  {/* Show error only after the user has typed something */}
+                  {registerPasswordConfirm && !passwordsMatch && (
+                    <p className="text-sm text-red-500">
+                      {t("auth.passwordsDontMatch")}
+                    </p>
+                  )}
                 </CardContent>
                 <CardFooter>
                   <Button type="submit" className="w-full" disabled={isSubmitting}>

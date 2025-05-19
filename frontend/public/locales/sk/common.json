@@ -421,7 +421,9 @@
     "name": "Meno",
     "namePlaceholder": "Ján Novák",
     "createAccount": "Vytvoriť účet",
-    "creatingAccount": "Vytváranie účtu..."
+    "creatingAccount": "Vytváranie účtu...",
+    "passwordConfirm": "Potvrdiť heslo",
+    "passwordsDontMatch": "Heslá sa nezhodujú"
   },
   "pdfCard": {
     "selectFile": "Vybrať {{fileName}}",

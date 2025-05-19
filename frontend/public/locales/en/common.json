@@ -421,7 +421,9 @@
     "name": "Name",
     "namePlaceholder": "John Doe",
     "createAccount": "Create account",
-    "creatingAccount": "Creating account..."
+    "creatingAccount": "Creating account...",
+    "passwordConfirm": "Confirm Password",
+    "passwordsDontMatch": "Passwords do not match"
   },
   "pdfCard": {
     "selectFile": "Select {{fileName}}",
