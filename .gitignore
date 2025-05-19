@@ -41,6 +41,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 frontend/next-env.d.ts
-/backend/test.db
-__pycache__
 __pycache__/
+
+# tests
+backend/test.db

@@ -1,6 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+
+from app.core.security import get_current_active_user
 from app.schemas.auth import UserCreate, Token, UserRead
 from app.services.auth_service import authenticate_user, create_user, create_tokens_for_user
 from app.api.dependencies import get_db
@@ -31,3 +33,15 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
             headers={"WWW-Authenticate": "Bearer"},
         )
     return create_tokens_for_user(user)
+
+@router.post(
+    "/refresh",
+    response_model=Token,
+    summary="Obnoví (nanovo vygeneruje) prístupový JWT token",
+)
+def refresh_access_token(current_user: User = Depends(get_current_active_user)):
+    """
+    Vyžaduje platný **access token** v hlavičke `Authorization: Bearer <token>`.
+    Vráti nový, časovo predĺžený token (rovnaký *payload*, nové `exp`).
+    """
+    return create_tokens_for_user(current_user)
