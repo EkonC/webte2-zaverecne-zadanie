@@ -81,22 +81,6 @@ export default function Home() {
           </h2>
           <FeatureGrid />
         </div>
-
-        <div className="mt-16">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-            <h2 className="text-2xl font-semibold">
-              {t("dashboard.recentFiles")}
-            </h2>
-            <Link href="/files" passHref legacyBehavior>
-              <Button variant="outline" size="sm" asChild>
-                <a>
-                  {t("dashboard.viewAllFiles")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </Link>
-          </div>
-        </div>
       </main>
     </div>
   );

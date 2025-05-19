@@ -63,7 +63,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const tokenType = localStorage.getItem("tokenType");
     if (token && tokenType) {
       setUser({ token, tokenType, role: extractRole(token) });
-      // TODO: Optionally, verify the token with a backend endpoint here
     }
     setIsLoadingAuth(false); // Initial check is complete
   }, []);

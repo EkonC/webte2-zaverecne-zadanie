@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Table,
@@ -11,54 +11,107 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  ChevronLeft,
-  ChevronRight,
-  MoreHorizontal,
-  Download,
-  Eye,
-  Trash2,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useAuth } from "./providers/auth-provider";
+import { toast } from "sonner"; // Or your preferred toast library
 
-// Sample data for demonstration
-const historyData = Array.from({ length: 10 }).map((_, i) => ({
-  id: `op-${i + 1000}`,
-  action: [
-    "Merge PDFs",
-    "Split PDF",
-    "Edit PDF",
-    "Convert to Images",
-    "Delete Pages",
-  ][Math.floor(Math.random() * 5)],
-  timestamp: new Date(
-    Date.now() - Math.floor(Math.random() * 10 * 24 * 60 * 60 * 1000)
-  ).toISOString(),
-  location: [
-    "New York, US",
-    "London, UK",
-    "Bratislava, SK",
-    "Berlin, DE",
-    "Paris, FR",
-  ][Math.floor(Math.random() * 5)],
-  fileCount: Math.floor(Math.random() * 5) + 1,
-}));
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export function UsageHistoryTable() {
+// Define the structure of a history item based on your backend's HistoryRead schema
+interface HistoryItem {
+  id: number;
+  user_email: string;
+  action: string;
+  source: string | null;
+  city: string | null;
+  country: string | null;
+  timestamp: string; // ISO date string
+}
+
+// The component now accepts a 'key' prop which, when changed,
+// will cause React to remount it, thus triggering useEffect for a fresh fetch.
+// This is useful for the parent component to force a refresh.
+export function UsageHistoryTable({ key: _key }: { key?: number }) {
   const { t } = useTranslation("common");
-  const [page, setPage] = useState(1);
-  const pageSize = 5;
-  const totalPages = Math.ceil(historyData.length / pageSize);
+  const { user, isLoadingAuth } = useAuth();
 
-  const paginatedData = historyData.slice(
-    (page - 1) * pageSize,
-    page * pageSize
-  );
+  const [historyItems, setHistoryItems] = useState<HistoryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10; // Items per page
+  const [hasNextPage, setHasNextPage] = useState(false);
+
+  const fetchHistory = useCallback(async () => {
+    if (!user?.token || isLoadingAuth) {
+      // If auth is still loading, or no token, don't fetch yet.
+      // If no token after auth load, it might be handled by parent or useRequireAdmin
+      if (!isLoadingAuth && !user?.token) {
+         setError(t("errors.unauthenticated", "Authentication required to view history."));
+         setIsLoading(false);
+      }
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    const offset = (currentPage - 1) * pageSize;
+
+    try {
+      const response = await fetch(
+        `${API_URL}/history/?limit=${pageSize}&offset=${offset}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.detail || t("history.errors.fetchFailed", "Failed to fetch history.")
+        );
+      }
+
+      const data: HistoryItem[] = await response.json();
+      setHistoryItems(data);
+      setHasNextPage(data.length === pageSize); // If we got a full page, there might be more
+    } catch (err: any) {
+      setError(err.message || t("errors.unexpected", "An unexpected error occurred."));
+      setHistoryItems([]); // Clear data on error
+      toast.error(err.message || t("errors.unexpected", "An unexpected error occurred."));
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentPage, pageSize, user?.token, isLoadingAuth, t]);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]); // `fetchHistory` includes all its dependencies
+
+  if (historyItems.length === 0 && currentPage === 1) {
+    return (
+      <div className="text-center py-10 text-muted-foreground">
+        {t("history.noEntries", "No history entries found.")}
+      </div>
+    );
+  }
+
+
+  const formatLocation = (city: string | null, country: string | null) => {
+    if (city && country) return `${city}, ${country}`;
+    if (city) return city;
+    if (country) return country;
+    return t("common.notAvailable", "N/A");
+  };
+
+  const startIndex = (currentPage - 1) * pageSize + 1;
+  const endIndex = (currentPage - 1) * pageSize + historyItems.length;
 
   return (
     <div>
@@ -68,42 +121,23 @@ export function UsageHistoryTable() {
             <TableHead>{t("history.operationId")}</TableHead>
             <TableHead>{t("history.action")}</TableHead>
             <TableHead>{t("history.dateTime")}</TableHead>
+            <TableHead>{t("history.author")}</TableHead>
+            <TableHead>{t("history.provider")}</TableHead>
             <TableHead>{t("history.location")}</TableHead>
-            <TableHead>{t("history.files")}</TableHead>
-            <TableHead className="text-right">{t("history.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedData.map((item) => (
+          {historyItems.map((item) => (
             <TableRow key={item.id}>
               <TableCell className="font-medium">{item.id}</TableCell>
               <TableCell>{item.action}</TableCell>
-              <TableCell>{new Date(item.timestamp).toLocaleString()}</TableCell>
-              <TableCell>{item.location}</TableCell>
-              <TableCell>{item.fileCount}</TableCell>
-              <TableCell className="text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">{t("history.actions")}</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Eye className="mr-2 h-4 w-4" />
-                      <span>{t("history.viewDetails")}</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      <Download className="mr-2 h-4 w-4" />
-                      <span>{t("history.downloadResult")}</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer text-destructive">
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      <span>{t("history.deleteRecord")}</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              <TableCell>
+                {new Date(item.timestamp).toLocaleString()}
+              </TableCell>
+              <TableCell>{item.user_email}</TableCell>
+              <TableCell>{item.source || t("common.notAvailable", "N/A")}</TableCell>
+              <TableCell>
+                {formatLocation(item.city, item.country)}
               </TableCell>
             </TableRow>
           ))}
@@ -112,28 +146,29 @@ export function UsageHistoryTable() {
 
       <div className="flex items-center justify-between mt-4">
         <div className="text-sm text-muted-foreground">
-          {t("history.showing")} {(page - 1) * pageSize + 1} {t("history.to")}{" "}
-          {Math.min(page * pageSize, historyData.length)} {t("history.of")}{" "}
-          {historyData.length} {t("history.entries")}
+          {historyItems.length > 0
+            ? t("history.showingRange", "Showing {{start}} to {{end}} entries", { start: startIndex, end: endIndex})
+            : t("history.noEntriesFoundForPage", "No entries on this page.")
+          }
         </div>
 
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setPage(page - 1)}
-            disabled={page === 1}
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={currentPage === 1 || isLoading}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-sm">
-            {t("history.page")} {page} {t("history.of")} {totalPages}
+            {t("history.page")} {currentPage}
           </span>
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setPage(page + 1)}
-            disabled={page === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={!hasNextPage || isLoading}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

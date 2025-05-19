@@ -448,6 +448,36 @@
       "multiplePagesSheet": "Viac strán na list"
     }
   },
+  "history": {
+    "title": "História používania",
+    "subtitle": "Prezerajte a spravujte záznamy o aktivite v aplikácii.",
+    "exportCsv": "Exportovať CSV",
+    "clearHistory": "Vymazať históriu",
+    "activityLog": "Záznam aktivity",
+    "activityLogDesc": "Podrobný záznam všetkých významných akcií vykonaných v aplikácii.",
+    "confirmClear": "Naozaj chcete vymazať všetky záznamy histórie? Táto akcia je nevratná.",
+    "clearSuccess": "História bola úspešne vymazaná.",
+    "exportSuccess": "História bola úspešne exportovaná. Skontrolujte si stiahnuté súbory.",
+    "operationId": "ID Operácie",
+    "action": "Akcia",
+    "dateTime": "Dátum a čas",
+    "author": "Autor (Používateľ)",
+    "provider": "Poskytovateľ/Zdroj",
+    "location": "Lokalita",
+    "page": "Strana",
+    "of": "z",
+    "showing": "Zobrazuje sa",
+    "to": "až",
+    "entries": "záznamov",
+    "noEntries": "Nenašli sa žiadne záznamy v histórii.",
+    "noEntriesFoundForPage": "Pre túto stránku sa nenašli žiadne záznamy.",
+    "showingRange": "Zobrazuje sa {{start}} až {{end}} záznamov",
+    "errors": {
+      "exportFailed": "Nepodarilo sa exportovať CSV. Skúste to prosím znova.",
+      "clearFailed": "Nepodarilo sa vymazať históriu. Skúste to prosím znova.",
+      "fetchFailed": "Nepodarilo sa načítať údaje o histórii. Skúste to prosím znova."
+    }
+  },
   "api": {
     "title": "PDF Manipulátor API",
     "version": "Verzia 1.0.0 • OpenAPI 3.0",
