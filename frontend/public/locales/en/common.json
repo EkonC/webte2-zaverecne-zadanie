@@ -40,9 +40,29 @@
     "uploading": "Uploading...",
     "selectedFile": "Selected file:",
     "mb": "MB",
-    "changeFile": "Change file"
+    "changeFile": "Change file",
+    "subtitlePdfOnly": "Only PDF files are supported.",
+    "fileTooLarge": "File size exceeds the maximum limit of {{size}} MB.",
+    "fileNotPdf": "The uploaded file is not a valid PDF.",
+    "fileSelected": "File selected",
+    "selectToolPrompt": "Select a tool to proceed with your PDF file."
   },
   "tools": {
+    "titles":{
+      "rotate": "Rotate PDF",
+      "merge": "Merge PDFs",
+      "split": "Split PDF",
+      "delete": "Delete Pages",
+      "extractImages": "Extract Images",
+      "extractText": "Extract Text",
+      "compress": "Compress PDF",
+      "addWatermark": "Add Watermark",
+      "exportPng": "Export to PNG",
+      "exportJpg": "Export to JPG",
+      "nUp": "Multiple Pages Per Sheet",
+      "deletePages": "Delete Pages",
+      "rotatePages": "Rotate Pages"
+    },
     "merge": {
       "title": "Merge PDFs",
       "description": "Combine multiple PDF files into a single document",

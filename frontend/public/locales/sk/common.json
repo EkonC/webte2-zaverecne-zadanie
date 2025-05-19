@@ -31,6 +31,7 @@
     "viewAllFiles": "Zobraziť všetky súbory",
     "noRecentFiles": "Žiadne nedávne súbory na zobrazenie. Nahrajte nejaké, aby sa tu zobrazili!",
     "loadingRecentFiles": "Načítavajú sa nedávne súbory..."
+    
   },
   "upload": {
     "title": "Nahrajte svoj PDF súbor",
@@ -40,9 +41,30 @@
     "uploading": "Nahrávanie...",
     "selectedFile": "Vybraný súbor:",
     "mb": "MB",
-    "changeFile": "Zmeniť súbor"
+    "changeFile": "Zmeniť súbor",
+    "subtitlePdfOnly": "Naše nástroje sú určené len pre PDF súbory.",
+    "fileTooLarge": "Súbor je príliš veľký. Maximálna veľkosť súboru je {{size}} MB.",
+    "fileNotPdf": "Súbor nie je PDF. Prosím nahrajte platný PDF súbor.",
+    "fileUploadError": "Nastala chyba pri nahrávaní súboru. Skúste to prosím znova.",
+    "fileSelected": "Vybraný súbor",
+    "selectToolPrompt": "Vyberte nástroj na manipuláciu s PDF"
   },
   "tools": {
+    "titles":{
+      "rotate": "Otočiť PDF",
+      "merge": "Zlúčiť PDF",
+      "split": "Rozdeliť PDF",
+      "delete": "Odstrániť strany",
+      "extractImages": "Extrahovať obrázky",
+      "extractText": "Extrahovať text",
+      "compress": "Zmenšiť veľkosť súboru",
+      "addWatermark": "Pridať vodoznak",
+      "exportPng": "Exportovať do PNG",
+      "exportJpg": "Exportovať do JPG",
+      "nUp": "Viac strán na jeden list",
+      "rotatePages": "Otočiť strany",
+      "deletePages": "Odstrániť strany"
+    },
     "merge": {
       "title": "Zlúčiť PDF",
       "description": "Kombinujte viacero PDF súborov do jedného dokumentu",
