@@ -96,10 +96,6 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-          <RecentFilesGrid
-            files={recentFilesData}
-            isLoading={isLoadingRecentFiles}
-          />
         </div>
       </main>
     </div>
