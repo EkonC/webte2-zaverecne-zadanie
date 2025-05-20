@@ -243,7 +243,7 @@ export function PdfAddWatermarkTool() {
                 {t("tools.addWatermark.watermarkOptions")}
               </h3>
               <Tabs defaultValue="text" onValueChange={(value) => setWatermarkType(value)}>
-                <TabsList className="grid grid-cols-2 mb-4">
+                <TabsList className="grid grid-cols-1 mb-4">
                   <TabsTrigger value="text" className="flex items-center gap-1.5">
                     <Type className="h-4 w-4" />
                     <span>{t("tools.addWatermark.textWatermark")}</span>

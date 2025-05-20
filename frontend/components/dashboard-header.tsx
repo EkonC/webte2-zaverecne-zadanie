@@ -68,6 +68,12 @@ export function DashboardHeader() {
                   {t("nav.documentation")}
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/guide">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  {t("nav.guide")}
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
@@ -103,6 +109,14 @@ export function DashboardHeader() {
               target="_blank"
             >
               {t("nav.documentation")}
+            </Link>
+            <Link
+              href="/guide"
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive("/guide") ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {t("nav.guide")}
             </Link>
           </nav>
         </div>
