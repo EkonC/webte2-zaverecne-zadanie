@@ -104,13 +104,6 @@ export function DashboardHeader() {
               </Link>
             )}
             <Link
-              href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"}
-              className={`text-sm font-medium transition-colors hover:text-primary text-muted-foreground`}
-              target="_blank"
-            >
-              {t("nav.documentation")}
-            </Link>
-            <Link
               href="/guide"
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive("/guide") ? "text-primary" : "text-muted-foreground"
