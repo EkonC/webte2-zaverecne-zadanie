@@ -209,45 +209,38 @@ export function UserManual() {
             </div>
           </div>
         </div>
-        
-        <div className="space-y-4 mt-4">
-          <h3 className="text-lg font-medium">{t("guide.api")}</h3>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q1")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a1")}</p>
-            </div>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q2")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a2")}</p>
-            </div>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q3")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a3")}</p>
-            </div>
+        <div className="space-y-4 mt-8">
+          <h3 className="text-lg font-medium">
+            {t("guide.apiUsageTitle")}
+          </h3>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q4")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a4")}</p>
-            </div>
+          <p className="text-sm">
+            {t("guide.apiUsageDesc")}{" "}
+            <a
+              href="http://localhost:8000/docs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              {t("guide.apiSwaggerLink")}
+            </a>.
+          </p>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q5")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a5")}</p>
-            </div>
-          </div>
+          <p className="text-sm">
+            <strong>{t("guide.apiBaseUrl")}:</strong>{" "}
+            <code className="bg-muted px-1 rounded">
+              https://node32.webte.fei.stuba.sk/api/v1
+            </code>
+          </p>
+
+          <p className="text-sm">{t("guide.apiExample")}</p>
+          <pre className="bg-muted p-3 rounded text-xs overflow-x-auto">
+{`curl -X POST -H "Authorization: Bearer <YOUR_TOKEN>" \\
+  -F "files=@first.pdf" -F "files=@second.pdf" \\
+  http://localhost:8000/pdf/merge-pdf -o merged.pdf`}
+          </pre>
         </div>
         
       </div>

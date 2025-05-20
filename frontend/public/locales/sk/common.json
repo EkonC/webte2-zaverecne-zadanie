@@ -251,6 +251,7 @@
     "addWatermark": {
       "title": "Pridať vodoznak",
       "description": "Pridajte textový alebo obrazový vodoznak do PDF súboru.",
+      "howToTitle": "Ako pridať vodoznak do PDF",
       "noFileLoadedTitle": "Nie je načítaný žiadny PDF súbor",
       "noFileLoadedDesc": "Nahrajte PDF súbor, aby ste mohli pridať vodoznak.",
       "uploadPdfFileFallback": "Nahrať PDF súbor",
@@ -525,6 +526,11 @@
       "a4": "Môžete kontaktovať náš tím podpory cez sekciu \"Pomoc\" alebo nám poslať email na support@pdfmanipulator.com.",
       "q5": "Je k dispozícii API?",
       "a5": "Áno, ponúkame RESTful API pre programový prístup ku všetkým funkciám manipulácie s PDF. Pozrite si API dokumentáciu pre detaily."
-    }
+    },
+    "apiUsageTitle": "Používanie API priamo",
+    "apiUsageDesc": "Všetky operácie s PDF môžete používať aj priamo, pomocou API. Preskúmajte ich v našej",
+    "apiSwaggerLink": "API dokumentácii (Swagger UI)",
+    "apiBaseUrl": "Základná URL",
+    "apiExample": "Príklad cURL požiadavky (zlúčenie dvoch PDF):"
   }
 }

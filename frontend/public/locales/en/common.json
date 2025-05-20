@@ -64,6 +64,7 @@
     "addWatermark": {
       "title": "Add Watermark",
       "description": "Add text or image watermarks to your PDF files.",
+      "howToTitle": "How to Add Watermarks to PDF",
       "noFileLoadedTitle": "No PDF file loaded",
       "noFileLoadedDesc": "Please upload a PDF file to add a watermark.",
       "uploadPdfFileFallback": "Upload PDF file",
@@ -508,6 +509,11 @@
       "feature2": "Access your operation history",
       "feature3": "Generate API keys for programmatic access",
       "feature4": "Customize your application settings"
-    }
+    },
+    "apiUsageTitle": "Using the API directly",
+    "apiUsageDesc": "All PDF operations are also available to be used from our API. Explore them in our",
+    "apiSwaggerLink": "API Documentation (Swagger UI)",
+    "apiBaseUrl": "Base URL",
+    "apiExample": "Example cURL request (merging two PDFs):"
   }
 }
