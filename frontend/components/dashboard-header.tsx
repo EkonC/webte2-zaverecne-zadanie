@@ -65,12 +65,6 @@ export function DashboardHeader() {
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem asChild>
-                <Link href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"} target="_blank">
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  {t("nav.documentation")}
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
                 <Link href="/guide">
                   <BookOpen className="mr-2 h-4 w-4" />
                   {t("nav.guide")}
