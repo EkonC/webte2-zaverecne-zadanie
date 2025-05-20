@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     INIT_ADMIN_EMAIL: Optional[EmailStr] = None
     INIT_ADMIN_PASSWORD: Optional[str] = None
 
+    API_PREFIX: str = "/api/v1"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore"

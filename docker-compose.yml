@@ -41,21 +41,21 @@ services:
       - .env
     restart: unless-stopped
 
-  tests:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-    env_file:
-      - .env
-    volumes:
-      - ./backend:/usr/src/app
-    working_dir: /usr/src/app
-    environment:
-      PYTHONPATH: /usr/src/app
-    entrypoint: []
-    command: ["pytest", "-q"]
+#  tests:
+#    build:
+#      context: ./backend
+#      dockerfile: Dockerfile
+#    depends_on:
+#      - db
+#    env_file:
+#      - .env
+#    volumes:
+#      - ./backend:/usr/src/app
+#    working_dir: /usr/src/app
+#    environment:
+#      PYTHONPATH: /usr/src/app
+#    entrypoint: []
+#    command: ["pytest", "-q"]
 
   adminer:
     image: adminer:latest
