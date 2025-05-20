@@ -2,61 +2,54 @@
 
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileDown } from "lucide-react";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 
 export function UserManual() {
   const { t } = useTranslation("common");
 
-  // Function to export the user manual content as a PDF
-  const handleExportAsPdf = async () => {
-    const container = document.getElementById("user-manual-container");
-    if (!container) return;
 
-    // 1) Un-hide all tab panels
-    container.querySelectorAll("[hidden]").forEach((el) => el.removeAttribute("hidden"));
+  const handleExportAsPdf = async () => {
+    const original = document.getElementById("user-manual-container");
+    if (!original) return;
+
+    original.querySelectorAll("[hidden]").forEach((el) => el.removeAttribute("hidden"));
+
+    const clone = original.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll("[data-export-ignore]").forEach((el) => el.remove());
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8"/>
+          <style>
+            body { font-family: "DejaVu Sans", "Helvetica", "Arial", sans-serif; }
+            [data-export-ignore]{ display:none !important; }
+          </style>
+        </head>
+        <body>${clone.innerHTML}</body>
+      </html>
+    `;
 
     try {
-      // 2) Render entire container to canvas
-      const canvas = await html2canvas(container, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/utils/html-to-pdf`, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: html,
+      });
 
-      // 3) Build PDF and split into pages
-      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
-      const pageWidth  = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      // scale canvas px → PDF pts
-      const pxToPt = (px: number) => (px * 72) / 96;
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfImgWidth  = pageWidth;
-      const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
-
-      let remainingHeight = pdfImgHeight;
-      let positionY       = 0;
-
-      // add first page
-      pdf.addImage(imgData, "PNG", 0, 0, pdfImgWidth, pdfImgHeight);
-      remainingHeight -= pageHeight;
-
-      // add extra pages as needed
-      while (remainingHeight > 0) {
-        positionY -= pageHeight;
-        pdf.addPage();
-        pdf.addImage(
-          imgData,
-          "PNG",
-          0,
-          positionY,
-          pdfImgWidth,
-          pdfImgHeight
-        );
-        remainingHeight -= pageHeight;
+      if (!res.ok) {
+        throw new Error(await res.text());
       }
 
-      pdf.save("user-manual.pdf");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "user-manual.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Export error:", err);
     }
@@ -66,7 +59,7 @@ export function UserManual() {
     <div className="space-y-6" id="user-manual-container">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold">{t("guide.userGuide")}</h2>
-        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={handleExportAsPdf}>
+        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={handleExportAsPdf} data-export-ignore>
           <FileDown className="h-4 w-4" />
           <span>{t("guide.exportAsPdf")}</span>
         </Button>
@@ -209,45 +202,38 @@ export function UserManual() {
             </div>
           </div>
         </div>
-        
-        <div className="space-y-4 mt-4">
-          <h3 className="text-lg font-medium">{t("guide.api")}</h3>
-          <div className="space-y-4">
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q1")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a1")}</p>
-            </div>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q2")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a2")}</p>
-            </div>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q3")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a3")}</p>
-            </div>
+        <div className="space-y-4 mt-8">
+          <h2 className="text-lg font-medium">
+            {t("guide.apiUsageTitle")}
+          </h2>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q4")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a4")}</p>
-            </div>
+          <p className="text-sm">
+            {t("guide.apiUsageDesc")}{" "}
+            <a
+              href="http://localhost:8000/docs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              {t("guide.apiSwaggerLink")}
+            </a>.
+          </p>
 
-            <div>
-              <h3 className="text-md font-medium">
-                {t("guide.api.q5")}
-              </h3>
-              <p className="text-sm mt-1">{t("guide.api.a5")}</p>
-            </div>
-          </div>
+          <p className="text-sm">
+            <strong>{t("guide.apiBaseUrl")}:</strong>{" "}
+            <code className="bg-muted px-1 rounded">
+              https://node32.webte.fei.stuba.sk/api/v1
+            </code>
+          </p>
+
+          <p className="text-sm">{t("guide.apiExample")}</p>
+          <pre className="bg-muted p-3 rounded text-xs overflow-x-auto">
+{`curl -X POST -H "Authorization: Bearer <YOUR_TOKEN>" \\
+  -F "files=@first.pdf" -F "files=@second.pdf" \\
+  https://node32.webte.fei.stuba.sk/api/v1/pdf/merge-pdf -o merged.pdf`}
+          </pre>
         </div>
         
       </div>

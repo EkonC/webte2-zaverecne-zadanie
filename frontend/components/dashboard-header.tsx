@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "@/components/language-switcher";
@@ -27,6 +28,7 @@ import { useAuth } from "@/components/providers/auth-provider";
 export function DashboardHeader() {
   const { t } = useTranslation("common");
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuth();
   const role = user?.role ?? null;
 
@@ -104,13 +106,6 @@ export function DashboardHeader() {
               </Link>
             )}
             <Link
-              href={process.env.NEXT_PUBLIC_DOCS_URL ?? "/docs"}
-              className={`text-sm font-medium transition-colors hover:text-primary text-muted-foreground`}
-              target="_blank"
-            >
-              {t("nav.documentation")}
-            </Link>
-            <Link
               href="/guide"
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive("/guide") ? "text-primary" : "text-muted-foreground"
@@ -125,6 +120,7 @@ export function DashboardHeader() {
           <ThemeSwitcher />
           <LanguageSwitcher />
 
+        {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
@@ -139,6 +135,17 @@ export function DashboardHeader() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={() => router.push("/login")}
+          >
+            <User className="h-5 w-5" />
+            <span className="sr-only">{t("nav.menu")}</span>
+          </Button>
+        )}
         </div>
       </div>
     </header>

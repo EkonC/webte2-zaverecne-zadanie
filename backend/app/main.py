@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routers.auth import router as auth_router
 from app.api.routers.pdf import router as pdf_router
 from app.api.routers.history import router as history_router
+from app.api.routers.utils import router as utils_router
 from app.startup import lifespan
 
 app = FastAPI(
@@ -33,6 +34,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(pdf_router)
 app.include_router(history_router)
+app.include_router(utils_router)
 
 @app.get("/", tags=["health"])
 async def read_root():
