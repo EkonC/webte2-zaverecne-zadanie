@@ -68,7 +68,7 @@ async def log_action(
         request: Request,
         source: Literal["frontend", "api"],
 ) -> None:
-    ip = request.client.host if request.client else ""
+    ip = _get_client_ip(request)
     city, country = await _ip_to_location(ip)
 
     entry = History(
