@@ -37,8 +37,10 @@ def _get_client_ip(request: Request) -> str | None:
             for ip in request.headers[header].split(","):
                 ip = ip.strip()
                 if _is_public(ip):
+                    logging.info("Selected client IP from header %s: %s", header, ip)
                     return ip
     host = request.client.host if request.client else ""
+    logging.info("Fallback client IP: %s", host)
     return host if _is_public(host) else None
 
 
