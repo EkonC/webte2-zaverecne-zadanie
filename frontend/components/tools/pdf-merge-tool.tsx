@@ -148,7 +148,7 @@ export function PdfMergeTool() {
             <div className="flex justify-between items-center">
                 <CardTitle>{t("tools.titles.merge")}</CardTitle>
                 <Button variant="outline" size="sm" onClick={handleReset}>
-                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.resetTool")}
+                    <RefreshCw className="h-3 w-3 mr-1.5" />{t("tools.changeFile")}
                 </Button>
             </div>
             <p className="text-sm text-muted-foreground pt-1">{t("tools.merge.description")}</p>

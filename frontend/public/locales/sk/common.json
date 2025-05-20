@@ -11,7 +11,8 @@
     "profile": "Profil",
     "settings": "Nastavenia",
     "logout": "Odhlásiť sa",
-    "userMenu": "Používateľské menu"
+    "userMenu": "Používateľské menu",
+    "guide": "Návod"
   },
   "theme": {
     "toggle": "Prepnúť tému",
@@ -239,6 +240,7 @@
       "reductionLabel": "Zmenšenie:",
       "downloadButton": "Stiahnuť",
       "howToTitle": "Ako komprimovať PDF súbory",
+      "optionsTitle": "Možnosti kompresie",
       "steps": {
       "step1": "Nahrajte PDF súbor pomocou prehliadača súborov vyššie.",
       "step2": "Vyberte požadovanú úroveň kompresie a možnosti.",
@@ -481,5 +483,48 @@
     "backHome": "Späť na domovskú stránku",
     "somethingWrong": "Niečo sa pokazilo",
     "tryAgain": "Skúste to znova neskôr."
+  },
+  "guide": {
+    "title": "Dokumentácia",
+    "subtitle": "Naučte sa, ako efektívne používať PDF Manipulátor",
+    "userManual": "Používateľská príručka",
+    "userManualDesc": "Naučte sa efektívne používať naše nástroje na manipuláciu s PDF",
+    "apiDocs": "API dokumentácia",
+    "apiDocsDesc": "Technická dokumentácia pre integráciu s našim PDF API",
+    "userGuide": "Používateľská príručka PDF Manipulátora",
+    "exportAsPdf": "Exportovať ako PDF",
+    "gettingStarted": "Začíname",
+    "tools": "Nástroje",
+    "faq": "Často kladené otázky",
+    "welcome": "Vitajte v PDF Manipulátore",
+    "welcomeDesc": "PDF Manipulátor je výkonná webová aplikácia, ktorá vám umožňuje vykonávať rôzne operácie s PDF súbormi. Táto príručka vám pomôže začať s aplikáciou a využiť jej funkcie naplno.",
+    "quickStart": "Rýchly štart",
+    "quickStartSteps": {
+      "step1": "Nahrajte PDF súbor pomocou oblasti pre pretiahnutie a pustenie alebo prehliadača súborov na nástenke.",
+      "step2": "Vyberte operáciu, ktorú chcete vykonať, z dostupných nástrojov.",
+      "step3": "Nakonfigurujte nastavenia operácie podľa potreby.",
+      "step4": "Kliknite na tlačidlo \"Spracovať\" pre vykonanie operácie.",
+      "step5": "Stiahnite si výsledný PDF súbor."
+    },
+    "accountManagement": "Správa účtu",
+    "accountManagementDesc": "Pre prístup ku všetkým funkciám PDF Manipulátora si musíte vytvoriť účet. Po prihlásení môžete:",
+    "accountFeatures": {
+      "feature1": "Ukladať PDF súbory pre budúce použitie",
+      "feature2": "Pristupovať k histórii operácií",
+      "feature3": "Generovať API kľúče pre programový prístup",
+      "feature4": "Prispôsobiť nastavenia aplikácie"
+    },
+    "faqQuestions": {
+      "q1": "Sú moje údaje bezpečné?",
+      "a1": "Áno, všetky nahrané súbory sú šifrované a automaticky odstránené po spracovaní, pokiaľ sa nerozhodnete ich uložiť do svojho účtu.",
+      "q2": "Aké sú limity veľkosti súborov?",
+      "a2": "Bezplatné účty môžu nahrávať súbory do 10MB. Prémiové účty môžu nahrávať súbory do 100MB.",
+      "q3": "Môžem používať aplikáciu offline?",
+      "a3": "Nie, PDF Manipulátor je webová aplikácia a vyžaduje pripojenie na internet.",
+      "q4": "Ako môžem nahlásiť problémy alebo požiadať o funkcie?",
+      "a4": "Môžete kontaktovať náš tím podpory cez sekciu \"Pomoc\" alebo nám poslať email na support@pdfmanipulator.com.",
+      "q5": "Je k dispozícii API?",
+      "a5": "Áno, ponúkame RESTful API pre programový prístup ku všetkým funkciám manipulácie s PDF. Pozrite si API dokumentáciu pre detaily."
+    }
   }
 }

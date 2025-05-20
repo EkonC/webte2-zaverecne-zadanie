@@ -11,7 +11,8 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "userMenu": "User menu"
+    "userMenu": "User menu",
+    "guide": "Guide"
   },
   "theme": {
     "toggle": "Toggle theme",
@@ -49,10 +50,8 @@
   },
   "tools": {
     "titles":{
-      "rotate": "Rotate PDF",
       "merge": "Merge PDFs",
       "split": "Split PDF",
-      "delete": "Delete Pages",
       "extractImages": "Extract Images",
       "extractText": "Extract Text",
       "compress": "Compress PDF",
@@ -60,8 +59,7 @@
       "exportPng": "Export to PNG",
       "exportJpg": "Export to JPG",
       "nUp": "Multiple Pages Per Sheet",
-      "deletePages": "Delete Pages",
-      "rotatePages": "Rotate Pages"
+      "deletePages": "Delete Pages"
     },
     "addWatermark": {
       "title": "Add Watermark",
@@ -355,6 +353,7 @@
       "invalidResponseError": "Invalid server response.",
       "compressionOptions": "Compression Options",
       "compressionLevel": "Compression Level",
+      "optionsTitle": "Compression Options",
       "levels": {
       "low": "Low (Best quality, least compression)",
       "medium": "Medium (Balanced)",
@@ -479,5 +478,36 @@
     "backHome": "Back to Home",
     "somethingWrong": "Something went wrong",
     "tryAgain": "Please try again later."
+  },
+  "guide": {
+    "title": "Documentation",
+    "subtitle": "Learn how to use PDF Manipulator",
+    "userManual": "User Manual",
+    "userManualDesc": "Learn how to use our PDF manipulation tools effectively",
+    "apiDocs": "API Documentation",
+    "apiDocsDesc": "Technical documentation for integrating with our PDF API",
+    "userGuide": "PDF Manipulator User Guide",
+    "exportAsPdf": "Export as PDF",
+    "gettingStarted": "Getting Started",
+    "tools": "Tools",
+    "faq": "FAQ",
+    "welcome": "Welcome to PDF Manipulator",
+    "welcomeDesc": "PDF Manipulator is a powerful web application that allows you to perform various operations on PDF files. This guide will help you get started with the application and make the most of its features.",
+    "quickStart": "Quick Start",
+    "quickStartSteps": {
+      "step1": "Upload a PDF file using the drag-and-drop area or file browser on the dashboard.",
+      "step2": "Select the operation you want to perform from the available tools.",
+      "step3": "Configure the operation settings as needed.",
+      "step4": "Click the \"Process\" button to perform the operation.",
+      "step5": "Download the resulting PDF file."
+    },
+    "accountManagement": "Account Management",
+    "accountManagementDesc": "To access all features of PDF Manipulator, you need to create an account. Once logged in, you can:",
+    "accountFeatures": {
+      "feature1": "Save your PDF files for future use",
+      "feature2": "Access your operation history",
+      "feature3": "Generate API keys for programmatic access",
+      "feature4": "Customize your application settings"
+    }
   }
 }

@@ -202,32 +202,7 @@ export function PdfNUpTool() {
                         </Select>
                     </div>
                 </div>
-                 <div className="space-y-4 opacity-70 group"> {/* Column 2 - UI only options */}
-                    <h3 className="text-base font-medium">{t("tools.nUp.advancedOptionsTitle")} <span className="text-xs text-amber-600 dark:text-amber-400 group-hover:opacity-100 opacity-0 transition-opacity">({t("tools.common.uiOnlyFeature")})</span></h3>
-                    {/* Page Range (UI only) */}
-                    {/*
-                    <div className="space-y-2">
-                        <Label htmlFor="page-range-nup">{t("tools.nUp.pageRangeLabel")}</Label>
-                        <Input id="page-range-nup" placeholder="e.g., 1-10 or blank for all" value={pageRange} onChange={(e) => setPageRange(e.target.value)} />
-                        <p className="text-xs text-muted-foreground">{t("tools.nUp.pageRangeDesc")}</p>
-                    </div>
-                    */}
-                    {/* Page Order (UI only) */}
-                    {/*
-                    <div className="space-y-2">
-                        <Label>{t("tools.nUp.pageOrderLabel")}</Label>
-                        <RadioGroup value={pageOrder} onValueChange={setPageOrder}> // ... radio items ... </RadioGroup>
-                    </div>
-                    */}
-                     {/* Page Orientation (UI only) */}
-                    {/*
-                    <div className="space-y-2">
-                        <Label>{t("tools.nUp.pageOrientationLabel")}</Label>
-                        <RadioGroup value={pageOrientation} onValueChange={setPageOrientation}> // ... radio items ... </RadioGroup>
-                    </div>
-                    */}
-                    <p className="text-sm text-muted-foreground">{t("tools.nUp.advancedOptionsNote")}</p>
-                </div>
+                 
             </div>
 
             <Button onClick={handleNUp} disabled={isProcessing || !currentFile} className="w-full sm:w-auto" size="lg">
