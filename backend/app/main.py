@@ -1,6 +1,6 @@
 # vstupný bod aplikácie (Fast API)
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -14,13 +14,13 @@ app = FastAPI(
     title="PDF Service API",
     version="1.0.0",
     description="Back-end pre PDF úpravy",
+    docs_url="/api/v1/docs",
+    openapi_url="/api/v1/openapi.json",
     lifespan=lifespan,
 )
 
-# for development purposes only
 origins = [
-    "http://localhost:3000",  # Your Next.js frontend URL
-    # Add any other frontend origins if necessary
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -31,11 +31,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth_router)
-app.include_router(pdf_router)
-app.include_router(history_router)
-app.include_router(utils_router)
+api = APIRouter(prefix="/api/v1")
 
-@app.get("/", tags=["health"])
+api.include_router(auth_router)
+api.include_router(pdf_router)
+api.include_router(history_router)
+api.include_router(utils_router)
+
+app.include_router(api)
+
+@api.get("/", tags=["health"])
 async def read_root():
     return {"status": "ok", "message": "API beží 🚀"}

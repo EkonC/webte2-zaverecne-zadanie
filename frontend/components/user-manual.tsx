@@ -7,6 +7,8 @@ import { FileDown } from "lucide-react";
 export function UserManual() {
   const { t } = useTranslation("common");
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+  const SWAGGER_URL  = `${API_URL}/docs`;
 
   const handleExportAsPdf = async () => {
     const original = document.getElementById("user-manual-container");
@@ -212,7 +214,7 @@ export function UserManual() {
           <p className="text-sm">
             {t("guide.apiUsageDesc")}{" "}
             <a
-              href="http://localhost:8000/docs"
+              href={SWAGGER_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary underline"
@@ -223,17 +225,13 @@ export function UserManual() {
 
           <p className="text-sm">
             <strong>{t("guide.apiBaseUrl")}:</strong>{" "}
-            <code className="bg-muted px-1 rounded">
-              https://node32.webte.fei.stuba.sk/api/v1
-            </code>
+            <code className="bg-muted px-1 rounded">{API_URL}</code>
           </p>
 
           <p className="text-sm">{t("guide.apiExample")}</p>
-          <pre className="bg-muted p-3 rounded text-xs overflow-x-auto">
-{`curl -X POST -H "Authorization: Bearer <YOUR_TOKEN>" \\
-  -F "files=@first.pdf" -F "files=@second.pdf" \\
-  https://node32.webte.fei.stuba.sk/api/v1/pdf/merge-pdf -o merged.pdf`}
-          </pre>
+          <pre className="bg-muted p-3 rounded text-xs overflow-x-auto">{`curl -X POST -H "Authorization: Bearer <YOUR_TOKEN>" \\
+            -F "files=@first.pdf" -F "files=@second.pdf" \\
+            ${API_URL}/pdf/merge-pdf -o merged.pdf`}</pre>
         </div>
         
       </div>
