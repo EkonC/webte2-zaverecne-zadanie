@@ -4,131 +4,253 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileDown } from "lucide-react";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 export function UserManual() {
   const { t } = useTranslation("common");
 
+  // Function to export the user manual content as a PDF
+  const handleExportAsPdf = async () => {
+    const container = document.getElementById("user-manual-container");
+    if (!container) return;
+
+    // 1) Un-hide all tab panels
+    container.querySelectorAll("[hidden]").forEach((el) => el.removeAttribute("hidden"));
+
+    try {
+      // 2) Render entire container to canvas
+      const canvas = await html2canvas(container, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+
+      // 3) Build PDF and split into pages
+      const pdf = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+      const pageWidth  = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      // scale canvas px → PDF pts
+      const pxToPt = (px: number) => (px * 72) / 96;
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfImgWidth  = pageWidth;
+      const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
+
+      let remainingHeight = pdfImgHeight;
+      let positionY       = 0;
+
+      // add first page
+      pdf.addImage(imgData, "PNG", 0, 0, pdfImgWidth, pdfImgHeight);
+      remainingHeight -= pageHeight;
+
+      // add extra pages as needed
+      while (remainingHeight > 0) {
+        positionY -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(
+          imgData,
+          "PNG",
+          0,
+          positionY,
+          pdfImgWidth,
+          pdfImgHeight
+        );
+        remainingHeight -= pageHeight;
+      }
+
+      pdf.save("user-manual.pdf");
+    } catch (err) {
+      console.error("Export error:", err);
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="user-manual-container">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">{t("docs.userGuide")}</h2>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
+        <h2 className="text-xl font-semibold">{t("guide.userGuide")}</h2>
+        <Button variant="outline" size="sm" className="flex items-center gap-1" onClick={handleExportAsPdf}>
           <FileDown className="h-4 w-4" />
-          <span>{t("docs.exportAsPdf")}</span>
+          <span>{t("guide.exportAsPdf")}</span>
         </Button>
       </div>
 
-      <Tabs defaultValue="getting-started">
-        <TabsList>
-          <TabsTrigger value="getting-started">
-            {t("docs.gettingStarted")}
-          </TabsTrigger>
-          <TabsTrigger value="tools">{t("docs.tools")}</TabsTrigger>
-          <TabsTrigger value="faq">{t("docs.faq")}</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="getting-started" className="space-y-4 mt-4">
+      <div defaultValue="getting-started">
+        <div className="space-y-4 mt-4">
           <div className="space-y-4">
-            <h3 className="text-lg font-medium">{t("docs.welcome")}</h3>
-            <p>{t("docs.welcomeDesc")}</p>
-
-            <h4 className="text-md font-medium mt-6">{t("docs.quickStart")}</h4>
-            <ol className="list-decimal list-inside space-y-2 ml-4">
-              <li>{t("docs.quickStartSteps.step1")}</li>
-              <li>{t("docs.quickStartSteps.step2")}</li>
-              <li>{t("docs.quickStartSteps.step3")}</li>
-              <li>{t("docs.quickStartSteps.step4")}</li>
-              <li>{t("docs.quickStartSteps.step5")}</li>
-            </ol>
-
-            <h4 className="text-md font-medium mt-6">
-              {t("docs.accountManagement")}
-            </h4>
-            <p>{t("docs.accountManagementDesc")}</p>
-            <ul className="list-disc list-inside space-y-2 ml-4">
-              <li>{t("docs.accountFeatures.feature1")}</li>
-              <li>{t("docs.accountFeatures.feature2")}</li>
-              <li>{t("docs.accountFeatures.feature3")}</li>
-              <li>{t("docs.accountFeatures.feature4")}</li>
-            </ul>
+            <h3 className="text-lg font-medium">{t("guide.gettingStarted")}</h3>
           </div>
-        </TabsContent>
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">{t("guide.welcome")}</h3>
+            <p>{t("guide.welcomeDesc")}</p>
 
-        <TabsContent value="tools" className="space-y-4 mt-4">
+            <h4 className="text-md font-medium mt-6">{t("guide.quickStart")}</h4>
+            <ol className="list-decimal list-inside space-y-2 ml-4">
+              <li>{t("guide.quickStartSteps.step1")}</li>
+              <li>{t("guide.quickStartSteps.step2")}</li>
+              <li>{t("guide.quickStartSteps.step3")}</li>
+              <li>{t("guide.quickStartSteps.step4")}</li>
+              <li>{t("guide.quickStartSteps.step5")}</li>
+            </ol>
+          </div>
+        </div>
+
+        <div className="space-y-4 mt-4">
+          <h3 className="text-lg font-medium">{t("guide.tools")}</h3>
           <div className="space-y-6">
             <div>
               <h3 className="text-lg font-medium">{t("tools.merge.title")}</h3>
               <p className="mt-1">{t("tools.merge.description")}</p>
+              <p className="mt-1">{t("tools.merge.howToTitle")}</p>
+              <ul>
+                <li>- {t("tools.merge.steps.step1")}</li>
+                <li>- {t("tools.merge.steps.step2")}</li>
+                <li>- {t("tools.merge.steps.step3")}</li>
+                <li>- {t("tools.merge.steps.step4")}</li>
+              </ul>
             </div>
 
             <div>
               <h3 className="text-lg font-medium">{t("tools.split.title")}</h3>
               <p className="mt-1">{t("tools.split.description")}</p>
+              <p className="mt-1">{t("tools.split.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.split.steps.step1")}</li>
+                <li>- {t("tools.split.steps.step2")}</li>
+                <li>- {t("tools.split.steps.step3")}</li>
+                <li>- {t("tools.split.steps.step4")}</li>
+              </ol>
             </div>
 
             <div>
-              <h3 className="text-lg font-medium">{t("tools.edit.title")}</h3>
-              <p className="mt-1">{t("tools.edit.description")}</p>
+              <h3 className="text-lg font-medium">{t("tools.deletePages.title")}</h3>
+              <p className="mt-1">{t("tools.deletePages.description")}</p>
+              <p className="mt-1">{t("tools.deletePages.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.deletePages.steps.step1")}</li>
+                <li>- {t("tools.deletePages.steps.step2")}</li>
+                <li>- {t("tools.deletePages.steps.step3")}</li>
+                <li>- {t("tools.deletePages.steps.step4")}</li>
+              </ol>
             </div>
-
             <div>
-              <h3 className="text-lg font-medium">{t("tools.delete.title")}</h3>
-              <p className="mt-1">{t("tools.delete.description")}</p>
+              <h3 className="text-lg font-medium">{t("tools.compress.title")}</h3>
+              <p className="mt-1">{t("tools.compress.description")}</p>
+              <p className="mt-1">{t("tools.compress.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.compress.steps.step1")}</li>
+                <li>- {t("tools.compress.steps.step2")}</li>
+                <li>- {t("tools.compress.steps.step3")}</li>
+                <li>- {t("tools.compress.steps.step4")}</li>
+              </ol>
             </div>
-
             <div>
-              <h3 className="text-lg font-medium">{t("tools.toc.title")}</h3>
-              <p className="mt-1">{t("tools.toc.description")}</p>
+              <h3 className="text-lg font-medium">{t("tools.exportJpg.title")}</h3>
+              <p className="mt-1">{t("tools.exportJpg.description")}</p>
+              <p className="mt-1">{t("tools.exportJpg.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.exportJpg.steps.step1")}</li>
+                <li>- {t("tools.exportJpg.steps.step2")}</li>
+                <li>- {t("tools.exportJpg.steps.step3")}</li>
+                <li>- {t("tools.exportJpg.steps.step4")}</li>
+              </ol>
             </div>
-
             <div>
-              <h3 className="text-lg font-medium">
-                {t("tools.convert.title")}
-              </h3>
-              <p className="mt-1">{t("tools.convert.description")}</p>
+              <h3 className="text-lg font-medium">{t("tools.exportJpg.title")}</h3>
+              <p className="mt-1">{t("tools.exportPng.description")}</p>
+              <p className="mt-1">{t("tools.exportPng.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.exportPng.steps.step1")}</li>
+                <li>- {t("tools.exportPng.steps.step2")}</li>
+                <li>- {t("tools.exportPng.steps.step3")}</li>
+                <li>- {t("tools.exportPng.steps.step4")}</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-lg font-medium">{t("tools.extractImages.title")}</h3>
+              <p className="mt-1">{t("tools.extractImages.description")}</p>
+              <p className="mt-1">{t("tools.extractImages.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.extractImages.steps.step1")}</li>
+                <li>- {t("tools.extractImages.steps.step2")}</li>
+                <li>- {t("tools.extractImages.steps.step3")}</li>
+                <li>- {t("tools.extractImages.steps.step4")}</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-lg font-medium">{t("tools.nUp.title")}</h3>
+              <p className="mt-1">{t("tools.nUp.description")}</p>
+              <p className="mt-1">{t("tools.nUp.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.nUp.steps.step1")}</li>
+                <li>- {t("tools.nUp.steps.step2")}</li>
+                <li>- {t("tools.nUp.steps.step3")}</li>
+                <li>- {t("tools.nUp.steps.step4")}</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-lg font-medium">{t("tools.extractText.title")}</h3>
+              <p className="mt-1">{t("tools.extractText.description")}</p>
+              <p className="mt-1">{t("tools.extractText.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.extractText.steps.step1")}</li>
+                <li>- {t("tools.extractText.steps.step2")}</li>
+                <li>- {t("tools.extractText.steps.step3")}</li>
+                <li>- {t("tools.extractText.steps.step4")}</li>
+              </ol>
+            </div>
+            <div>
+              <h3 className="text-lg font-medium">{t("tools.addWatermark.title")}</h3>
+              <p className="mt-1">{t("tools.addWatermark.description")}</p>
+              <p className="mt-1">{t("tools.addWatermark.howToTitle")}</p>
+              <ol>
+                <li>- {t("tools.addWatermark.steps.step1")}</li>
+                <li>- {t("tools.addWatermark.steps.step2")}</li>
+                <li>- {t("tools.addWatermark.steps.step3")}</li>
+                <li>- {t("tools.addWatermark.steps.step4")}</li>
+              </ol>
             </div>
           </div>
-        </TabsContent>
-
-        <TabsContent value="faq" className="space-y-4 mt-4">
+        </div>
+        
+        <div className="space-y-4 mt-4">
+          <h3 className="text-lg font-medium">{t("guide.api")}</h3>
           <div className="space-y-4">
             <div>
               <h3 className="text-md font-medium">
-                {t("docs.faqQuestions.q1")}
+                {t("guide.api.q1")}
               </h3>
-              <p className="text-sm mt-1">{t("docs.faqQuestions.a1")}</p>
+              <p className="text-sm mt-1">{t("guide.api.a1")}</p>
             </div>
 
             <div>
               <h3 className="text-md font-medium">
-                {t("docs.faqQuestions.q2")}
+                {t("guide.api.q2")}
               </h3>
-              <p className="text-sm mt-1">{t("docs.faqQuestions.a2")}</p>
+              <p className="text-sm mt-1">{t("guide.api.a2")}</p>
             </div>
 
             <div>
               <h3 className="text-md font-medium">
-                {t("docs.faqQuestions.q3")}
+                {t("guide.api.q3")}
               </h3>
-              <p className="text-sm mt-1">{t("docs.faqQuestions.a3")}</p>
+              <p className="text-sm mt-1">{t("guide.api.a3")}</p>
             </div>
 
             <div>
               <h3 className="text-md font-medium">
-                {t("docs.faqQuestions.q4")}
+                {t("guide.api.q4")}
               </h3>
-              <p className="text-sm mt-1">{t("docs.faqQuestions.a4")}</p>
+              <p className="text-sm mt-1">{t("guide.api.a4")}</p>
             </div>
 
             <div>
               <h3 className="text-md font-medium">
-                {t("docs.faqQuestions.q5")}
+                {t("guide.api.q5")}
               </h3>
-              <p className="text-sm mt-1">{t("docs.faqQuestions.a5")}</p>
+              <p className="text-sm mt-1">{t("guide.api.a5")}</p>
             </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+        
+      </div>
     </div>
   );
 }
